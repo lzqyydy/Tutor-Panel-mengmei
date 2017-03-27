@@ -31,7 +31,7 @@ document.addEventListener( 'mousemove', onMouseMove, false );
 function onMouseMove( event ) {
   event.preventDefault();
   if(event.buttons&1){ //left button
-    cameraPhi += Math.PI * (event.clientX - clientX)/window.innerWidth;
+    cameraPhi -= Math.PI * (event.clientX - clientX)/window.innerWidth;
     cameraTheta += Math.PI * (event.clientY - clientY)/window.innerHeight;
     if(cameraTheta>Math.PI/2-0.01){
       cameraTheta = Math.PI/2-0.01;
@@ -39,7 +39,7 @@ function onMouseMove( event ) {
     if(cameraTheta<0){
       cameraTheta = 0;
     }
-    camera.position.set(cameraDistance*Math.cos(cameraTheta)*Math.cos(cameraPhi), cameraDistance*Math.sin(cameraTheta), cameraDistance*Math.cos(cameraTheta)*Math.sin(cameraPhi));
+    camera.position.set(cameraDistance*Math.cos(cameraTheta)*Math.sin(cameraPhi), cameraDistance*Math.sin(cameraTheta), cameraDistance*Math.cos(cameraTheta)*Math.cos(cameraPhi));
     camera.lookAt(new THREE.Vector3(0,0,0));
   }
   clientX = event.clientX;

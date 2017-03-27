@@ -3,7 +3,7 @@ var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHei
 var cameraDistance = 100;
 var cameraPhi = 0;
 var cameraTheta = Math.acos(0.8); 
-camera.position.set(cameraDistance*Math.cos(cameraTheta)*Math.cos(cameraPhi), cameraDistance*Math.sin(cameraTheta), cameraDistance*Math.cos(cameraTheta)*Math.sin(cameraPhi));
+camera.position.set(cameraDistance*Math.cos(cameraTheta)*Math.sin(cameraPhi), cameraDistance*Math.sin(cameraTheta), cameraDistance*Math.cos(cameraTheta)*Math.cos(cameraPhi));
 camera.lookAt(new THREE.Vector3(0,0,0));
 scene.add(camera);
 

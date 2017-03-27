@@ -14,19 +14,22 @@ var render = function() {
     if ( intersects[ 0 ].object != INTERSECTED ) { 
       if ( INTERSECTED ) {
         INTERSECTED.position.y -= 1;
-        //hover.geometry.scale(0, 0, 0);
+        hover.scale.set(0.01, 0.01, 0.01);
       }
       INTERSECTED = intersects[ 0 ].object;
       INTERSECTED.position.y += 1;
-      //hover.position = INTERSECTED.position;
-      //hover.geometry.scale(1.05, 1.05, 1.05);
+      hover.position.copy(INTERSECTED.position);
+      
+      hoverDummy.rotation.set(0, Math.PI/2*Math.floor(INTERSECTED.data.index/34), 0, 'XYZ');
+      hover.rotation.set(Math.PI/2, 0, 0, 'XYZ');
+      hover.scale.set(1.1, 1.1, 1.1);
     }
   } 
   else 
   {
     if ( INTERSECTED ) {
       INTERSECTED.position.y -= 1;
-      //hover.geometry.scale(0, 0, 0);
+      hover.scale.set(0.01, 0.01, 0.01);
     }
     INTERSECTED = null;
   }

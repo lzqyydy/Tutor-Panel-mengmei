@@ -37,8 +37,10 @@ for(var i=0;i<136;i++){
   var material = new THREE.MeshLambertMaterial({color:new THREE.Color(parseInt(Math.random()*16777216))});
   hai[i] = new THREE.Mesh(geometry, material);
   hai[i].position.x = 12+4*Math.floor((i%34)/2)-50; 
-  hai[i].position.y = 2.4*(i%2)+2.8; 
+  hai[i].position.y = 2.4*(i%2)+1.2; 
   hai[i].position.z = 30.8;
+  hai[i].data = {};
+  hai[i].data.index = i;
   rotateAroundWorldAxis(hai[i], new THREE.Vector3(1,0,0), Math.PI/2);
   //cube[i].rotation.x = Math.PI/2; 
   yama[Math.floor(i/34)].add(hai[i]);
@@ -52,11 +54,19 @@ rotateAroundWorldAxis(yama[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
 //JavaScript's object will reference with each other
 //so when 'hover' changing it's geometry, all tile's geometry will be changed
 //then the clone() was added to prevent it
-var hover = new THREE.Mesh(geometry.clone(), new THREE.MeshBasicMaterial({
+var hoverDummy = new THREE.Object3D();
+hoverDummy.position.x = 0;
+hoverDummy.position.y = 0;
+var hover = new THREE.Mesh(new THREE.BoxGeometry(4, 5.6, 2.4), new THREE.MeshBasicMaterial({
   color: 0x00ff00,
   side: THREE.BackSide
 }));
-hover.geometry.scale(0,0,0);
+hover.position.x = 0;
+hover.position.y = 0;
+hover.rotation.set(Math.PI/2, 0, 0, 'XYZ');
+hover.scale.set(0.01, 0.01, 0.01);
+hoverDummy.add(hover);
+scene.add(hoverDummy);
 
 function rotateAroundObjectAxis( object, axis, radians ) {
   var rotationMatrix = new THREE.Matrix4();
