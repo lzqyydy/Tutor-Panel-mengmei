@@ -13,11 +13,11 @@ var render = function() {
   if ( intersects.length > 0 ){
     if ( intersects[ 0 ].object != INTERSECTED ) { 
       if ( INTERSECTED ) {
-        INTERSECTED.position.y -= 1;
+        //INTERSECTED.position.y -= 1;
         hover.scale.set(0.01, 0.01, 0.01);
       }
       INTERSECTED = intersects[ 0 ].object;
-      INTERSECTED.position.y += 1;
+      //INTERSECTED.position.y += 1;
       hover.position.copy(INTERSECTED.position);
       
       hoverDummy.rotation.set(0, Math.PI/2*Math.floor(INTERSECTED.data.index/34), 0, 'XYZ');
@@ -28,7 +28,7 @@ var render = function() {
   else 
   {
     if ( INTERSECTED ) {
-      INTERSECTED.position.y -= 1;
+      //INTERSECTED.position.y -= 1;
       hover.scale.set(0.01, 0.01, 0.01);
     }
     INTERSECTED = null;

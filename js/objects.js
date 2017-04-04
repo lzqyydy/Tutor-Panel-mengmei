@@ -63,7 +63,6 @@ var hover = new THREE.Mesh(new THREE.BoxGeometry(4, 5.6, 2.4), new THREE.MeshBas
 }));
 hover.position.x = 0;
 hover.position.y = 0;
-hover.rotation.set(Math.PI/2, 0, 0, 'XYZ');
 hover.scale.set(0.01, 0.01, 0.01);
 hoverDummy.add(hover);
 scene.add(hoverDummy);
