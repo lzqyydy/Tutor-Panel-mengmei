@@ -1,3 +1,46 @@
+
+controller.operations.mouseMove = function ( event ) {
+  event.preventDefault();
+  if(event.buttons&1){ //left button
+    controller.camera.phi -= Math.PI * (event.clientX - clientX)/window.innerWidth;
+    controller.camera.theta += Math.PI * (event.clientY - clientY)/window.innerHeight;
+    if(controller.camera.theta>Math.PI/2-0.01){
+      controller.camera.theta = Math.PI/2-0.01;
+    }
+    if(controller.camera.theta<0){
+      controller.camera.theta = 0;
+    }
+    base.camera.position.set(controller.camera.Distance*Math.cos(controller.camera.theta)*Math.sin(controller.camera.phi), 
+                            controller.camera.Distance*Math.sin(controller.camera.theta), 
+                            controller.camera.Distance*Math.cos(controller.camera.theta)*Math.cos(controller.camera.phi));
+    base.camera.lookAt(new THREE.Vector3(0,0,0));
+  }
+  controller.mouse.clientX = event.clientX;
+  controller.mouse.clientY = event.clientY;
+  controller.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+};
+
+controller.operations.windowResize = function () {
+  base.renderer.setSize(window.innerWidth, window.innerHeight);
+  base.camera.aspect = window.innerWidth / window.innerHeight;
+  base.camera.updateProjectionMatrix();
+};
+
+var controllerInit = function () {
+  controller.raycaster = new THREE.Raycaster();
+  controller.mouse = new THREE.Vector2();
+  controller.mouse.clientX = 0;
+  controller.mouse.clientY = 0;
+  controller.mouse.x = 0;
+  controller.mouse.y = 0;
+  controller.INTERSECTED = null;
+  // ## mousemove event
+  document.addEventListener( 'mousemove', controller.operations.mouseMove, false );
+  // ## resize event
+  window.addEventListener("resize", controller.operations.windowResize, false);
+}
+
 // 2017/3/22
 // some code grabbed from threejs example about drag file as material texture
 //
@@ -22,41 +65,3 @@
 //   reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
 //   document.body.style.opacity = 1;
 // }, false );
-
-var clientX = 0;
-var clientY = 0;
-// ## Window mousemove event
-document.addEventListener( 'mousemove', onMouseMove, false );
-// ## Window mousemove
-function onMouseMove( event ) {
-  event.preventDefault();
-  if(event.buttons&1){ //left button
-    cameraPhi -= Math.PI * (event.clientX - clientX)/window.innerWidth;
-    cameraTheta += Math.PI * (event.clientY - clientY)/window.innerHeight;
-    if(cameraTheta>Math.PI/2-0.01){
-      cameraTheta = Math.PI/2-0.01;
-    }
-    if(cameraTheta<0){
-      cameraTheta = 0;
-    }
-    camera.position.set(cameraDistance*Math.cos(cameraTheta)*Math.sin(cameraPhi), cameraDistance*Math.sin(cameraTheta), cameraDistance*Math.cos(cameraTheta)*Math.cos(cameraPhi));
-    camera.lookAt(new THREE.Vector3(0,0,0));
-  }
-  clientX = event.clientX;
-  clientY = event.clientY;
-  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-}
-
-
-// ## Window resize event
-window.addEventListener("resize", onWindowResize, false);
-// ## Window resize
-function onWindowResize() {
-    var canvasWidth = window.innerWidth;
-    var canvasHeight = window.innerHeight;
-    renderer.setSize(canvasWidth, canvasHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    render();
-}
