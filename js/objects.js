@@ -9,54 +9,58 @@ var objectInit = function(){
   // scene.add( centerLight );
 
 
-  var backGroundSphere = new THREE.SphereGeometry( 200, 50, 50 );
-  // backGroundSphere.scale( -1, 1, 1 );  
-  // var textureLoader = new THREE.TextureLoader();
-  // textureLoader.crossOrigin = '';
-  // var backGroundMaterial = new THREE.MeshBasicMaterial({
-    // map: textureLoader.load( 'https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg' )
-  // });
-  // backGround = new THREE.Mesh(backGroundSphere, backGroundMaterial);
-  // scene.add(backGround);
+  var backgroundGeo = new THREE.SphereGeometry( 200, 50, 50 );
+  backgroundGeo.scale( -1, 1, 1 );  
+  var backgroundMat = new THREE.MeshBasicMaterial({
+    map: textures.background
+  });
+  objects.meshes.background = new THREE.Mesh(backgroundGeo, backgroundMat);
+  base.scene.add(objects.meshes.background);
 
-  var geometryTable = new THREE.PlaneGeometry( 100, 100);
-  // var materialTable = new THREE.MeshBasicMaterial({
-  //   color: 0xff0000
-  // });
-  // materialPlane.side = THREE.DoubleSide;
-  // plane = new THREE.Mesh(geometryPlane, materialPlane);
-  // plane.rotation.x+=Math.PI/2;
-  // scene.add(plane);
-
-  var geometry = new THREE.BoxGeometry(4, 5.6, 2.4);
-
+  var tableGeo = new THREE.PlaneGeometry( 100, 100);
+  var tableMat = new THREE.MeshBasicMaterial({
+    color: 0xF1E9DA,
+    side: THREE.DoubleSide
+  });
+  objects.meshes.table = new THREE.Mesh(tableGeo, tableMat);
+  objects.meshes.table.rotation.x+=Math.PI/2;
+  base.scene.add(objects.meshes.table);
 
   //dummy yama
-  var yama = [];
+  objects.dummies.yama = [];
   for(var i=0;i<4;i++){
-    // yama[i] = new THREE.Object3D();
-    // yama[i].position.x = 0;
-    // yama[i].position.y = 0;
-    // scene.add(yama[i]);
+    objects.dummies.yama[i] = new THREE.Object3D();
+    objects.dummies.yama[i].position.x = 0;
+    objects.dummies.yama[i].position.y = 0;
+    base.scene.add(objects.dummies.yama[i]);
   }
-  //hai
-  objects.meshes.hai = [];
+  //tiles
+  objects.meshes.tile = [];
+  var tileGeo = new THREE.BoxGeometry(4, 5.6, 2.4);
+  var tileMat = new THREE.MultiMaterial( [
+    new THREE.MeshBasicMaterial( { map: textures.tile[40] } ), // right
+    new THREE.MeshBasicMaterial( { map: textures.tile[39] } ), // left
+    new THREE.MeshBasicMaterial( { map: textures.tile[42] } ), // top
+    new THREE.MeshBasicMaterial( { map: textures.tile[41] } ), // bottom
+    new THREE.MeshBasicMaterial( { map: textures.tile[43] } ), // back
+    null  // front
+  ] );
   for(var i=0;i<136;i++){
+    tileMat.materials[5] = new THREE.MeshBasicMaterial( { map: textures.tile[Math.floor(i/4)] } );
     // var material = new THREE.MeshLambertMaterial({color:new THREE.Color(parseInt(Math.random()*16777216))});
-    // hai[i] = new THREE.Mesh(geometry, material);
-    // hai[i].position.x = 12+4*Math.floor((i%34)/2)-50; 
-    // hai[i].position.y = 2.4*(i%2)+1.2; 
-    // hai[i].position.z = 30.8;
-    // hai[i].data = {};
-    // hai[i].data.index = i;
-    // rotateAroundWorldAxis(hai[i], new THREE.Vector3(1,0,0), Math.PI/2);
-    // //cube[i].rotation.x = Math.PI/2; 
-    // yama[Math.floor(i/34)].add(hai[i]);
+    objects.meshes.tile[i] = new THREE.Mesh(tileGeo, tileMat.clone());
+    objects.meshes.tile[i].position.x = 12+4*Math.floor((i%34)/2)-50; 
+    objects.meshes.tile[i].position.y = 2.4*(i%2)+1.2; 
+    objects.meshes.tile[i].position.z = 30.8;
+    objects.meshes.tile[i].data = {};
+    objects.meshes.tile[i].data.index = i;
+    rotateAroundWorldAxis(objects.meshes.tile[i], new THREE.Vector3(1,0,0), -Math.PI/2);
+    objects.dummies.yama[Math.floor(i/34)].add(objects.meshes.tile[i]);
   }
   // rotateAroundWorldAxis(yama[0], new THREE.Vector3(0,1,0), 0);
-  // rotateAroundWorldAxis(yama[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
-  // rotateAroundWorldAxis(yama[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
-  // rotateAroundWorldAxis(yama[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
+  rotateAroundWorldAxis(objects.dummies.yama[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
+  rotateAroundWorldAxis(objects.dummies.yama[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
+  rotateAroundWorldAxis(objects.dummies.yama[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
 
   //2017/03/27
   //JavaScript's object will reference with each other
@@ -77,16 +81,16 @@ var objectInit = function(){
 
   // var geometryTestBox = new THREE.BoxGeometry( 30, 30, 30 );
   // var materialTestBox = new THREE.MultiMaterial( [
-  //   new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( 'resources/texture/UV_Grid_Sm.jpg' ) } ), // right
-  //   new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( 'resources/texture/UV_Grid_Sm.jpg' ) } ), // left
-  //   new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( 'resources/texture/UV_Grid_Sm.jpg' ) } ), // top
-  //   new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( 'resources/texture/UV_Grid_Sm.jpg' ) } ), // bottom
-  //   new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( 'resources/texture/UV_Grid_Sm.jpg' ) } ), // back
-  //   new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load( 'resources/texture/UV_Grid_Sm.jpg' ) } )  // front
+  //   new THREE.MeshBasicMaterial( { map: textures.tile[0] } ), // right
+  //   new THREE.MeshBasicMaterial( { map: textures.tile[1] } ), // left
+  //   new THREE.MeshBasicMaterial( { map: textures.tile[2] } ), // top
+  //   new THREE.MeshBasicMaterial( { map: textures.tile[3] } ), // bottom
+  //   new THREE.MeshBasicMaterial( { map: textures.tile[4] } ), // back
+  //   new THREE.MeshBasicMaterial( { map: textures.tile[5] } )  // front
   // ] );
   // var testBox = new THREE.Mesh(geometryTestBox, materialTestBox);
   // testBox.position.y = 30;
-  // scene.add(testBox);
+  // base.scene.add(testBox);
 }
 
 

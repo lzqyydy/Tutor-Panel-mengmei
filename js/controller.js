@@ -2,17 +2,17 @@
 controller.operations.mouseMove = function ( event ) {
   event.preventDefault();
   if(event.buttons&1){ //left button
-    controller.camera.phi -= Math.PI * (event.clientX - clientX)/window.innerWidth;
-    controller.camera.theta += Math.PI * (event.clientY - clientY)/window.innerHeight;
+    controller.camera.phi -= Math.PI * (event.clientX - controller.mouse.clientX)/window.innerWidth;
+    controller.camera.theta += Math.PI * (event.clientY - controller.mouse.clientY)/window.innerHeight;
     if(controller.camera.theta>Math.PI/2-0.01){
       controller.camera.theta = Math.PI/2-0.01;
     }
     if(controller.camera.theta<0){
       controller.camera.theta = 0;
     }
-    base.camera.position.set(controller.camera.Distance*Math.cos(controller.camera.theta)*Math.sin(controller.camera.phi), 
-                            controller.camera.Distance*Math.sin(controller.camera.theta), 
-                            controller.camera.Distance*Math.cos(controller.camera.theta)*Math.cos(controller.camera.phi));
+    base.camera.position.set(controller.camera.distance*Math.cos(controller.camera.theta)*Math.sin(controller.camera.phi), 
+                            controller.camera.distance*Math.sin(controller.camera.theta), 
+                            controller.camera.distance*Math.cos(controller.camera.theta)*Math.cos(controller.camera.phi));
     base.camera.lookAt(new THREE.Vector3(0,0,0));
   }
   controller.mouse.clientX = event.clientX;
@@ -28,6 +28,14 @@ controller.operations.windowResize = function () {
 };
 
 var controllerInit = function () {
+  controller.camera.distance = 100;
+  controller.camera.theta = Math.acos(0.8); 
+  controller.camera.phi = 0;
+  base.camera.position.set(controller.camera.distance*Math.cos(controller.camera.theta)*Math.sin(controller.camera.phi),
+                            controller.camera.distance*Math.sin(controller.camera.theta),
+                            controller.camera.distance*Math.cos(controller.camera.theta)*Math.cos(controller.camera.phi));
+  base.camera.lookAt(new THREE.Vector3(0,0,0));
+  
   controller.raycaster = new THREE.Raycaster();
   controller.mouse = new THREE.Vector2();
   controller.mouse.clientX = 0;

@@ -7,7 +7,8 @@ var controller = {
 var textures = {};
 var objects = {
 	lights: {},
-	meshes: {}
+	meshes: {},
+	dummies: {}
 };
 
 

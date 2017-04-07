@@ -5,9 +5,9 @@ var render = function() {
 
   controller.raycaster.setFromCamera( controller.mouse, base.camera );
   
-  var intersects = controller.raycaster.intersectObjects( objects.meshes.hai );
+  var intersects = controller.raycaster.intersectObjects( objects.meshes.tile );
   if ( intersects.length > 0 ){
-    if ( intersects[ 0 ].object != INTERSECTED ) { 
+    if ( intersects[ 0 ].object != controller.INTERSECTED ) { 
       if ( controller.INTERSECTED ) {
         //INTERSECTED.position.y -= 1;
         //hover.scale.set(0.01, 0.01, 0.01);
@@ -30,5 +30,7 @@ var render = function() {
     controller.INTERSECTED = null;
   }
   
+
+  base.stats.update();
   base.renderer.render(base.scene, base.camera);
 };
