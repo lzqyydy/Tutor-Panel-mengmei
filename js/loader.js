@@ -1,26 +1,21 @@
 
-var base = {};
-var controller = {
-	camera: {},
-	operations: {}
-};
-var textures = {};
-var objects = {
-	lights: {},
-	meshes: {},
-	dummies: {}
-};
+window.onload = function(){
+  var vm = new Vue({
+    mixins: [_util, _base, _controller, _texture, _objects, _game],
+    data: {
 
+    },
+    methods: {
 
-window.onload = function () {
-	// init and load all resources
-  baseInit();
-  controllerInit();
-  textureInit();
-  objectInit();
-  // and set their initial value and link them here
-  gameInit();
-  // render and event handling 
-  render();
+    },
+    calculated: {
 
-};
+    },
+    watch: {
+
+    },
+    created: function(){
+      this.methods.game.render.call(this);
+    }
+  });
+}

@@ -1,53 +1,65 @@
 
-controller.operations.mouseMove = function ( event ) {
-  event.preventDefault();
-  if(event.buttons&1){ //left button
-    controller.camera.phi -= Math.PI * (event.clientX - controller.mouse.clientX)/window.innerWidth;
-    controller.camera.theta += Math.PI * (event.clientY - controller.mouse.clientY)/window.innerHeight;
-    if(controller.camera.theta>Math.PI/2-0.01){
-      controller.camera.theta = Math.PI/2-0.01;
-    }
-    if(controller.camera.theta<0){
-      controller.camera.theta = 0;
-    }
-    base.camera.position.set(controller.camera.distance*Math.cos(controller.camera.theta)*Math.sin(controller.camera.phi), 
-                            controller.camera.distance*Math.sin(controller.camera.theta), 
-                            controller.camera.distance*Math.cos(controller.camera.theta)*Math.cos(controller.camera.phi));
-    base.camera.lookAt(new THREE.Vector3(0,0,0));
-  }
-  controller.mouse.clientX = event.clientX;
-  controller.mouse.clientY = event.clientY;
-  controller.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-  controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-};
 
-controller.operations.windowResize = function () {
-  base.renderer.setSize(window.innerWidth, window.innerHeight);
-  base.camera.aspect = window.innerWidth / window.innerHeight;
-  base.camera.updateProjectionMatrix();
-};
-
-var controllerInit = function () {
-  controller.camera.distance = 100;
-  controller.camera.theta = Math.acos(0.8); 
-  controller.camera.phi = 0;
-  base.camera.position.set(controller.camera.distance*Math.cos(controller.camera.theta)*Math.sin(controller.camera.phi),
-                            controller.camera.distance*Math.sin(controller.camera.theta),
-                            controller.camera.distance*Math.cos(controller.camera.theta)*Math.cos(controller.camera.phi));
-  base.camera.lookAt(new THREE.Vector3(0,0,0));
-  
-  controller.raycaster = new THREE.Raycaster();
-  controller.mouse = new THREE.Vector2();
-  controller.mouse.clientX = 0;
-  controller.mouse.clientY = 0;
-  controller.mouse.x = 0;
-  controller.mouse.y = 0;
-  controller.INTERSECTED = null;
-  // ## mousemove event
-  document.addEventListener( 'mousemove', controller.operations.mouseMove, false );
-  // ## resize event
-  window.addEventListener("resize", controller.operations.windowResize, false);
-}
+var _controller = function () {
+  return {
+    data: {
+      controller: {
+        camera: {},
+      }
+    },
+    methods: {
+      controller: {
+        mouseMove: function(event){
+          event.preventDefault();
+          if(event.buttons&1){ //left button
+            this.controller.camera.phi -= Math.PI * (event.clientX - this.controller.mouse.clientX)/window.innerWidth;
+            this.controller.camera.theta += Math.PI * (event.clientY - this.controller.mouse.clientY)/window.innerHeight;
+            if(this.controller.camera.theta>Math.PI/2-0.01){
+              this.controller.camera.theta = Math.PI/2-0.01;
+            }
+            if(this.controller.camera.theta<0){
+              this.controller.camera.theta = 0;
+            }
+            this.base.camera.position.set(this.controller.camera.distance*Math.cos(this.controller.camera.theta)*Math.sin(this.controller.camera.phi), 
+                                    this.controller.camera.distance*Math.sin(this.controller.camera.theta), 
+                                    this.controller.camera.distance*Math.cos(this.controller.camera.theta)*Math.cos(this.controller.camera.phi));
+            this.base.camera.lookAt(new THREE.Vector3(0,0,0));
+          }
+          this.controller.mouse.clientX = event.clientX;
+          this.controller.mouse.clientY = event.clientY;
+          this.controller.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+          this.controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        },
+        windowResize: function () {
+          this.base.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.base.camera.aspect = window.innerWidth / window.innerHeight;
+          this.base.camera.updateProjectionMatrix();
+        }
+      }
+    },
+    created: function(){
+      this.controller.camera.distance = 100;
+      this.controller.camera.theta = Math.acos(0.8); 
+      this.controller.camera.phi = 0;
+      this.base.camera.position.set(this.controller.camera.distance*Math.cos(this.controller.camera.theta)*Math.sin(this.controller.camera.phi),
+                                this.controller.camera.distance*Math.sin(this.controller.camera.theta),
+                                this.controller.camera.distance*Math.cos(this.controller.camera.theta)*Math.cos(this.controller.camera.phi));
+      this.base.camera.lookAt(new THREE.Vector3(0,0,0));
+      
+      this.controller.raycaster = new THREE.Raycaster();
+      this.controller.mouse = new THREE.Vector2();
+      this.controller.mouse.clientX = 0;
+      this.controller.mouse.clientY = 0;
+      this.controller.mouse.x = 0;
+      this.controller.mouse.y = 0;
+      this.controller.INTERSECTED = null;
+      // ## mousemove event
+      document.addEventListener( 'mousemove', this.methods.controller.mouseMove.bind(this), false );
+      // ## resize event
+      window.addEventListener("resize", this.methods.controller.windowResize.bind(this), false);
+    }
+  };
+}();
 
 // 2017/3/22
 // some code grabbed from threejs example about drag file as material texture
