@@ -1,6 +1,7 @@
 
+var vm;
 window.onload = function(){
-  var vm = new Vue({
+  vm = new Vue({
     mixins: [_util, _base, _controller, _texture, _objects, _game],
     data: {
 

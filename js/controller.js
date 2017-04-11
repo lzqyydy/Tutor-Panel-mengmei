@@ -30,6 +30,14 @@ var _controller = function () {
           this.controller.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
           this.controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         },
+        click: function(event){
+          if(this.controller.INTERSECTED){
+            var value = this.game.tehai.haiIndex[this.controller.INTERSECTED.userData.index];
+            this.game.socket.emit('discard', {
+              value: value
+            }, this.methods.game.cbDiscard.bind(this, value))
+          }
+        },
         windowResize: function () {
           this.base.renderer.setSize(window.innerWidth, window.innerHeight);
           this.base.camera.aspect = window.innerWidth / window.innerHeight;
@@ -57,6 +65,8 @@ var _controller = function () {
       document.addEventListener( 'mousemove', this.methods.controller.mouseMove.bind(this), false );
       // ## resize event
       window.addEventListener("resize", this.methods.controller.windowResize.bind(this), false);
+      // ## mousemove event
+      document.addEventListener( 'click', this.methods.controller.click.bind(this), false );
     }
   };
 }();

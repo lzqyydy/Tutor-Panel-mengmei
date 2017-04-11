@@ -3,43 +3,121 @@ var _game = function(){
   return {
     data: {
       game: {
-
+        tehai: {}
       }
     },
     methods: {
       game: {
         render: function() {
           requestAnimationFrame(this.methods.game.render.bind(this));
-
           this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.camera );
           
-          var intersects = this.controller.raycaster.intersectObjects( this.objects.meshes.tile );
+          var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.hand[0].slots );
           if ( intersects.length > 0 ){
             if ( intersects[ 0 ].object !== this.controller.INTERSECTED ) { 
               if ( this.controller.INTERSECTED ) {
-                //INTERSECTED.position.y -= 1;
-                //hover.scale.set(0.01, 0.01, 0.01);
+                if(this.controller.INTERSECTED.children.length > 0){
+                  this.controller.INTERSECTED.children[0].position.y -= 1;
+                }
               }
               this.controller.INTERSECTED = intersects[ 0 ].object;
-              //INTERSECTED.position.y += 1;
-              //hover.position.copy(INTERSECTED.position);
-              
-              //hoverDummy.rotation.set(0, Math.PI/2*Math.floor(INTERSECTED.data.index/34), 0, 'XYZ');
-              //hover.rotation.set(Math.PI/2, 0, 0, 'XYZ');
-              //hover.scale.set(1.1, 1.1, 1.1);
+              if(this.controller.INTERSECTED.children.length > 0){
+                this.controller.INTERSECTED.children[0].position.y += 1;
+              }
             }
           } 
           else 
           {
             if ( this.controller.INTERSECTED ) {
-              //INTERSECTED.position.y -= 1;
-              //hover.scale.set(0.01, 0.01, 0.01);
+              if(this.controller.INTERSECTED.children.length > 0){
+                this.controller.INTERSECTED.children[0].position.y -= 1;
+              }
             }
             this.controller.INTERSECTED = null;
           }
           this.base.stats.update();
           this.base.renderer.render(this.base.scene, this.base.camera);
+        },
+        cbStart: function(data){
+          // data:{
+          //  tehai: Tehai()
+          // }
+
+          //changing this object to fill hand
+          this.game.tehai = data.tehai;
+          //fill yama with white
+          for(var i=0;i<136;i++){
+            var tile = this.objects.meshes.tile[31].clone(); // clone white
+            this.objects.dummies.yama[Math.floor(i/34)].slots[i%34].add(tile);
+          }
+          //fill others hand with white
+          for(var i=13;i<4*13;i++){
+            var tile = this.objects.meshes.tile[31].clone(); // clone white
+            this.objects.dummies.hand[Math.floor(i/13)].slots[i%13].add(tile);
+          }
+        },
+        cbDraw: function(data){
+          // data:{
+          //  turn: {number},
+          //  hai: {number},
+          //  kan: {bool},
+          //  agari: {bool},
+          //  riichi: {bool}
+          // }
+
+          if(data.turn===this.game.tehai.ji){
+            if(data.hai!==null){
+              // trigger refresh hand
+              this.game.tehai.haiIndex.push(data.hai);
+            }
+          }
+        },
+        cbDiscard: function(value){
+          // LATER: maybe check value's existance?
+          if(this.controller.INTERSECTED===this.objects.dummies.hand[0].slots[this.game.tehai.haiIndex.indexOf(value)]){
+            this.controller.INTERSECTED = null;
+          }
+          this.game.tehai.haiIndex.splice(this.game.tehai.haiIndex.indexOf(value), 1);
+        },
+        cbDiscarded: function(data){
+          // data:{
+          //  discard: {number},
+          // }
+
+          if(data&&data.hai!==null){
+            // trigger refresh hand
+            this.game.tehai.discard = data.discard;
+          }
         }
+      }
+    },
+    watch: {
+      "game.tehai": {
+        handler: function(newVal, oldVal){
+          //refresh hand 
+          for(var i=0;i<this.objects.dummies.hand[0].slots.length;i++){
+            if(this.objects.dummies.hand[0].slots[i].children.length > 0){
+              this.objects.dummies.hand[0].slots[i].remove(this.objects.dummies.hand[0].slots[i].children[0]);
+            }
+          }
+          for(var i=0;i<this.game.tehai.haiIndex.length;i++){
+            var tile = this.objects.meshes.tile[Math.floor(this.game.tehai.haiIndex[i]/4)].clone(); // clone white
+            this.objects.dummies.hand[0].slots[i].add(tile);
+          }
+          //refresh discard 
+          for(var i=0;i<4*24;i++){
+            if(this.objects.dummies.discard[Math.floor(i/24)].slots[i%24].children.length > 0){
+              this.objects.dummies.discard[Math.floor(i/24)].slots[i%24].remove(this.objects.dummies.discard[Math.floor(i/24)].slots[i%24].children[0]);
+            }
+          }
+          for(var i=0;i<4;i++){
+            for(var j=0;j<this.game.tehai.discard[i].length;j++){
+              var tile = this.objects.meshes.tile[Math.floor(this.game.tehai.discard[i][j]/4)].clone(); // clone white
+              this.objects.dummies.discard[i].slots[j].add(tile);
+            }
+          }
+        },
+        deep: true
       }
     },
     created: function(){
@@ -48,13 +126,9 @@ var _game = function(){
       this.game.socket.on('full', function(){
         this.emit('ready');
       });
-      this.game.socket.on('start', function(data){
-        // data:{
-        //  tehai: Tehai()
-        // }
-
-        debugger;
-      });
+      this.game.socket.on('start', this.methods.game.cbStart.bind(this));
+      this.game.socket.on('draw', this.methods.game.cbDraw.bind(this));
+      this.game.socket.on('discarded', this.methods.game.cbDiscarded.bind(this));
       this.game.socket.on('reconnect', function(){
         this.emit('join');
       });

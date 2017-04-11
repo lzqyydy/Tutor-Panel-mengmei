@@ -13,13 +13,13 @@ var _objects = function(){
     },
     created: function(){
       // soft white light
-      var ambientLight = new THREE.AmbientLight( 0x404040 ); 
-      var centerLight = new THREE.DirectionalLight(0xffffff, 1);
+      // var ambientLight = new THREE.AmbientLight( 0x404040 ); 
+      // var centerLight = new THREE.DirectionalLight(0xffffff, 1);
       // centerLight.position.set(0, 5, 0);
       // scene.add( ambientLight );
       // scene.add( centerLight );
 
-
+      // background ball
       var backgroundGeo = new THREE.SphereGeometry( 200, 50, 50 );
       backgroundGeo.scale( -1, 1, 1 );  
       var backgroundMat = new THREE.MeshBasicMaterial({
@@ -28,6 +28,7 @@ var _objects = function(){
       this.objects.meshes.background = new THREE.Mesh(backgroundGeo, backgroundMat);
       this.base.scene.add(this.objects.meshes.background);
 
+      // flat table
       var tableGeo = new THREE.PlaneGeometry( 100, 100);
       var tableMat = new THREE.MeshBasicMaterial({
         color: 0xF1E9DA,
@@ -37,7 +38,7 @@ var _objects = function(){
       this.objects.meshes.table.rotation.x+=Math.PI/2;
       this.base.scene.add(this.objects.meshes.table);
 
-      //dummy yama
+      // dummy yama
       this.objects.dummies.yama = [];
       for(var i=0;i<4;i++){
         this.objects.dummies.yama[i] = new THREE.Object3D();
@@ -45,6 +46,52 @@ var _objects = function(){
         this.objects.dummies.yama[i].position.y = 0;
         this.base.scene.add(this.objects.dummies.yama[i]);
       }
+      this.objects.dummies.yama[0].position.add(new THREE.Vector3(-38,0,30.8));
+      this.objects.dummies.yama[1].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
+      this.objects.dummies.yama[2].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
+      this.objects.dummies.yama[3].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
+      // this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[0], new THREE.Vector3(0,1,0), 0);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
+
+      // dummy hand
+      this.objects.dummies.hand = [];
+      for(var i=0;i<4;i++){
+        this.objects.dummies.hand[i] = new THREE.Object3D();
+        this.objects.dummies.hand[i].position.x = 0;
+        this.objects.dummies.hand[i].position.y = 0;
+        this.base.scene.add(this.objects.dummies.hand[i]);
+      }
+      this.objects.dummies.hand[0].position.add(new THREE.Vector3(-40,0,50));
+      this.objects.dummies.hand[1].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
+      this.objects.dummies.hand[2].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
+      this.objects.dummies.hand[3].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
+
+      // this.methods.util.rotateAroundWorldAxis(this.objects.dummies.hand[0], new THREE.Vector3(0,1,0), 0);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.hand[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.hand[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.hand[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
+
+      // dummy discard
+      this.objects.dummies.discard = [];
+      for(var i=0;i<4;i++){
+        this.objects.dummies.discard[i] = new THREE.Object3D();
+        this.objects.dummies.discard[i].position.x = 0;
+        this.objects.dummies.discard[i].position.y = 0;
+        this.base.scene.add(this.objects.dummies.discard[i]);
+      }
+      this.objects.dummies.discard[0].position.add(new THREE.Vector3(-12,0,12.8));
+      this.objects.dummies.discard[1].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
+      this.objects.dummies.discard[2].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
+      this.objects.dummies.discard[3].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
+
+      // this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[0], new THREE.Vector3(0,1,0), 0);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
+
+
       //tiles
       this.objects.meshes.tile = [];
       var tileGeo = new THREE.BoxGeometry(4, 5.6, 2.4);
@@ -60,21 +107,58 @@ var _objects = function(){
         tileMat.materials[5] = new THREE.MeshBasicMaterial( { map: this.textures.tile[Math.floor(i)] } );
         this.objects.meshes.tile[i] = new THREE.Mesh(tileGeo, tileMat.clone());
       }
-      //fill yama
+
+      //fill yama with dummies
+      this.objects.dummies.yama[0].slots = [];
+      this.objects.dummies.yama[1].slots = [];
+      this.objects.dummies.yama[2].slots = [];
+      this.objects.dummies.yama[3].slots = [];
       for(var i=0;i<136;i++){
-        var tile = this.objects.meshes.tile[31].clone(); // clone white
-        tile.position.x = 12+4*Math.floor((i%34)/2)-50; 
-        tile.position.y = 2.4*(i%2)+1.2; 
-        tile.position.z = 30.8;
-        tile.data = {};
-        tile.data.index = i;
-        this.methods.util.rotateAroundWorldAxis(tile, new THREE.Vector3(1,0,0), -Math.PI/2);
-        this.objects.dummies.yama[Math.floor(i/34)].add(tile);
+        var dtile = new THREE.Object3D();
+        dtile.position.x = 4*Math.floor((i%34)/2); 
+        dtile.position.y = 2.4*(i%2)+1.2; 
+        dtile.position.z = 0;
+        this.methods.util.rotateAroundWorldAxis(dtile, new THREE.Vector3(1,0,0), -Math.PI/2);
+        this.objects.dummies.yama[Math.floor(i/34)].slots[i%34] = dtile;
+        this.objects.dummies.yama[Math.floor(i/34)].add(dtile);
       }
-      // rotateAroundWorldAxis(yama[0], new THREE.Vector3(0,1,0), 0);
-      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
-      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
-      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.yama[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
+
+      var invisibleMat = new THREE.MeshBasicMaterial( );
+      invisibleMat.visible = false;
+      //fill hand with dummies
+      this.objects.dummies.hand[0].slots = [];
+      this.objects.dummies.hand[1].slots = [];
+      this.objects.dummies.hand[2].slots = [];
+      this.objects.dummies.hand[3].slots = [];
+      for(var i=0;i<4*14;i++){
+        // hand dummies need to interact with raycaster, so use Mesh instead of Object3D
+        var dtile = new THREE.Mesh(tileGeo, invisibleMat);
+        dtile.position.x = 4*(i%14); 
+        dtile.position.y = 2.8; 
+        dtile.position.z = 0;
+        // we need get this index so we can know which tile should be discarded
+        dtile.userData.index = i;
+        this.methods.util.rotateAroundWorldAxis(dtile, new THREE.Vector3(0,1,0), Math.PI);
+        this.objects.dummies.hand[Math.floor(i/14)].slots[i%14] = dtile;
+        this.objects.dummies.hand[Math.floor(i/14)].add(dtile);
+      }
+
+      //fill discard with dummies
+      this.objects.dummies.discard[0].slots = [];
+      this.objects.dummies.discard[1].slots = [];
+      this.objects.dummies.discard[2].slots = [];
+      this.objects.dummies.discard[3].slots = [];
+      for(var i=0;i<4*24;i++){
+        var dtile = new THREE.Object3D();
+        dtile.position.x = 4*(i%6)+24*Math.floor((i%24)/18); 
+        dtile.position.y = 1.2; 
+        dtile.position.z = 5.6*Math.floor((i%24)/6)-5.6*Math.floor((i%24)/18);
+        this.methods.util.rotateAroundObjectAxis(dtile, new THREE.Vector3(1,0,0), -Math.PI/2);
+        this.methods.util.rotateAroundObjectAxis(dtile, new THREE.Vector3(0,1,0), Math.PI);
+        this.objects.dummies.discard[Math.floor(i/24)].slots[i%24] = dtile;
+        this.objects.dummies.discard[Math.floor(i/24)].add(dtile);
+      }
+
     }
   };
 }();

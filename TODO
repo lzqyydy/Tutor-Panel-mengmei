@@ -1,8 +1,9 @@
 next:
 
-1. set hand tile
-2. add socket.io (auto ready)
-3. set tile texture
-4. init hand tile with real data
-5. ray casting discard
+//1. set hand tile
+//2. add socket.io (auto ready)
+//3. set tile texture
+//4. init hand tile with real data
+//5. ray casting discard
 6. dom operation button
+7. fix logic

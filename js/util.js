@@ -9,7 +9,7 @@ var _util = function(){
         rotateAroundObjectAxis: function ( object, axis, radians ) {
           var rotationMatrix = new THREE.Matrix4();
           rotationMatrix.makeRotationAxis( axis.normalize(), radians );
-          object.matrix.multiply( rotationMatrix );                       // post-multiply
+          object.matrix.multiply( rotationMatrix );      // post-multiply
           object.rotation.setFromRotationMatrix( object.matrix );
         },
         rotateAroundWorldAxis: function (object, axis, radians) {
