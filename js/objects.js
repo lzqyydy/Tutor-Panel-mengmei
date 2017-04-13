@@ -5,7 +5,8 @@ var _objects = function(){
       objects: {
         lights: {},
         meshes: {},
-        dummies: {}
+        dummies: {},
+        sprites: {}
       }
     },
     methods: {
@@ -92,7 +93,7 @@ var _objects = function(){
       this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
 
 
-      //tiles
+      //create tile meshes
       this.objects.meshes.tile = [];
       var tileGeo = new THREE.BoxGeometry(4, 5.6, 2.4);
       var tileMat = new THREE.MultiMaterial( [
@@ -159,6 +160,91 @@ var _objects = function(){
         this.objects.dummies.discard[Math.floor(i/24)].add(dtile);
       }
 
+
+      //dummy for furo sprites 
+      this.objects.dummies.furoList = new THREE.Object3D();
+      this.objects.dummies.furoList.$init = function(vm){
+        for(var i=0;i<this.children.length;i++){
+          this.remove(this.children[i]);
+        }
+      };
+      this.objects.dummies.furoList.$push = function(vm, tile, value){
+        var bg = vm.objects.sprites.furoBG.clone();
+        var tiles = [];
+        switch(value){
+          case 0:
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)+1]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)+2]);
+            break;
+          case 1:
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)-1]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)+1]);
+            break;
+          case 2:
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)-2]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)-1]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            break;
+          case 3:
+          case 4:
+          case 5:
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            break;
+          case 6:
+          case 7:
+          case 8:
+          case 9:
+          case 10:
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
+            break;
+          case 13:
+            break;
+        }
+        var group = new THREE.Group();
+        vm.base.sceneOrtho.add(bg);
+        if(tiles.length===3){
+          tiles[0].position.set(-80,0,1);
+          vm.base.sceneOrtho.add(tiles[0]);
+          tiles[1].position.set(0,0,1);
+          vm.base.sceneOrtho.add(tiles[1]);
+          tiles[2].position.set(80,0,1);
+          vm.base.sceneOrtho.add(tiles[2]);
+        }
+        else{
+          tiles[0].position.set(-110,0,1);
+          vm.base.sceneOrtho.add(tiles[0]);
+          tiles[1].position.set(-30,0,1);
+          vm.base.sceneOrtho.add(tiles[1]);
+          tiles[2].position.set(30,0,1);
+          vm.base.sceneOrtho.add(tiles[2]);
+          tiles[3].position.set(110,0,1);
+          vm.base.sceneOrtho.add(tiles[3]);
+        }
+        this.add(group);
+        this.$reposition(vm);
+      };
+      this.objects.dummies.furoList.$reposition = function(vm){
+        this.position.set(0, 0, 0);
+        this.scale.set(100, 100, 1);
+        //this.position.set(-120*this.children.length, vm.base.height-60, 0);
+      };
+      this.base.sceneOrtho.add(this.objects.dummies.furoList);
+      //create furo BG sprite
+      this.objects.sprites.furoBG = new THREE.Sprite(new THREE.SpriteMaterial( { color: 0x000000 } ));
+      this.objects.sprites.furoBG.scale.set(240,120,1);
+      //create tile sprites
+      this.objects.sprites.tile = [];
+      for(var i=0;i<34;i++){
+        this.objects.sprites.tile[i] = new THREE.Sprite(new THREE.SpriteMaterial( { map: this.textures.tile[i] } ))
+        this.objects.sprites.tile[i].scale.set(60,84,1);
+      }
     }
   };
 }();

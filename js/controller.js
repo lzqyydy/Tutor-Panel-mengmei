@@ -31,7 +31,7 @@ var _controller = function () {
           this.controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         },
         click: function(event){
-          if(this.controller.INTERSECTED){
+          if(this.controller.INTERSECTED&&this.controller.INTERSECTED.children.length){
             var value = this.game.tehai.haiIndex[this.controller.INTERSECTED.userData.index];
             this.game.socket.emit('discard', {
               value: value
@@ -39,9 +39,19 @@ var _controller = function () {
           }
         },
         windowResize: function () {
-          this.base.renderer.setSize(window.innerWidth, window.innerHeight);
-          this.base.camera.aspect = window.innerWidth / window.innerHeight;
+          this.base.width = window.innerWidth;
+          this.base.height = window.innerHeight;
+          
+          this.base.camera.aspect = this.base.width / this.base.height;
           this.base.camera.updateProjectionMatrix();
+
+          this.base.cameraOrtho.left = - this.base.width / 2;
+          this.base.cameraOrtho.right = this.base.width / 2;
+          this.base.cameraOrtho.top = this.base.height / 2;
+          this.base.cameraOrtho.bottom = - this.base.height / 2;
+          this.base.cameraOrtho.updateProjectionMatrix();
+
+          this.base.renderer.setSize(window.innerWidth, window.innerHeight);
         }
       }
     },
@@ -53,6 +63,9 @@ var _controller = function () {
                                 this.controller.camera.distance*Math.sin(this.controller.camera.theta),
                                 this.controller.camera.distance*Math.cos(this.controller.camera.theta)*Math.cos(this.controller.camera.phi));
       this.base.camera.lookAt(new THREE.Vector3(0,0,0));
+
+      this.base.cameraOrtho.position.z = 10;
+      this.base.cameraOrtho.lookAt(new THREE.Vector3(0,0,0));
       
       this.controller.raycaster = new THREE.Raycaster();
       this.controller.mouse = new THREE.Vector2();

@@ -36,7 +36,10 @@ var _game = function(){
             this.controller.INTERSECTED = null;
           }
           this.base.stats.update();
+          this.base.renderer.clear();
           this.base.renderer.render(this.base.scene, this.base.camera);
+          this.base.renderer.clearDepth();
+          this.base.renderer.render(this.base.sceneOrtho, this.base.cameraOrtho);
         },
         cbStart: function(data){
           // data:{
@@ -88,6 +91,32 @@ var _game = function(){
             // trigger refresh hand
             this.game.tehai.discard = data.discard;
           }
+        },
+        cbOperation: function(data){
+          // data:{
+          //   tile: Number,
+          //   data: Array[Number]
+          // }
+          console.log(data);
+          this.objects.dummies.furoList.$init();
+          for(var i=0;i<data.data.length;i++){
+            this.objects.dummies.furoList.$push(this, data.tile, data.data[i]);
+          }
+        },
+        op_chi: function(){
+          
+        },
+        op_pon: function(){
+          
+        },
+        op_kan: function(){
+          
+        },
+        op_agari: function(){
+          
+        },
+        op_pass: function(){
+          
         }
       }
     },
@@ -129,6 +158,7 @@ var _game = function(){
       this.game.socket.on('start', this.methods.game.cbStart.bind(this));
       this.game.socket.on('draw', this.methods.game.cbDraw.bind(this));
       this.game.socket.on('discarded', this.methods.game.cbDiscarded.bind(this));
+      this.game.socket.on('operation', this.methods.game.cbOperation.bind(this));
       this.game.socket.on('reconnect', function(){
         this.emit('join');
       });
