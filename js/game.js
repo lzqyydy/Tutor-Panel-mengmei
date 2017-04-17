@@ -10,37 +10,61 @@ var _game = function(){
       game: {
         render: function() {
           requestAnimationFrame(this.methods.game.render.bind(this));
-          this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.camera );
+
           
-          var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.hand[0].slots );
+          this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.cameraOrtho );
+          var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.furoList.buttonList );
           if ( intersects.length > 0 ){
-            if ( intersects[ 0 ].object !== this.controller.INTERSECTED ) { 
-              if ( this.controller.INTERSECTED ) {
-                if(this.controller.INTERSECTED.children.length > 0){
-                  this.controller.INTERSECTED.children[0].position.y -= 1;
-                }
+            if ( intersects[ 0 ].object !== this.controller.INTERSECTED.furoButton ) { 
+              if ( this.controller.INTERSECTED.furoButton ) {
+                this.controller.INTERSECTED.furoButton.material.color.g = 0;
               }
-              this.controller.INTERSECTED = intersects[ 0 ].object;
-              if(this.controller.INTERSECTED.children.length > 0){
-                this.controller.INTERSECTED.children[0].position.y += 1;
-              }
+              this.controller.INTERSECTED.furoButton = intersects[ 0 ].object;
+              this.controller.INTERSECTED.furoButton.material.color.g = 0.5;
             }
           } 
           else 
           {
-            if ( this.controller.INTERSECTED ) {
-              if(this.controller.INTERSECTED.children.length > 0){
-                this.controller.INTERSECTED.children[0].position.y -= 1;
-              }
+            if ( this.controller.INTERSECTED.furoButton ) {
+              this.controller.INTERSECTED.furoButton.material.color.g = 0;
             }
-            this.controller.INTERSECTED = null;
+            this.controller.INTERSECTED.furoButton = null;
           }
+
+          if(this.controller.INTERSECTED.furoButton===null){
+            this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.camera );
+            var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.hand[0].slots );
+            if ( intersects.length > 0 ){
+              if ( intersects[ 0 ].object !== this.controller.INTERSECTED.handTile ) { 
+                if ( this.controller.INTERSECTED.handTile ) {
+                  if(this.controller.INTERSECTED.handTile.children.length > 0){
+                    this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
+                  }
+                }
+                this.controller.INTERSECTED.handTile = intersects[ 0 ].object;
+                if(this.controller.INTERSECTED.handTile.children.length > 0){
+                  this.controller.INTERSECTED.handTile.children[0].position.y += 1;
+                }
+              }
+            } 
+            else 
+            {
+              if ( this.controller.INTERSECTED.handTile ) {
+                if(this.controller.INTERSECTED.handTile.children.length > 0){
+                  this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
+                }
+              }
+              this.controller.INTERSECTED.handTile = null;
+            }
+          }
+
           this.base.stats.update();
           this.base.renderer.clear();
           this.base.renderer.render(this.base.scene, this.base.camera);
           this.base.renderer.clearDepth();
           this.base.renderer.render(this.base.sceneOrtho, this.base.cameraOrtho);
         },
+        // on start the game
         cbStart: function(data){
           // data:{
           //  tehai: Tehai()
@@ -59,6 +83,7 @@ var _game = function(){
             this.objects.dummies.hand[Math.floor(i/13)].slots[i%13].add(tile);
           }
         },
+        // on draw tile
         cbDraw: function(data){
           // data:{
           //  turn: {number},
@@ -75,13 +100,15 @@ var _game = function(){
             }
           }
         },
+        // on discard tile, sending request
         cbDiscard: function(value){
           // LATER: maybe check value's existance?
-          if(this.controller.INTERSECTED===this.objects.dummies.hand[0].slots[this.game.tehai.haiIndex.indexOf(value)]){
-            this.controller.INTERSECTED = null;
+          if(this.controller.INTERSECTED.handTile===this.objects.dummies.hand[0].slots[this.game.tehai.haiIndex.indexOf(value)]){
+            this.controller.INTERSECTED.handTile = null;
           }
           this.game.tehai.haiIndex.splice(this.game.tehai.haiIndex.indexOf(value), 1);
         },
+        // on someone discard tile, update display
         cbDiscarded: function(data){
           // data:{
           //  discard: {number},
@@ -92,31 +119,19 @@ var _game = function(){
             this.game.tehai.discard = data.discard;
           }
         },
+        // on doing operation, sending request
         cbOperation: function(data){
           // data:{
           //   tile: Number,
           //   data: Array[Number]
           // }
           console.log(data);
-          this.objects.dummies.furoList.$init();
-          for(var i=0;i<data.data.length;i++){
-            this.objects.dummies.furoList.$push(this, data.tile, data.data[i]);
-          }
+          //this.objects.dummies.furoList.$init(this);
+          this.objects.dummies.furoList.$set(this, data);
         },
-        op_chi: function(){
-          
-        },
-        op_pon: function(){
-          
-        },
-        op_kan: function(){
-          
-        },
-        op_agari: function(){
-          
-        },
-        op_pass: function(){
-          
+        // on doing operation, update display
+        cbOperationHere: function(){
+          this.objects.dummies.furoList.$hide();
         }
       }
     },

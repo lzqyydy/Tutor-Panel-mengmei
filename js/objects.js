@@ -13,6 +13,9 @@ var _objects = function(){
 
     },
     created: function(){
+      var TILEWIDTH = 4;
+      var TILEHEIGHT = 5.6;
+      var TILETHICK = 2.4;
       // soft white light
       // var ambientLight = new THREE.AmbientLight( 0x404040 ); 
       // var centerLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -95,7 +98,7 @@ var _objects = function(){
 
       //create tile meshes
       this.objects.meshes.tile = [];
-      var tileGeo = new THREE.BoxGeometry(4, 5.6, 2.4);
+      var tileGeo = new THREE.BoxGeometry(TILEWIDTH, TILEHEIGHT, TILETHICK);
       var tileMat = new THREE.MultiMaterial( [
         new THREE.MeshBasicMaterial( { map: this.textures.tile[40] } ), // right
         new THREE.MeshBasicMaterial( { map: this.textures.tile[39] } ), // left
@@ -116,8 +119,8 @@ var _objects = function(){
       this.objects.dummies.yama[3].slots = [];
       for(var i=0;i<136;i++){
         var dtile = new THREE.Object3D();
-        dtile.position.x = 4*Math.floor((i%34)/2); 
-        dtile.position.y = 2.4*(i%2)+1.2; 
+        dtile.position.x = TILEWIDTH*Math.floor((i%34)/2); 
+        dtile.position.y = TILETHICK*(i%2)+TILETHICK/2; 
         dtile.position.z = 0;
         this.methods.util.rotateAroundWorldAxis(dtile, new THREE.Vector3(1,0,0), -Math.PI/2);
         this.objects.dummies.yama[Math.floor(i/34)].slots[i%34] = dtile;
@@ -134,8 +137,8 @@ var _objects = function(){
       for(var i=0;i<4*14;i++){
         // hand dummies need to interact with raycaster, so use Mesh instead of Object3D
         var dtile = new THREE.Mesh(tileGeo, invisibleMat);
-        dtile.position.x = 4*(i%14); 
-        dtile.position.y = 2.8; 
+        dtile.position.x = TILEWIDTH*(i%14); 
+        dtile.position.y = TILEHEIGHT/2; 
         dtile.position.z = 0;
         // we need get this index so we can know which tile should be discarded
         dtile.userData.index = i;
@@ -151,9 +154,9 @@ var _objects = function(){
       this.objects.dummies.discard[3].slots = [];
       for(var i=0;i<4*24;i++){
         var dtile = new THREE.Object3D();
-        dtile.position.x = 4*(i%6)+24*Math.floor((i%24)/18); 
-        dtile.position.y = 1.2; 
-        dtile.position.z = 5.6*Math.floor((i%24)/6)-5.6*Math.floor((i%24)/18);
+        dtile.position.x = TILEWIDTH*(i%6)+24*Math.floor((i%24)/18); 
+        dtile.position.y = TILETHICK/2; 
+        dtile.position.z = TILEHEIGHT*Math.floor((i%24)/6)-TILEHEIGHT*Math.floor((i%24)/18);
         this.methods.util.rotateAroundObjectAxis(dtile, new THREE.Vector3(1,0,0), -Math.PI/2);
         this.methods.util.rotateAroundObjectAxis(dtile, new THREE.Vector3(0,1,0), Math.PI);
         this.objects.dummies.discard[Math.floor(i/24)].slots[i%24] = dtile;
@@ -161,90 +164,150 @@ var _objects = function(){
       }
 
 
-      //dummy for furo sprites 
-      this.objects.dummies.furoList = new THREE.Object3D();
-      this.objects.dummies.furoList.$init = function(vm){
-        for(var i=0;i<this.children.length;i++){
-          this.remove(this.children[i]);
-        }
-      };
-      this.objects.dummies.furoList.$push = function(vm, tile, value){
-        var bg = vm.objects.sprites.furoBG.clone();
-        var tiles = [];
-        switch(value){
-          case 0:
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)+1]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)+2]);
-            break;
-          case 1:
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)-1]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)+1]);
-            break;
-          case 2:
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)-2]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)-1]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            break;
-          case 3:
-          case 4:
-          case 5:
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            break;
-          case 6:
-          case 7:
-          case 8:
-          case 9:
-          case 10:
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            tiles.push(vm.objects.sprites.tile[Math.floor(tile/4)]);
-            break;
-          case 13:
-            break;
-        }
-        var group = new THREE.Group();
-        vm.base.sceneOrtho.add(bg);
-        if(tiles.length===3){
-          tiles[0].position.set(-80,0,1);
-          vm.base.sceneOrtho.add(tiles[0]);
-          tiles[1].position.set(0,0,1);
-          vm.base.sceneOrtho.add(tiles[1]);
-          tiles[2].position.set(80,0,1);
-          vm.base.sceneOrtho.add(tiles[2]);
-        }
-        else{
-          tiles[0].position.set(-110,0,1);
-          vm.base.sceneOrtho.add(tiles[0]);
-          tiles[1].position.set(-30,0,1);
-          vm.base.sceneOrtho.add(tiles[1]);
-          tiles[2].position.set(30,0,1);
-          vm.base.sceneOrtho.add(tiles[2]);
-          tiles[3].position.set(110,0,1);
-          vm.base.sceneOrtho.add(tiles[3]);
-        }
-        this.add(group);
-        this.$reposition(vm);
-      };
-      this.objects.dummies.furoList.$reposition = function(vm){
-        this.position.set(0, 0, 0);
-        this.scale.set(100, 100, 1);
-        //this.position.set(-120*this.children.length, vm.base.height-60, 0);
-      };
-      this.base.sceneOrtho.add(this.objects.dummies.furoList);
+
+      // following objects are called 'sprite', but plane indeed
+      // that's because sprite's geometry is not a rectangular, but a circle, resulting in inproperate ray casting
       //create furo BG sprite
-      this.objects.sprites.furoBG = new THREE.Sprite(new THREE.SpriteMaterial( { color: 0x000000 } ));
-      this.objects.sprites.furoBG.scale.set(240,120,1);
+      this.objects.sprites.furoBG = new THREE.Mesh(new THREE.PlaneGeometry(100, 40), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+      //create riichi sprite
+      this.objects.sprites.riichi = new THREE.Mesh(new THREE.PlaneGeometry(40, 20), new THREE.MeshBasicMaterial( { map: this.textures.operations.riichi } ));
+      //create agari sprite
+      this.objects.sprites.agari = new THREE.Mesh(new THREE.PlaneGeometry(40, 20), new THREE.MeshBasicMaterial( { map: this.textures.operations.agari } ));
+      //create pass sprite
+      this.objects.sprites.pass = new THREE.Mesh(new THREE.PlaneGeometry(32, 32), new THREE.MeshBasicMaterial( { map: this.textures.operations.pass } ));
       //create tile sprites
       this.objects.sprites.tile = [];
       for(var i=0;i<34;i++){
-        this.objects.sprites.tile[i] = new THREE.Sprite(new THREE.SpriteMaterial( { map: this.textures.tile[i] } ))
-        this.objects.sprites.tile[i].scale.set(60,84,1);
+        this.objects.sprites.tile[i] = new THREE.Mesh(new THREE.PlaneGeometry(20, 28), new THREE.MeshBasicMaterial( { map: this.textures.tile[i] } ));
       }
+      //dummy for furo sprites 
+      this.objects.dummies.furoList = new THREE.Object3D();
+      this.objects.dummies.furoList.$set = function(vm, furo){
+        var tiles = [];
+        for(var i=0;i<furo.data.length;i++){
+          switch(furo.data[i]){
+            case 0:
+              for(var j=1;j<this.children[1].children.length;j++){
+                this.children[1].remove(this.children[1].children[j]);
+              }
+              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[1].children[1].position.set(-30, 0, 2);
+              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+1]);
+              this.children[1].children[2].position.set(0, 0, 2);
+              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+2]);
+              this.children[1].children[3].position.set(30, 0, 2);
+              this.children[1].visible = true;
+              this.buttonList[1].userData.tile = furo.tile;
+              break;
+            case 1:
+              for(var j=1;j<this.children[2].children.length;j++){
+                this.children[2].remove(this.children[2].children[j]);
+              }
+              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-1]);
+              this.children[2].children[1].position.set(-30, 0, 2);
+              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[2].children[2].position.set(0, 0, 2);
+              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+1]);
+              this.children[2].children[3].position.set(30, 0, 2);
+              this.children[2].visible = true;
+              this.buttonList[2].userData.tile = furo.tile;
+              break;
+            case 2:
+              for(var j=1;j<this.children[3].children.length;j++){
+                this.children[3].remove(this.children[3].children[j]);
+              }
+              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-2]);
+              this.children[3].children[1].position.set(-30, 0, 2);
+              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-1]);
+              this.children[3].children[2].position.set(0, 0, 2);
+              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[3].children[3].position.set(-30, 0, 2);
+              this.children[3].visible = true;
+              this.buttonList[3].userData.tile = furo.tile;
+              break;
+            case 3:
+            case 4:
+            case 5:
+              for(var j=1;j<this.children[5].children.length;j++){
+                this.children[5].remove(this.children[5].children[j]);
+              }
+              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[5].children[1].position.set(-30, 0, 2);
+              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[5].children[2].position.set(0, 0, 2);
+              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[5].children[3].position.set(-30, 0, 2);
+              this.children[5].visible = true;
+              this.buttonList[5].userData.tile = furo.tile;
+              break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+              for(var j=1;j<this.children[6].children.length;j++){
+                this.children[6].remove(this.children[6].children[j]);
+              }
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].children[1].position.set(-36, 0, 2);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].children[2].position.set(-12, 0, 2);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].children[3].position.set(12, 0, 2);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].children[4].position.set(36, 0, 2);
+              this.children[6].visible = true;
+              this.buttonList[6].userData.tile = furo.tile;
+              break;
+            case 13:
+              this.children[4].visible = true;
+              break;
+          }
+        }
+        this.children[7].visible = true;
+        this.$reposition(vm);
+      };
+      this.objects.dummies.furoList.$hide = function(){
+        for(var i=0;i<this.children.length;i++){
+          this.children[i].visible = false;
+        }
+      };
+      this.objects.dummies.furoList.$reposition = function(vm){
+        var ratio = vm.base.width/400;
+        this.position.set(0, -(vm.base.height/2-40*0.6*ratio), 1);
+        this.scale.set(0.6*ratio, 0.6*ratio, 1);
+      };
+      this.objects.dummies.furoList.$init = function(vm){
+        var bg = vm.objects.sprites.furoBG;
+        bg.position.set(0,0,1);
+        var txt_riichi = vm.objects.sprites.riichi.clone();
+        txt_riichi.position.set(0,0,2);
+        var txt_agari = vm.objects.sprites.agari.clone();
+        txt_agari.position.set(0,0,2);
+        var txt_pass = vm.objects.sprites.pass.clone();
+        txt_pass.position.set(0,0,2);
+
+        this.buttonList = [];
+        
+        for(var i=0;i<8;i++){
+          var group = new THREE.Group();
+          group.position.set(-150+100*(i%4),20*(Math.floor(i/4)?-1:1),0);
+          var bg_d = bg.clone();
+          bg_d.material = bg.material.clone();
+          bg_d.position.set(0,0,1);
+          bg_d.userData.index = i;
+          bg_d.userData.tile = null;
+          this.buttonList.push(bg_d);
+          group.add(bg_d);
+          this.add(group);
+        }
+        this.children[0].add(txt_riichi);
+        this.children[4].add(txt_agari);
+        this.children[7].add(txt_pass);
+
+        this.$hide();
+      }.call(this.objects.dummies.furoList, this);
+      this.base.sceneOrtho.add(this.objects.dummies.furoList);
     }
   };
 }();

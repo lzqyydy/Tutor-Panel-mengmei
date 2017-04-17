@@ -5,6 +5,7 @@ var _controller = function () {
     data: {
       controller: {
         camera: {},
+        INTERSECTED: {}
       }
     },
     methods: {
@@ -31,8 +32,16 @@ var _controller = function () {
           this.controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
         },
         click: function(event){
-          if(this.controller.INTERSECTED&&this.controller.INTERSECTED.children.length){
-            var value = this.game.tehai.haiIndex[this.controller.INTERSECTED.userData.index];
+          if(this.controller.INTERSECTED.furoButton&&this.controller.INTERSECTED.furoButton.parent.visible){
+            var index = this.controller.INTERSECTED.furoButton.userData.index;
+            var tile = this.controller.INTERSECTED.furoButton.userData.tile;
+            this.game.socket.emit('operation', {
+              tile: tile,
+              value: index
+            }, this.methods.game.cbOperationHere.bind(this, value))
+          }
+          else if(this.controller.INTERSECTED.handTile&&this.controller.INTERSECTED.handTile.children.length){
+            var value = this.game.tehai.haiIndex[this.controller.INTERSECTED.handTile.userData.index];
             this.game.socket.emit('discard', {
               value: value
             }, this.methods.game.cbDiscard.bind(this, value))
@@ -52,6 +61,8 @@ var _controller = function () {
           this.base.cameraOrtho.updateProjectionMatrix();
 
           this.base.renderer.setSize(window.innerWidth, window.innerHeight);
+
+          this.objects.dummies.furoList.$reposition(this);
         }
       }
     },
@@ -73,7 +84,8 @@ var _controller = function () {
       this.controller.mouse.clientY = 0;
       this.controller.mouse.x = 0;
       this.controller.mouse.y = 0;
-      this.controller.INTERSECTED = null;
+      this.controller.INTERSECTED.handTile = null;
+      this.controller.INTERSECTED.furoButton = null;
       // ## mousemove event
       document.addEventListener( 'mousemove', this.methods.controller.mouseMove.bind(this), false );
       // ## resize event
