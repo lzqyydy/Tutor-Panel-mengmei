@@ -6,16 +6,21 @@ var _objects = function(){
         lights: {},
         meshes: {},
         dummies: {},
-        sprites: {}
+        sprites: {},
+        consts: {
+          TILEWIDTH: 4,
+          TILEHEIGHT: 5.6,
+          TILETHICK: 2.4
+        }
       }
     },
     methods: {
 
     },
     created: function(){
-      var TILEWIDTH = 4;
-      var TILEHEIGHT = 5.6;
-      var TILETHICK = 2.4;
+      var TILEWIDTH = this.objects.consts.TILEWIDTH;
+      var TILEHEIGHT = this.objects.consts.TILEHEIGHT;
+      var TILETHICK = this.objects.consts.TILETHICK;
       // soft white light
       // var ambientLight = new THREE.AmbientLight( 0x404040 ); 
       // var centerLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -95,6 +100,23 @@ var _objects = function(){
       this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
       this.methods.util.rotateAroundWorldAxis(this.objects.dummies.discard[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
 
+      // dummy furo
+      this.objects.dummies.furo = [];
+      for(var i=0;i<4;i++){
+        this.objects.dummies.furo[i] = new THREE.Object3D();
+        this.objects.dummies.furo[i].position.x = 0;
+        this.objects.dummies.furo[i].position.y = 0;
+        this.base.scene.add(this.objects.dummies.furo[i]);
+      }
+      this.objects.dummies.furo[0].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
+      this.objects.dummies.furo[1].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
+      this.objects.dummies.furo[2].position.add(new THREE.Vector3(-40,0,-50));
+      this.objects.dummies.furo[3].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.furo[0], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.furo[1], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
+      // this.methods.util.rotateAroundWorldAxis(this.objects.furo.discard[2], new THREE.Vector3(0,1,0), 0);
+      this.methods.util.rotateAroundWorldAxis(this.objects.dummies.furo[3], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
+
 
       //create tile meshes
       this.objects.meshes.tile = [];
@@ -161,6 +183,29 @@ var _objects = function(){
         this.methods.util.rotateAroundObjectAxis(dtile, new THREE.Vector3(0,1,0), Math.PI);
         this.objects.dummies.discard[Math.floor(i/24)].slots[i%24] = dtile;
         this.objects.dummies.discard[Math.floor(i/24)].add(dtile);
+      }
+
+      //fill furo with dummies
+      for(var i=0;i<4;i++){
+        this.objects.dummies.furo[i].groups = [];
+        for(var j=0;j<4;j++){
+          this.objects.dummies.furo[i].groups[j] = new THREE.Group();
+          this.objects.dummies.furo[i].groups[j].slots = [];
+          this.objects.dummies.furo[i].groups[j].position.x = (j)*(2*TILEWIDTH+2*TILEHEIGHT);
+          this.objects.dummies.furo[i].add(this.objects.dummies.furo[i].groups[j]);
+        }
+      }
+      for(var i=0;i<4;i++){
+        for(var j=0;j<4;j++){
+          for(var k=0;k<4;k++){
+            var dtile = new THREE.Object3D();
+            //dtile.position.x = (k-1.5)*TILEWIDTH;
+            dtile.position.y = 0.5*TILETHICK;
+            this.objects.dummies.furo[i].groups[j].slots[k] = dtile;
+            this.methods.util.rotateAroundObjectAxis(dtile, new THREE.Vector3(1,0,0), Math.PI/2);
+            this.objects.dummies.furo[i].groups[j].add(dtile);
+          }
+        }
       }
 
 

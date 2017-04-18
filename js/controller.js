@@ -38,7 +38,7 @@ var _controller = function () {
             this.game.socket.emit('operation', {
               tile: tile,
               value: index
-            }, this.methods.game.cbOperationHere.bind(this, value))
+            }, this.methods.game.cbOperationDone.bind(this))
           }
           else if(this.controller.INTERSECTED.handTile&&this.controller.INTERSECTED.handTile.children.length){
             var value = this.game.tehai.haiIndex[this.controller.INTERSECTED.handTile.userData.index];

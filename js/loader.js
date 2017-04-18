@@ -28,7 +28,30 @@ window.onload = function(){
       f2.add(this.objects.sprites.pass.scale, 'z');
       f2.open();
 
-      //this.objects.dummies.furoList.$init(this);
+
+      // var furo = [[],[],[],[]];
+      // furo[0][0] = {tile: 30, value: 0};
+      // furo[0][1] = {tile: 30, value: 1};
+      // furo[0][2] = {tile: 30, value: 2};
+      // furo[1][0] = {tile: 30, value: 3};
+      // furo[1][1] = {tile: 30, value: 4};
+      // furo[1][2] = {tile: 30, value: 5};
+      // furo[2][0] = {tile: 30, value: 6};
+      // furo[2][1] = {tile: 30, value: 7};
+      // furo[2][2] = {tile: 30, value: 8};
+      // furo[3][0] = {tile: 30, value: 9};
+      // furo[3][1] = {tile: 30, value: 10};
+      // furo[3][2] = {tile: 30, value: 11};
+      // furo[3][3] = {tile: 30, value: 12};
+      // this.game.tehai.furo = furo;
+      // for(var i=0;i<4;i++){
+      //   for(var j=0;j<4;j++){
+      //     for(var k=0;k<4;k++){
+      //       this.objects.dummies.furo[i].groups[j].slot[k].add(this.objects.meshes.tile[30].clone());
+      //     }
+      //   }
+      // }
+
       this.methods.game.render.call(this);
     }
   });
