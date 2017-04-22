@@ -1,5 +1,5 @@
 
-var _objects = function(){
+export default function(){
   return {
     data: {
       objects: {
@@ -355,7 +355,7 @@ var _objects = function(){
       this.base.sceneOrtho.add(this.objects.dummies.furoList);
     }
   };
-}();
+};
 
 //2017/03/27
 //JavaScript's object will reference with each other

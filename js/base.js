@@ -1,5 +1,5 @@
 
-var _base = function () {
+export default function(){
   return {
     data: {
       base: {
@@ -30,4 +30,4 @@ var _base = function () {
       document.body.appendChild( this.base.stats.domElement );
     }
   }; 
-}();
+};

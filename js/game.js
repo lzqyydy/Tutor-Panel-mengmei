@@ -1,5 +1,5 @@
 
-var _game = function(){
+export default function(){
   return {
     data: {
       game: {
@@ -19,8 +19,13 @@ var _game = function(){
               if ( this.controller.INTERSECTED.furoButton ) {
                 this.controller.INTERSECTED.furoButton.material.color.g = 0;
               }
-              this.controller.INTERSECTED.furoButton = intersects[ 0 ].object;
-              this.controller.INTERSECTED.furoButton.material.color.g = 0.5;
+              if(intersects[ 0 ].object.visible){
+                this.controller.INTERSECTED.furoButton = intersects[ 0 ].object;
+                this.controller.INTERSECTED.furoButton.material.color.g = 0.5;
+              }
+              else{
+                this.controller.INTERSECTED.furoButton = null;
+              }
             }
           } 
           else 
@@ -393,4 +398,4 @@ var _game = function(){
       });
     }
   };
-}();
+};

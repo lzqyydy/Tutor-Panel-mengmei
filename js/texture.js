@@ -1,5 +1,5 @@
 
-var _texture = function(){
+export default function(){
   return {
     data: {
       textures: {
@@ -61,4 +61,4 @@ var _texture = function(){
       this.textures.operations.pass.needsUpdate = true;
     }
   };
-}();
+};

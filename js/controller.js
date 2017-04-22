@@ -1,6 +1,6 @@
 
 
-var _controller = function () {
+export default function(){
   return {
     data: {
       controller: {
@@ -94,7 +94,7 @@ var _controller = function () {
       document.addEventListener( 'click', this.methods.controller.click.bind(this), false );
     }
   };
-}();
+};
 
 // 2017/3/22
 // some code grabbed from threejs example about drag file as material texture

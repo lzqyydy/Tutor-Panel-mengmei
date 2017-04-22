@@ -1,8 +1,15 @@
 
+import _util        from "./util.js";
+import _base        from "./base.js";
+import _controller  from "./controller.js";
+import _texture     from "./texture.js";
+import _objects     from "./objects.js";
+import _game        from "./game.js";
+
 var vm;
 window.onload = function(){
   vm = new Vue({
-    mixins: [_util, _base, _controller, _texture, _objects, _game],
+    mixins: [_util(), _base(), _controller(), _texture(), _objects(), _game()],
     data: {
 
     },

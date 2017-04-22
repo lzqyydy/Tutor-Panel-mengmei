@@ -1,5 +1,5 @@
 
-var _util = function(){
+export default function(){
   return {
     data: {
 
@@ -24,4 +24,4 @@ var _util = function(){
       this.methods = this.$options.methods;
     }
   };
-}();
+};
