@@ -235,11 +235,11 @@ export default function(){
               for(var j=1;j<this.children[1].children.length;j++){
                 this.children[1].remove(this.children[1].children[j]);
               }
-              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[1].children[1].position.set(-30, 0, 2);
-              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+1]);
+              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
               this.children[1].children[2].position.set(0, 0, 2);
-              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+2]);
+              this.children[1].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+2].clone());
               this.children[1].children[3].position.set(30, 0, 2);
               this.children[1].visible = true;
               this.buttonList[1].userData.tile = furo.tile;
@@ -248,11 +248,11 @@ export default function(){
               for(var j=1;j<this.children[2].children.length;j++){
                 this.children[2].remove(this.children[2].children[j]);
               }
-              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-1]);
+              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
               this.children[2].children[1].position.set(-30, 0, 2);
-              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[2].children[2].position.set(0, 0, 2);
-              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+1]);
+              this.children[2].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
               this.children[2].children[3].position.set(30, 0, 2);
               this.children[2].visible = true;
               this.buttonList[2].userData.tile = furo.tile;
@@ -261,12 +261,12 @@ export default function(){
               for(var j=1;j<this.children[3].children.length;j++){
                 this.children[3].remove(this.children[3].children[j]);
               }
-              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-2]);
+              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-2].clone());
               this.children[3].children[1].position.set(-30, 0, 2);
-              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-1]);
+              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
               this.children[3].children[2].position.set(0, 0, 2);
-              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
-              this.children[3].children[3].position.set(-30, 0, 2);
+              this.children[3].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+              this.children[3].children[3].position.set(30, 0, 2);
               this.children[3].visible = true;
               this.buttonList[3].userData.tile = furo.tile;
               break;
@@ -276,12 +276,12 @@ export default function(){
               for(var j=1;j<this.children[5].children.length;j++){
                 this.children[5].remove(this.children[5].children[j]);
               }
-              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[5].children[1].position.set(-30, 0, 2);
-              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[5].children[2].position.set(0, 0, 2);
-              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
-              this.children[5].children[3].position.set(-30, 0, 2);
+              this.children[5].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+              this.children[5].children[3].position.set(30, 0, 2);
               this.children[5].visible = true;
               this.buttonList[5].userData.tile = furo.tile;
               break;
@@ -293,13 +293,13 @@ export default function(){
               for(var j=1;j<this.children[6].children.length;j++){
                 this.children[6].remove(this.children[6].children[j]);
               }
-              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[6].children[1].position.set(-36, 0, 2);
-              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[6].children[2].position.set(-12, 0, 2);
-              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[6].children[3].position.set(12, 0, 2);
-              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)]);
+              this.children[6].add(vm.objects.sprites.tile[Math.floor(furo.tile/4)].clone());
               this.children[6].children[4].position.set(36, 0, 2);
               this.children[6].visible = true;
               this.buttonList[6].userData.tile = furo.tile;

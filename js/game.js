@@ -12,56 +12,7 @@ export default function(){
           requestAnimationFrame(this.methods.game.render.bind(this));
 
           
-          this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.cameraOrtho );
-          var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.furoList.buttonList );
-          if ( intersects.length > 0 ){
-            if ( intersects[ 0 ].object !== this.controller.INTERSECTED.furoButton ) { 
-              if ( this.controller.INTERSECTED.furoButton ) {
-                this.controller.INTERSECTED.furoButton.material.color.g = 0;
-              }
-              if(intersects[ 0 ].object.visible){
-                this.controller.INTERSECTED.furoButton = intersects[ 0 ].object;
-                this.controller.INTERSECTED.furoButton.material.color.g = 0.5;
-              }
-              else{
-                this.controller.INTERSECTED.furoButton = null;
-              }
-            }
-          } 
-          else 
-          {
-            if ( this.controller.INTERSECTED.furoButton ) {
-              this.controller.INTERSECTED.furoButton.material.color.g = 0;
-            }
-            this.controller.INTERSECTED.furoButton = null;
-          }
 
-          if(this.controller.INTERSECTED.furoButton===null){
-            this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.camera );
-            var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.hand[0].slots );
-            if ( intersects.length > 0 ){
-              if ( intersects[ 0 ].object !== this.controller.INTERSECTED.handTile ) { 
-                if ( this.controller.INTERSECTED.handTile ) {
-                  if(this.controller.INTERSECTED.handTile.children.length > 0){
-                    this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
-                  }
-                }
-                this.controller.INTERSECTED.handTile = intersects[ 0 ].object;
-                if(this.controller.INTERSECTED.handTile.children.length > 0){
-                  this.controller.INTERSECTED.handTile.children[0].position.y += 1;
-                }
-              }
-            } 
-            else 
-            {
-              if ( this.controller.INTERSECTED.handTile ) {
-                if(this.controller.INTERSECTED.handTile.children.length > 0){
-                  this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
-                }
-              }
-              this.controller.INTERSECTED.handTile = null;
-            }
-          }
 
           this.base.stats.update();
           this.base.renderer.clear();
@@ -125,18 +76,17 @@ export default function(){
           }
         },
         // on reciving avaliable operations, then sending request
-        cbOperation: function(data){
+        cbOperation: function(operation){
           // data:{
           //   tile: Number, //0-132
           //   value: Number
           // }
-          console.log(data);
+          console.log(operation);
           //this.objects.dummies.furoList.$init(this);
-          this.objects.dummies.furoList.$set(this, data);
+          this.objects.dummies.furoList.$set(this, operation);
         },
         // on doing operation, update display
-        cbOperationDone: function(){
-          //TODO: 减少手牌
+        cbOperationDone: function(index, tile){
           this.objects.dummies.furoList.$hide();
         },
         // on reciving furo, update display
@@ -146,7 +96,8 @@ export default function(){
           //   value: Number,
           //   player: Number //27-30
           // }
-          this.game.tehai.furo = data.furo;
+          //this.game.tehai.furo = data.furo;
+          this.game.tehai = data.tehai;
         }
       }
     },
