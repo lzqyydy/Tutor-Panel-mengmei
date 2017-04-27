@@ -1,4 +1,4 @@
-import rayPicking from './controller/rayPicking.js'
+//import rayPicking from './controller/rayPicking.js'
 
 export default function(){
   return {
