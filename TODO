@@ -1,9 +1,15 @@
-next:
-
-//1. set hand tile
-//2. add socket.io (auto ready)
-//3. set tile texture
-//4. init hand tile with real data
-//5. ray casting discard
-6. dom operation button
+todo list:
 7. fix logic
+8. riichi
+
+
+bug list:
+1.111122223333算作两杯口
+2.手牌中已存在的杠不触发
+
+blog list:
+1.旋转后自身坐标系与children坐标系
+
+improve list: 
+1.减少计分板材料重制次数
+

@@ -47,6 +47,9 @@ export default function(){
       this.objects.meshes.table.rotation.x+=Math.PI/2;
       this.base.scene.add(this.objects.meshes.table);
 
+
+
+
       // dummy yama
       this.objects.dummies.yama = [];
       for(var i=0;i<4;i++){
@@ -353,6 +356,52 @@ export default function(){
         this.$hide();
       }.call(this.objects.dummies.furoList, this);
       this.base.sceneOrtho.add(this.objects.dummies.furoList);
+
+
+      //center score board
+      this.objects.sprites.board = new THREE.Mesh( new THREE.PlaneGeometry(20, 20), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+      this.objects.sprites.board.position.y = 0.02;
+      this.methods.util.rotateAroundWorldAxis(this.objects.sprites.board, new THREE.Vector3(1,0,0), - Math.PI/2);
+      this.base.scene.add(this.objects.sprites.board);
+
+      //score board element
+      this.objects.sprites.board.round = new THREE.Mesh( new THREE.PlaneGeometry(10, 10), new THREE.MeshBasicMaterial( { color: 0xffffff } ));
+      this.objects.sprites.board.round.position.z = 0.02;
+      this.objects.sprites.board.add(this.objects.sprites.board.round);
+      this.objects.sprites.board.data = [];
+      for (var i=0;i<4;i++){
+        this.objects.sprites.board.data[i] = new THREE.Group();
+        this.objects.sprites.board.data[i].pos = new THREE.Mesh( new THREE.PlaneGeometry(5, 5), new THREE.MeshBasicMaterial( { color: 0xff0000 } ));
+        this.objects.sprites.board.data[i].pos.position.x = -2.5;
+        this.objects.sprites.board.data[i].pos.position.z = 0.03;
+        this.objects.sprites.board.data[i].player = new THREE.Mesh( new THREE.PlaneGeometry(5, 2.5), new THREE.MeshBasicMaterial( { color: 0x00ff00 } ));
+        this.objects.sprites.board.data[i].player.position.x = 2.5;
+        this.objects.sprites.board.data[i].player.position.y = 1.25;
+        this.objects.sprites.board.data[i].player.position.z = 0.03;
+        this.objects.sprites.board.data[i].score = new THREE.Mesh( new THREE.PlaneGeometry(5, 2.5), new THREE.MeshBasicMaterial( { color: 0x0000ff } ));
+        this.objects.sprites.board.data[i].score.position.x = 2.5;
+        this.objects.sprites.board.data[i].score.position.y = -1.25;
+        this.objects.sprites.board.data[i].score.position.z = 0.03;
+        this.objects.sprites.board.data[i].add(this.objects.sprites.board.data[i].pos);
+        this.objects.sprites.board.data[i].add(this.objects.sprites.board.data[i].player);
+        this.objects.sprites.board.data[i].add(this.objects.sprites.board.data[i].score);
+        this.objects.sprites.board.data[i].position.add(new THREE.Vector3(0, -7.5, 0).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 0, 1 ), Math.PI/2*i)));
+        this.methods.util.rotateAroundWorldAxis(this.objects.sprites.board.data[i], new THREE.Vector3(0,0,1), Math.PI/2 * i);
+        this.objects.sprites.board.add(this.objects.sprites.board.data[i]);
+      }
+
+
+      //result board
+      this.objects.sprites.result = new THREE.Mesh( new THREE.PlaneGeometry(500,500), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+      this.objects.sprites.result.$set = function(vm, value){
+
+      };
+      this.objects.sprites.result.$hide = function(vm, value){
+
+      };
+      this.base.sceneOrtho.add(this.objects.sprites.result);
+
+
     }
   };
 };
