@@ -392,14 +392,14 @@ export default function(){
 
 
       //result board
-      this.objects.sprites.result = new THREE.Mesh( new THREE.PlaneGeometry(500,500), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
-      this.objects.sprites.result.$set = function(vm, value){
+      // this.objects.sprites.result = new THREE.Mesh( new THREE.PlaneGeometry(500,500), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+      // this.objects.sprites.result.$set = function(vm, value){
 
-      };
-      this.objects.sprites.result.$hide = function(vm, value){
+      // };
+      // this.objects.sprites.result.$hide = function(vm, value){
 
-      };
-      this.base.sceneOrtho.add(this.objects.sprites.result);
+      // };
+      // this.base.sceneOrtho.add(this.objects.sprites.result);
 
 
     }
