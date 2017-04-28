@@ -13,8 +13,55 @@ export default function(){
         render: function() {
           requestAnimationFrame(this.methods.game.render.bind(this));
 
-          
+          // this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.cameraOrtho );
+          // var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.furoList.buttonList );
+          // if ( intersects.length > 0 ){
+          //   if ( intersects[ 0 ].object !== this.controller.INTERSECTED.furoButton ) { 
+          //     if ( this.controller.INTERSECTED.furoButton ) {
+          //       this.controller.INTERSECTED.furoButton.material.color.g = 0;
+          //     }
+          //     if(intersects[ 0 ].object.parent.visible){
+          //       this.controller.INTERSECTED.furoButton = intersects[ 0 ].object;
+          //       this.controller.INTERSECTED.furoButton.material.color.g = 0.5;
+          //     }
+          //     else{
+          //       this.controller.INTERSECTED.furoButton = null;
+          //     }
+          //   }
+          // } 
+          // else {
+          //   if ( this.controller.INTERSECTED.furoButton ) {
+          //     this.controller.INTERSECTED.furoButton.material.color.g = 0;
+          //   }
+          //   this.controller.INTERSECTED.furoButton = null;
+          // }
 
+          // if(this.controller.INTERSECTED.furoButton===null){
+          //   this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.camera );
+          //   var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.hand[0].slots );
+          //   if ( intersects.length > 0 ){
+          //     if ( intersects[ 0 ].object !== this.controller.INTERSECTED.handTile ) { 
+          //       if ( this.controller.INTERSECTED.handTile ) {
+          //         if(this.controller.INTERSECTED.handTile.children.length > 0){
+          //           this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
+          //         }
+          //       }
+          //       this.controller.INTERSECTED.handTile = intersects[ 0 ].object;
+          //       if(this.controller.INTERSECTED.handTile.children.length > 0){
+          //         this.controller.INTERSECTED.handTile.children[0].position.y += 1;
+          //       }
+          //     }
+          //   } 
+          //   else 
+          //   {
+          //     if ( this.controller.INTERSECTED.handTile ) {
+          //       if(this.controller.INTERSECTED.handTile.children.length > 0){
+          //         this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
+          //       }
+          //     }
+          //     this.controller.INTERSECTED.handTile = null;
+          //   }
+          // }
 
           this.base.stats.update();
           this.base.renderer.clear();
@@ -102,7 +149,7 @@ export default function(){
           this.game.tehai = data.tehai;
         },
         cbRoundEnd: function(data){
-          console.log(data);
+          console.log(JSON.stringify(data));
         }
       }
     },
@@ -113,6 +160,59 @@ export default function(){
       }
     },
     created: function(){
+
+      //register rayCasting objects
+      this.controller.intersectList.push({
+        name: 'nextRound',
+        type: 'orthographic',
+        target: [this.objects.sprites.result.next],
+        condition: function(){
+          return this.parent.visible;
+        },
+        success: function(){
+          this.material.color.r = 0.5;
+          this.material.color.g = 1;
+          this.material.color.b = 0.5;
+        },
+        restore: function(){
+          this.material.color.r = 1;
+          this.material.color.g = 1;
+          this.material.color.b = 1;
+        }
+      });
+      this.controller.intersectList.push({
+        name: 'furoButton',
+        type: 'orthographic',
+        target: this.objects.dummies.furoList.buttonList,
+        condition: function(){
+          return this.parent.visible;
+        },
+        success: function(){
+          this.material.color.g = 0.5;
+        },
+        restore: function(){
+          this.material.color.g = 0;
+        }
+      });
+      this.controller.intersectList.push({
+        name: 'handTile',
+        type: 'perspective',
+        target: this.objects.dummies.hand[0].slots,
+        condition: function(){
+          return true;
+        },
+        success: function(){
+          if(this.children[0]){
+            this.children[0].position.y += 1;
+          }
+        },
+        restore: function(){
+          if(this.children[0]){
+            this.children[0].position.y -= 1;
+          }
+        }
+      });
+
       this.game.socket = io('/touhou');
       this.game.socket.emit('join');
       this.game.socket.on('full', function(){

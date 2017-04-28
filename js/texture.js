@@ -50,6 +50,7 @@ export default function(){
       this.textures.board.score = [];
 
       this.textures.result = {};
+      this.textures.result.next = this.methods.util.generateTextTexture('next', 32, 'Arial', 'rgba(255,255,255,1)');
     }
   };
 };

@@ -1,4 +1,4 @@
-//import rayPicking from './controller/rayPicking.js'
+import rayPicking from './controller/rayPicking.js'
 
 export default function(){
   return {
@@ -33,57 +33,8 @@ export default function(){
           this.controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;  
 
 
+          rayPicking(this);
 
-          this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.cameraOrtho );
-          var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.furoList.buttonList );
-          if ( intersects.length > 0 ){
-            if ( intersects[ 0 ].object !== this.controller.INTERSECTED.furoButton ) { 
-              if ( this.controller.INTERSECTED.furoButton ) {
-                this.controller.INTERSECTED.furoButton.material.color.g = 0;
-              }
-              if(intersects[ 0 ].object.parent.visible){
-                this.controller.INTERSECTED.furoButton = intersects[ 0 ].object;
-                this.controller.INTERSECTED.furoButton.material.color.g = 0.5;
-              }
-              else{
-                this.controller.INTERSECTED.furoButton = null;
-              }
-            }
-          } 
-          else 
-          {
-            if ( this.controller.INTERSECTED.furoButton ) {
-              this.controller.INTERSECTED.furoButton.material.color.g = 0;
-            }
-            this.controller.INTERSECTED.furoButton = null;
-          }
-
-          if(this.controller.INTERSECTED.furoButton===null){
-            this.controller.raycaster.setFromCamera( this.controller.mouse, this.base.camera );
-            var intersects = this.controller.raycaster.intersectObjects( this.objects.dummies.hand[0].slots );
-            if ( intersects.length > 0 ){
-              if ( intersects[ 0 ].object !== this.controller.INTERSECTED.handTile ) { 
-                if ( this.controller.INTERSECTED.handTile ) {
-                  if(this.controller.INTERSECTED.handTile.children.length > 0){
-                    this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
-                  }
-                }
-                this.controller.INTERSECTED.handTile = intersects[ 0 ].object;
-                if(this.controller.INTERSECTED.handTile.children.length > 0){
-                  this.controller.INTERSECTED.handTile.children[0].position.y += 1;
-                }
-              }
-            } 
-            else 
-            {
-              if ( this.controller.INTERSECTED.handTile ) {
-                if(this.controller.INTERSECTED.handTile.children.length > 0){
-                  this.controller.INTERSECTED.handTile.children[0].position.y -= 1;
-                }
-              }
-              this.controller.INTERSECTED.handTile = null;
-            }
-          }
         },
         click: function(event){
           if(this.controller.INTERSECTED.furoButton&&this.controller.INTERSECTED.furoButton.parent.visible){

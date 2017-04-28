@@ -390,16 +390,22 @@ export default function(){
         this.objects.sprites.board.add(this.objects.sprites.board.data[i]);
       }
 
-
+this.textures.result.next
       //result board
-      // this.objects.sprites.result = new THREE.Mesh( new THREE.PlaneGeometry(500,500), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
-      // this.objects.sprites.result.$set = function(vm, value){
+      this.objects.sprites.result = new THREE.Mesh( new THREE.PlaneGeometry(500,500), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+      this.objects.sprites.result.position.z = 0.04;
+      this.objects.sprites.result.next = new THREE.Mesh( new THREE.PlaneGeometry(50,25), new THREE.MeshBasicMaterial( { map: this.textures.result.next } ));
+      this.objects.sprites.result.next.position.y = -200;
+      this.objects.sprites.result.next.position.z = 0.05;
+      this.objects.sprites.result.add(this.objects.sprites.result.next);
+      this.objects.sprites.result.$set = function(vm, value){
+        this.visible = true;
 
-      // };
-      // this.objects.sprites.result.$hide = function(vm, value){
-
-      // };
-      // this.base.sceneOrtho.add(this.objects.sprites.result);
+      };
+      this.objects.sprites.result.$hide = function(vm, value){
+        this.visible = false;
+      };
+      this.base.sceneOrtho.add(this.objects.sprites.result);
 
 
     }

@@ -1,6 +1,7 @@
 todo list:
 7. fix logic
 8. riichi
+9. 自动理牌
 
 
 bug list:
@@ -12,4 +13,5 @@ blog list:
 
 improve list: 
 1.减少计分板材料重制次数
+2.目前object初始化在controller后面，考虑吧rayCasting部分放在controller里面把这两个调换位置？
 

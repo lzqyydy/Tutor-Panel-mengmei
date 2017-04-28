@@ -53,7 +53,7 @@ window.onload = function(){
       //     }
       //   }
       // }
-
+      //'[{"operation":"agari","data":{"player":0,"oya":0,"haiIndex":[0,1,2,3,4,5,6,7,8,10,9,11,12,14],"agariFrom":0,"agariHai":3,"fu":{"base":20,"kotsu":0,"jyan":2,"machi":0,"menzen":0,"tsumo":2,"chitoi":0,"pinfu":0,"count":30},"han":{"dora":false,"riichi":false,"ippatsu":false,"menzentsumo":1,"tanyao":false,"pinfu":false,"ipeiko":false,"yaku_haku":false,"yaku_hatsu":false,"yaku_chun":false,"yaku_jikaze":false,"yaku_bakaze":false,"rinsyan":false,"chankan":false,"haitei":false,"hotei":false,"sansyoku":false,"ikki":false,"honchantai":false,"chitoi":false,"toitoi":false,"sananko":false,"honro":false,"santoko":false,"sankan":false,"syousangen":false,"double":false,"honitsu":false,"junchantai":false,"ryanpei":3,"chinitsu":6,"kokushi":false,"suanko":false,"daisangen":false,"tsuiso":false,"syousushi":false,"daisushi":false,"ryuiso":false,"chinroto":false,"sukantsu":false,"churen":false,"tenhou":false,"chihou":false,"nakashi":false,"count":10},"basePoint":4000}}]';
       this.methods.game.render.call(this);
     }
   });
