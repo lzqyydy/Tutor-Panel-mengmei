@@ -362,7 +362,7 @@ export default function(){
       this.objects.sprites.board = new THREE.Mesh( new THREE.PlaneGeometry(20, 20), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
       this.objects.sprites.board.position.y = 0.02;
       this.methods.util.rotateAroundWorldAxis(this.objects.sprites.board, new THREE.Vector3(1,0,0), - Math.PI/2);
-      //this.base.scene.add(this.objects.sprites.board);
+      this.base.scene.add(this.objects.sprites.board);
 
       //score board element
       this.objects.sprites.board.round = new THREE.Mesh( new THREE.PlaneGeometry(10, 10), new THREE.MeshBasicMaterial( { color: 0xffffff } ));
@@ -404,7 +404,8 @@ export default function(){
       this.objects.sprites.result.$hide = function(vm, value){
         this.visible = false;
       };
-      //this.base.sceneOrtho.add(this.objects.sprites.result);
+      this.objects.sprites.result.$hide();
+      this.base.sceneOrtho.add(this.objects.sprites.result);
 
 
     }

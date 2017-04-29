@@ -162,7 +162,7 @@ export default function(){
           //   basePoint: this.tehai.agari.final.basePoint
           // };
           //console.log(JSON.stringify(data));
-
+          this.objects.sprites.result.$set(data);
         },
         cbReady: function(){
 
@@ -177,8 +177,18 @@ export default function(){
     },
     created: function(){
 
+
+      ///////////////
+      // IMPORTANT //
+      ///////////////
+      // 2017/04/29
+      // what the fuck was happened ?
+      // if i use push() instead of set by index
+      // render speed will drop to 10%
+      // WHY?
+
       //register rayCasting objects
-      this.controller.intersectList.push({
+      this.controller.intersectList[0] = {
         name: 'nextRound',
         type: 'orthographic',
         target: [this.objects.sprites.result.next],
@@ -195,8 +205,8 @@ export default function(){
           this.material.color.g = 1;
           this.material.color.b = 1;
         }
-      });
-      this.controller.intersectList.push({
+      };
+      this.controller.intersectList[1] = {
         name: 'furoButton',
         type: 'orthographic',
         target: this.objects.dummies.furoList.buttonList,
@@ -209,8 +219,8 @@ export default function(){
         restore: function(){
           this.material.color.g = 0;
         }
-      });
-      this.controller.intersectList.push({
+      };
+      this.controller.intersectList[2] = {
         name: 'handTile',
         type: 'perspective',
         target: this.objects.dummies.hand[0].slots,
@@ -224,10 +234,10 @@ export default function(){
         },
         restore: function(){
           if(this.children[0]){
-            this.children[0].position.y -= 1;
+            this.children[0].position.y = 0;
           }
         }
-      });
+      };
 
       this.game.socket = io('/touhou');
       this.game.socket.emit('join');
