@@ -75,6 +75,8 @@ export default function(){
           //  tehai: Tehai()
           // }
 
+          // hide result (if shown)
+          this.objects.sprites.result.$hide();
           //changing this object to fill hand
           this.game.tehai = data.tehai;
           //fill yama with white
@@ -149,7 +151,21 @@ export default function(){
           this.game.tehai = data.tehai;
         },
         cbRoundEnd: function(data){
-          console.log(JSON.stringify(data));
+          // var result = {
+          //   player: this.number,
+          //   oya: this.tehai.ji-27;
+          //   haiIndex: this.tehai.haiIndex,
+          //   agariFrom: this.tehai.agariFrom,
+          //   agariHai: this.tehai.agariHai,
+          //   fu: this.tehai.agari.final.fu,
+          //   han: this.tehai.agari.final.han,
+          //   basePoint: this.tehai.agari.final.basePoint
+          // };
+          //console.log(JSON.stringify(data));
+
+        },
+        cbReady: function(){
+
         }
       }
     },

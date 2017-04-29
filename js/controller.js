@@ -37,7 +37,11 @@ export default function(){
 
         },
         click: function(event){
-          if(this.controller.INTERSECTED.furoButton&&this.controller.INTERSECTED.furoButton.parent.visible){
+          if(this.controller.INTERSECTED.nextRound&&this.controller.INTERSECTED.nextRound.parent.visible){
+            this.game.socket.emit('ready', {
+            }, this.methods.game.cbReady.bind(this));
+          }
+          else if(this.controller.INTERSECTED.furoButton&&this.controller.INTERSECTED.furoButton.parent.visible){
             var index = this.controller.INTERSECTED.furoButton.userData.index;
             var tile = this.controller.INTERSECTED.furoButton.userData.tile;
             this.game.socket.emit('operation', {
