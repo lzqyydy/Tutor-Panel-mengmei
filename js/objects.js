@@ -393,6 +393,17 @@ export default function(){
       //result board
       this.objects.sprites.result = new THREE.Mesh( new THREE.PlaneGeometry(500,500), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
       this.objects.sprites.result.position.z = 0.04;
+      this.objects.sprites.result.hai = [];
+      for(var i=0;i<14;i++){
+        this.objects.sprites.result.hai[i] = new THREE.Object3D();
+        this.objects.sprites.result.hai[i].position.x = (i-7)*25;
+        this.objects.sprites.result.hai[i].position.y = 200;
+
+      }
+      this.objects.sprites.result.dora = [];
+      this.objects.sprites.result.han = [];
+      this.objects.sprites.result.ura = [];
+      this.objects.sprites.result.score = [];
       this.objects.sprites.result.next = new THREE.Mesh( new THREE.PlaneGeometry(50,25), new THREE.MeshBasicMaterial( { map: this.textures.result.next } ));
       this.objects.sprites.result.next.position.y = -200;
       this.objects.sprites.result.next.position.z = 0.05;
