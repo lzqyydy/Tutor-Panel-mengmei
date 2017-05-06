@@ -78,6 +78,9 @@ export default function(){
           // hide result (if shown)
           this.objects.sprites.result.$hide();
           //changing this object to fill hand
+          data.tehai.haiIndex.sort(function(a,b){
+            return a-b;
+          })
           this.game.tehai = data.tehai;
           //fill yama with white
           for(var i=0;i<136;i++){
@@ -148,6 +151,9 @@ export default function(){
           //   player: Number //27-30
           // }
           //this.game.tehai.furo = data.furo;
+          data.tehai.haiIndex.sort(function(a,b){
+            return a-b;
+          })
           this.game.tehai = data.tehai;
         },
         cbRoundEnd: function(data){
@@ -155,6 +161,7 @@ export default function(){
           //   player: this.number,
           //   oya: this.tehai.ji-27;
           //   haiIndex: this.tehai.haiIndex,
+          //   furo: this.tehai.furo,
           //   agariFrom: this.tehai.agariFrom,
           //   agariHai: this.tehai.agariHai,
           //   fu: this.tehai.agari.final.fu,

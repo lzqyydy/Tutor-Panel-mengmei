@@ -309,6 +309,8 @@ export default function(){
               break;
             case 13:
               this.children[4].visible = true;
+            case 14:
+              this.children[0].visible = true;
               break;
           }
         }
@@ -398,7 +400,8 @@ export default function(){
         this.objects.sprites.result.hai[i] = new THREE.Object3D();
         this.objects.sprites.result.hai[i].position.x = (i-7)*25;
         this.objects.sprites.result.hai[i].position.y = 200;
-
+        this.objects.sprites.result.hai[i].position.z = 0.05;
+        this.objects.sprites.result.add(this.objects.sprites.result.hai[i]);
       }
       this.objects.sprites.result.dora = [];
       this.objects.sprites.result.han = [];
@@ -408,8 +411,29 @@ export default function(){
       this.objects.sprites.result.next.position.y = -200;
       this.objects.sprites.result.next.position.z = 0.05;
       this.objects.sprites.result.add(this.objects.sprites.result.next);
-      this.objects.sprites.result.$set = function(vm, value){
+      this.objects.sprites.result.$set = function(vm, result){
         this.visible = true;
+        // var result = {
+        //   player: this.number,
+        //   oya: this.tehai.ji-27;
+        //   haiIndex: this.tehai.haiIndex,
+        //   furo: this.tehai.furo,
+        //   agariFrom: this.tehai.agariFrom,
+        //   agariHai: this.tehai.agariHai,
+        //   fu: this.tehai.agari.final.fu,
+        //   han: this.tehai.agari.final.han,
+        //   basePoint: this.tehai.agari.final.basePoint
+        // };
+        for(var i=0;i<result.length;i++){
+          for(var j=0;j<vm.objects.sprites.result.hai.length;j++){
+            if(vm.objects.sprites.result.hai[j].children.length){
+              vm.objects.sprites.result.hai[j].remove(vm.objects.sprites.result.hai[j].children[0])
+            }
+          }
+          for(var j=0;j<result[i].data.haiIndex.length;j++){
+            vm.objects.sprites.result.hai[j].add(vm.objects.sprites.tile[Math.floor(result[i].data.haiIndex[j]/4)].clone());
+          }
+        }
 
       };
       this.objects.sprites.result.$hide = function(vm, value){
