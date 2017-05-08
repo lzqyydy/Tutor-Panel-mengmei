@@ -1,15 +1,17 @@
 todo list:
-7. fix logic
+s1.逻辑重构
+s2.组建建类
+s3.tehai watcher
 10.其他人副露手牌减少
 11.摸牌效果
 12.牌disabled状态
 
 bug list:
-1.111122223333算作两杯口
 2.手牌中已存在的杠不触发
 
 blog list:
 1.旋转后自身坐标系与children坐标系
+2.es6 import export
 
 improve list: 
 1.减少计分板材料重制次数

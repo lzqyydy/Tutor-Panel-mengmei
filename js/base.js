@@ -1,33 +1,78 @@
+import { Unit } from './structures.js';
 
-export default function(){
-  return {
-    data: {
-      base: {
+var base = new Unit();
 
-      }
-    },
-    methods: {
+base.width = window.innerWidth;
+base.height = window.innerHeight;
+base.scene = new THREE.Scene();
+base.camera = new THREE.PerspectiveCamera(75, base.width / base.height, 0.1, 1000);
+base.scene.add(base.camera);
+base.sceneOrtho = new THREE.Scene();
+base.cameraOrtho = new THREE.OrthographicCamera(base.width/-2, base.width/2, base.height/2, base.height/-2, 0, 10);
+base.sceneOrtho.add(base.cameraOrtho);
+base.renderer = new THREE.WebGLRenderer();
+base.renderer.setSize(base.width, base.height);
+base.renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+document.body.appendChild( base.renderer.domElement );
+base.stats = new Stats();
+base.stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( base.stats.domElement );
 
-    },
-    created: function(){
-      this.base.width = window.innerWidth;
-      this.base.height = window.innerHeight;
+var render = function() {
+  requestAnimationFrame(render);
 
-      this.base.scene = new THREE.Scene();
-      this.base.camera = new THREE.PerspectiveCamera(75, this.base.width / this.base.height, 0.1, 1000);
-      this.base.scene.add(this.base.camera);
-
-      this.base.sceneOrtho = new THREE.Scene();
-      this.base.cameraOrtho = new THREE.OrthographicCamera(this.base.width / -2, this.base.width / 2, this.base.height / 2, this.base.height / -2, 0, 10);
-      this.base.sceneOrtho.add(this.base.cameraOrtho);
-
-      this.base.renderer = new THREE.WebGLRenderer();
-      this.base.renderer.setSize(window.innerWidth, window.innerHeight);
-      this.base.renderer.autoClear = false; // To allow render overlay on top of sprited sphere
-      document.body.appendChild( this.base.renderer.domElement );
-      this.base.stats = new Stats();
-      this.base.stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-      document.body.appendChild( this.base.stats.domElement );
-    }
-  }; 
+  base.stats.update();
+  base.renderer.clear();
+  base.renderer.render(base.scene, base.camera);
+  base.renderer.clearDepth();
+  base.renderer.render(base.sceneOrtho, base.cameraOrtho);
 };
+render();
+
+var center = new THREE.Vector3(0,0,0);
+base.camera.$distance = 100;
+base.camera.$theta = Math.acos(0.8); 
+base.camera.$phi = 0;
+base.camera.position.set(base.camera.$distance*Math.cos(base.camera.$theta)*Math.sin(base.camera.$phi),
+                         base.camera.$distance*Math.sin(base.camera.$theta),
+                         base.camera.$distance*Math.cos(base.camera.$theta)*Math.cos(base.camera.$phi));
+base.camera.lookAt(center);
+
+base.cameraOrtho.position.z = 10;
+base.cameraOrtho.lookAt(center);
+
+base.onNotify = function(source, event, param){
+  switch(event){
+    case 'move':
+      base.camera.$phi -= Math.PI*param.x/base.width;
+      base.camera.$theta += Math.PI*param.y/base.height;
+      if(base.camera.$theta>Math.PI/2-0.01){
+        base.camera.$theta = Math.PI/2-0.01;
+      }
+      if(base.camera.$theta<0){
+        base.camera.$theta = 0;
+      }
+      base.camera.position.set(base.camera.$distance*Math.cos(base.camera.$theta)*Math.sin(base.camera.$phi),
+                               base.camera.$distance*Math.sin(base.camera.$theta),
+                               base.camera.$distance*Math.cos(base.camera.$theta)*Math.cos(base.camera.$phi));
+      base.camera.lookAt(center);
+      break;
+    case 'resize':
+      base.width = window.innerWidth;
+      base.height = window.innerHeight;
+      
+      base.camera.aspect = base.width / base.height;
+      base.camera.updateProjectionMatrix();
+
+      base.cameraOrtho.left = - base.width / 2;
+      base.cameraOrtho.right = base.width / 2;
+      base.cameraOrtho.top = base.height / 2;
+      base.cameraOrtho.bottom = - base.height / 2;
+      base.cameraOrtho.updateProjectionMatrix();
+
+      base.renderer.setSize(window.innerWidth, window.innerHeight);
+      break;
+  }
+};
+
+export { base as default }
