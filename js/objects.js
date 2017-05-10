@@ -430,7 +430,16 @@ objects.onNotify = function(source, event, param){
         objects.dummies.hand[Math.floor(i/13)].slots[i%13].add(tile);
       }
       break;
-    case 'tehaiChange':
+    case 'socketOperation':
+      objects.dummies.furoList.$set(param);
+      break;
+    case 'socketRoundEnd':
+      objects.sprites.result.$set(param);
+      break;
+    case 'inputOperation':
+      objects.dummies.furoList.$hide();
+      break;
+    case 'tehaiChanged':
       //refresh hand 
       for(var i=0;i<objects.dummies.hand[0].slots.length;i++){
         if(objects.dummies.hand[0].slots[i].children.length > 0){

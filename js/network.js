@@ -23,4 +23,21 @@ network.socket.on('reconnect', function(){
   this.emit('join');
 });
 
+network.onNotify = function(source, event, param){
+  switch(event){
+    case 'inputReady':
+      network.socket.emit('ready');
+      break;
+    case 'inputOperation':
+      network.socket.emit('operation', param, function(){
+        network.notify('objects', 'inputOperation');
+      });
+      break;
+    case 'inputDiscard':
+      network.socket.emit('discard', param, function(){
+        network.notify('game', 'inputDiscard', param);
+      });
+      break;
+  }
+};
 export { network as default };

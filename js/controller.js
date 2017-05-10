@@ -30,30 +30,41 @@ function mouseMove(event){
 
 };
 function click(event){
-  // if(this.controller.INTERSECTED.nextRound&&this.controller.INTERSECTED.nextRound.parent.visible){
-  //   this.game.socket.emit('ready', {
-  //   }, this.methods.game.cbReady.bind(this));
-  // }
-  // else if(this.controller.INTERSECTED.furoButton&&this.controller.INTERSECTED.furoButton.parent.visible){
-  //   var index = this.controller.INTERSECTED.furoButton.userData.index;
-  //   var tile = this.controller.INTERSECTED.furoButton.userData.tile;
-  //   this.game.socket.emit('operation', {
-  //     tile: tile,
-  //     value: index
-  //   }, this.methods.game.cbOperationDone.bind(this, index, tile))
-  // }
-  // else if(this.controller.INTERSECTED.handTile&&this.controller.INTERSECTED.handTile.children.length){
-  //   var value = this.game.tehai.haiIndex[this.controller.INTERSECTED.handTile.userData.index];
-  //   this.game.socket.emit('discard', {
-  //     value: value
-  //   }, this.methods.game.cbDiscard.bind(this, value))
-  // }
-};
-function windowResize() {
-  controller.notify('base', 'resize', {});
-  //this.objects.dummies.furoList.$reposition(this);
+  if(controller.INTERSECTED.nextRound&&controller.INTERSECTED.nextRound.parent.visible){
+    controller.notify('network', 'inputReady');
+  }
+  else if(controller.INTERSECTED.furoButton&&controller.INTERSECTED.furoButton.parent.visible){
+    var index = controller.INTERSECTED.furoButton.userData.index;
+    var tile  = controller.INTERSECTED.furoButton.userData.tile;
+    controller.notify('network', 'inputOperation', {
+      tile: tile,
+      value: index
+    });
+  }
+  else if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
+    var value = game.tehai.haiIndex[controller.INTERSECTED.handTile.userData.index];
+    controller.notify('network', 'inputDiscard', {
+      value: value
+    });
+  }
 };
 
+// // on discard tile, update display
+// cbDiscard: function(value){
+//   // LATER: maybe check value's existance?
+//   this.game.tehai.haiIndex.splice(this.game.tehai.haiIndex.indexOf(value), 1);
+// },
+// // on doing operation, update display
+// cbOperationDone: function(index, tile){
+//   this.objects.dummies.furoList.$hide();
+// },
+
+function windowResize() {
+  controller.notify(null, 'resize', {});
+};
+
+controller.onNotify = function(source, event, param){
+};
 
 // ## mousemove event
 document.addEventListener( 'mousemove', mouseMove, false );

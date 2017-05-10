@@ -6,8 +6,12 @@ import network from './network.js'
 
 controller.addObserver('base', base);
 controller.addObserver('objects', objects);
+controller.addObserver('game', game);
+controller.addObserver('network', network);
+network.addObserver('controller', controller);
 network.addObserver('objects', objects);
 network.addObserver('game', game);
+game.addObserver('objects', objects);
 
 
 base.scene.add(objects.meshes.background);
