@@ -56,7 +56,7 @@ game.onNotify = function(source, event, param){
     case 'socketRoundEnd':
       break;
     case 'inputDiscard':
-      game.tehai.haiIndex.splice(game.tehai.haiIndex.indexOf(value), 1);
+      game.tehai.haiIndex.splice(game.tehai.haiIndex.indexOf(param.value), 1);
       game.notify('objects', 'tehaiChanged', game.tehai)
       break;
   }

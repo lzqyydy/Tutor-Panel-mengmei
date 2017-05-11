@@ -207,86 +207,86 @@ objects.dummies.furoList.$set = function(furo){
   for(var i=0;i<furo.data.length;i++){
     switch(furo.data[i]){
       case 0:
-        for(var j=1;j<children[1].children.length;j++){
-          children[1].remove(children[1].children[j]);
+        for(var j=1;j<this.children[1].children.length;j++){
+          this.children[1].remove(this.children[1].children[j]);
         }
-        children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[1].children[1].position.set(-30, 0, 2);
-        children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
-        children[1].children[2].position.set(0, 0, 2);
-        children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+2].clone());
-        children[1].children[3].position.set(30, 0, 2);
-        children[1].visible = true;
-        buttonList[1].userData.tile = furo.tile;
+        this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[1].children[1].position.set(-30, 0, 2);
+        this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
+        this.children[1].children[2].position.set(0, 0, 2);
+        this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+2].clone());
+        this.children[1].children[3].position.set(30, 0, 2);
+        this.children[1].visible = true;
+        this.buttonList[1].userData.tile = furo.tile;
         break;
       case 1:
-        for(var j=1;j<children[2].children.length;j++){
-          children[2].remove(children[2].children[j]);
+        for(var j=1;j<this.children[2].children.length;j++){
+          this.children[2].remove(this.children[2].children[j]);
         }
-        children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
-        children[2].children[1].position.set(-30, 0, 2);
-        children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[2].children[2].position.set(0, 0, 2);
-        children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
-        children[2].children[3].position.set(30, 0, 2);
-        children[2].visible = true;
-        buttonList[2].userData.tile = furo.tile;
+        this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
+        this.children[2].children[1].position.set(-30, 0, 2);
+        this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[2].children[2].position.set(0, 0, 2);
+        this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
+        this.children[2].children[3].position.set(30, 0, 2);
+        this.children[2].visible = true;
+        this.buttonList[2].userData.tile = furo.tile;
         break;
       case 2:
-        for(var j=1;j<children[3].children.length;j++){
-          children[3].remove(children[3].children[j]);
+        for(var j=1;j<this.children[3].children.length;j++){
+          this.children[3].remove(this.children[3].children[j]);
         }
-        children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-2].clone());
-        children[3].children[1].position.set(-30, 0, 2);
-        children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
-        children[3].children[2].position.set(0, 0, 2);
-        children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[3].children[3].position.set(30, 0, 2);
-        children[3].visible = true;
-        buttonList[3].userData.tile = furo.tile;
+        this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-2].clone());
+        this.children[3].children[1].position.set(-30, 0, 2);
+        this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
+        this.children[3].children[2].position.set(0, 0, 2);
+        this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[3].children[3].position.set(30, 0, 2);
+        this.children[3].visible = true;
+        this.buttonList[3].userData.tile = furo.tile;
         break;
       case 3:
       case 4:
       case 5:
-        for(var j=1;j<children[5].children.length;j++){
-          children[5].remove(children[5].children[j]);
+        for(var j=1;j<this.children[5].children.length;j++){
+          this.children[5].remove(this.children[5].children[j]);
         }
-        children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[5].children[1].position.set(-30, 0, 2);
-        children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[5].children[2].position.set(0, 0, 2);
-        children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[5].children[3].position.set(30, 0, 2);
-        children[5].visible = true;
-        buttonList[5].userData.tile = furo.tile;
+        this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[5].children[1].position.set(-30, 0, 2);
+        this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[5].children[2].position.set(0, 0, 2);
+        this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[5].children[3].position.set(30, 0, 2);
+        this.children[5].visible = true;
+        this.buttonList[5].userData.tile = furo.tile;
         break;
       case 6:
       case 7:
       case 8:
       case 9:
       case 10:
-        for(var j=1;j<children[6].children.length;j++){
-          children[6].remove(children[6].children[j]);
+        for(var j=1;j<this.children[6].children.length;j++){
+          this.children[6].remove(this.children[6].children[j]);
         }
-        children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[6].children[1].position.set(-36, 0, 2);
-        children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[6].children[2].position.set(-12, 0, 2);
-        children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[6].children[3].position.set(12, 0, 2);
-        children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        children[6].children[4].position.set(36, 0, 2);
-        children[6].visible = true;
-        buttonList[6].userData.tile = furo.tile;
+        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[6].children[1].position.set(-36, 0, 2);
+        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[6].children[2].position.set(-12, 0, 2);
+        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[6].children[3].position.set(12, 0, 2);
+        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+        this.children[6].children[4].position.set(36, 0, 2);
+        this.children[6].visible = true;
+        this.buttonList[6].userData.tile = furo.tile;
         break;
       case 13:
-        children[4].visible = true;
+        this.children[4].visible = true;
       case 14:
-        children[0].visible = true;
+        this.children[0].visible = true;
         break;
     }
   }
-  children[7].visible = true;
+  this.children[7].visible = true;
 };
 objects.dummies.furoList.$hide = function(){
   for(var i=0;i<this.children.length;i++){
@@ -295,8 +295,8 @@ objects.dummies.furoList.$hide = function(){
 };
 objects.dummies.furoList.$reposition = function(){
   var ratio = window.innerWidth/400;
-  position.set(0, -(window.innerHeight/2-40*0.6*ratio), 1);
-  scale.set(0.6*ratio, 0.6*ratio, 1);
+  this.position.set(0, -(window.innerHeight/2-40*0.6*ratio), 1);
+  this.scale.set(0.6*ratio, 0.6*ratio, 1);
 };
 objects.dummies.furoList.$init = function(){
   var bg = objects.sprites.furoBG;
@@ -434,6 +434,7 @@ objects.onNotify = function(source, event, param){
       objects.dummies.furoList.$set(param);
       break;
     case 'socketRoundEnd':
+      console.log(JSON.stringify(param));
       objects.sprites.result.$set(param);
       break;
     case 'inputOperation':
@@ -449,6 +450,7 @@ objects.onNotify = function(source, event, param){
       for(var i=0;i<param.haiIndex.length;i++){
         var tile = objects.meshes.tile[Math.floor(param.haiIndex[i]/4)].clone(); // clone white
         objects.dummies.hand[0].slots[i].add(tile);
+        objects.dummies.hand[0].slots[i].children[0]._tile = param.haiIndex[i];
       }
       //refresh discard 
       for(var i=0;i<4*24;i++){
@@ -482,7 +484,7 @@ objects.onNotify = function(source, event, param){
               t1.position.x = 2*TILEWIDTH+0.5*TILEHEIGHT;
               t2.position.x = TILEWIDTH;
               t3.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -494,7 +496,7 @@ objects.onNotify = function(source, event, param){
               t2.position.x = 2*TILEWIDTH+0.5*TILEHEIGHT;
               t1.position.x = TILEWIDTH;
               t3.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -506,7 +508,7 @@ objects.onNotify = function(source, event, param){
               t3.position.x = 2*TILEWIDTH+0.5*TILEHEIGHT;
               t1.position.x = TILEWIDTH;
               t2.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t3, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t3, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -518,7 +520,7 @@ objects.onNotify = function(source, event, param){
               t1.position.x = 2*TILEWIDTH+0.5*TILEHEIGHT;
               t2.position.x = TILEWIDTH;
               t3.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -530,7 +532,7 @@ objects.onNotify = function(source, event, param){
               t1.position.x = TILEWIDTH+TILEHEIGHT;
               t2.position.x = 0.5*TILEWIDTH+0.5*TILEHEIGHT;
               t3.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -542,7 +544,7 @@ objects.onNotify = function(source, event, param){
               t1.position.x = 1.5*TILEWIDTH+0.5*TILEHEIGHT;
               t2.position.x = 0.5*TILEWIDTH+0.5*TILEHEIGHT;
               t3.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t3, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t3, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -556,7 +558,7 @@ objects.onNotify = function(source, event, param){
               t2.position.x = 2*TILEWIDTH;
               t3.position.x = TILEWIDTH;
               t4.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -571,7 +573,7 @@ objects.onNotify = function(source, event, param){
               t2.position.x = 1.5*TILEWIDTH+0.5*TILEHEIGHT;
               t3.position.x = TILEWIDTH;
               t4.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -586,7 +588,7 @@ objects.onNotify = function(source, event, param){
               t2.position.x = TILEWIDTH+TILEHEIGHT;
               t3.position.x = TILEHEIGHT;
               t4.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -601,8 +603,8 @@ objects.onNotify = function(source, event, param){
               t2.position.x = 2*TILEWIDTH;
               t3.position.x = TILEWIDTH;
               t4.position.x = 0;
-              methods.util.rotateAroundWorldAxis(t1, new THREE.Vector3(1,0,0), Math.PI);
-              methods.util.rotateAroundWorldAxis(t4, new THREE.Vector3(1,0,0), Math.PI);
+              rotateAroundWorldAxis(t1, new THREE.Vector3(1,0,0), Math.PI);
+              rotateAroundWorldAxis(t4, new THREE.Vector3(1,0,0), Math.PI);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -618,8 +620,8 @@ objects.onNotify = function(source, event, param){
               t3.position.x = 0;
               t4.position.x = t1.position.x;
               t4.position.z = TILEWIDTH;
-              methods.util.rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
-              methods.util.rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t1, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -635,8 +637,8 @@ objects.onNotify = function(source, event, param){
               t3.position.x = 0;
               t4.position.x = t2.position.x;
               t4.position.z = TILEWIDTH;
-              methods.util.rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
-              methods.util.rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t2, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -652,8 +654,8 @@ objects.onNotify = function(source, event, param){
               t3.position.x = 0;
               t4.position.x = t3.position.x;
               t4.position.z = TILEWIDTH;
-              methods.util.rotateAroundWorldAxis(t3, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
-              methods.util.rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t3, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
+              rotateAroundWorldAxis(t4, new THREE.Vector3(0,0,1), Math.PI/2 * 1);
               objects.dummies.furo[i].groups[j].slots[0].add(t1);
               objects.dummies.furo[i].groups[j].slots[1].add(t2);
               objects.dummies.furo[i].groups[j].slots[2].add(t3);
@@ -666,10 +668,67 @@ objects.onNotify = function(source, event, param){
       objects.sprites.board.round.material = M.board.round[param.round];
       for(var i=0;i<4;i++){
         objects.sprites.board.data[i].pos.material = M.board.pos[(param.ji-27+i)%4];
-        //objects.sprites.board.data[i].score.material = new THREE.MeshBasicMaterial( { map: methods.util.generateTextTexture(param.point[i%4].toString(), 32, 'Arial', 'rgba(255,255,255,1)') } );
+        //objects.sprites.board.data[i].score.material = new THREE.MeshBasicMaterial( { map: generateTextTexture(param.point[i%4].toString(), 32, 'Arial', 'rgba(255,255,255,1)') } );
       }
       break;
   }
 };
 
 export { objects as default }
+
+function rayCastInit(){//register rayCasting objects
+  var castList = [];
+  castList[0] = {
+    name: 'nextRound',
+    type: 'orthographic',
+    target: [objects.sprites.result.next],
+    condition: function(){
+      return this.parent.visible;
+    },
+    success: function(){
+      this.material.color.r = 0.5;
+      this.material.color.g = 1;
+      this.material.color.b = 0.5;
+    },
+    restore: function(){
+      this.material.color.r = 1;
+      this.material.color.g = 1;
+      this.material.color.b = 1;
+    }
+  };
+  castList[1] = {
+    name: 'furoButton',
+    type: 'orthographic',
+    target: objects.dummies.furoList.buttonList,
+    condition: function(){
+      return this.parent.visible;
+    },
+    success: function(){
+      this.material.color.g = 0.5;
+    },
+    restore: function(){
+      this.material.color.g = 0;
+    }
+  };
+  castList[2] = {
+    name: 'handTile',
+    type: 'perspective',
+    target: objects.dummies.hand[0].slots,
+    condition: function(){
+      return true;
+    },
+    success: function(){
+      if(this.children[0]){
+        this.children[0].position.y += 1;
+      }
+    },
+    restore: function(){
+      if(this.children[0]){
+        this.children[0].position.y = 0;
+      }
+    }
+  };
+  objects.notify('controller', 'castInit', castList);
+}
+
+export { rayCastInit }

@@ -4,15 +4,22 @@ import objects from './objects.js'
 import game from './game.js'
 import network from './network.js'
 
+base.addObserver('controller', controller);
 controller.addObserver('base', base);
 controller.addObserver('objects', objects);
 controller.addObserver('game', game);
 controller.addObserver('network', network);
+objects.addObserver('controller', controller);
 network.addObserver('controller', controller);
 network.addObserver('objects', objects);
 network.addObserver('game', game);
 game.addObserver('objects', objects);
 
+import { cameraInit } from './base.js'
+import { rayCastInit } from './objects.js'
+
+cameraInit();
+rayCastInit();
 
 base.scene.add(objects.meshes.background);
 base.scene.add(objects.meshes.table);

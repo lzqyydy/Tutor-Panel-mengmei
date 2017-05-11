@@ -76,3 +76,13 @@ base.onNotify = function(source, event, param){
 };
 
 export { base as default }
+
+function cameraInit(){
+  //register rayCasting camera
+  var cameraList = {};
+  cameraList.orthographic = base.cameraOrtho;
+  cameraList.perspective = base.camera;
+  base.notify('controller', 'cameraInit', cameraList);
+}
+
+export { cameraInit }

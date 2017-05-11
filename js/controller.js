@@ -1,16 +1,16 @@
 import { Unit } from './structures.js';
+import rayPicking from './controller/rayPicking.js';
 
 var controller = new Unit();
 
-controller.raycaster = new THREE.Raycaster();
 controller.mouse = new THREE.Vector2();
 controller.mouse.$clientX = 0;
 controller.mouse.$clientY = 0;
 controller.mouse.x = 0;
 controller.mouse.y = 0;
 controller.INTERSECTED = [];
-controller.INTERSECTED.handTile = null;
-controller.INTERSECTED.furoButton = null;
+controller.cameraList = {};
+controller.raycastList = [];
 
 function mouseMove(event){
   event.preventDefault();
@@ -25,8 +25,7 @@ function mouseMove(event){
   controller.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;  
 
-
-  //rayPicking(this);
+  rayPicking(controller.cameraList, controller.raycastList, controller.mouse, controller.INTERSECTED);
 
 };
 function click(event){
@@ -42,28 +41,27 @@ function click(event){
     });
   }
   else if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
-    var value = game.tehai.haiIndex[controller.INTERSECTED.handTile.userData.index];
+    var value = controller.INTERSECTED.handTile.children[0]._tile;
     controller.notify('network', 'inputDiscard', {
       value: value
     });
   }
 };
 
-// // on discard tile, update display
-// cbDiscard: function(value){
-//   // LATER: maybe check value's existance?
-//   this.game.tehai.haiIndex.splice(this.game.tehai.haiIndex.indexOf(value), 1);
-// },
-// // on doing operation, update display
-// cbOperationDone: function(index, tile){
-//   this.objects.dummies.furoList.$hide();
-// },
 
 function windowResize() {
   controller.notify(null, 'resize', {});
 };
 
 controller.onNotify = function(source, event, param){
+  switch(event){
+    case 'castInit':
+      controller.raycastList = param;
+      break;
+    case 'cameraInit':
+      controller.cameraList = param;
+      break;
+  }
 };
 
 // ## mousemove event
