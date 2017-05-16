@@ -1,7 +1,6 @@
 todo list:
-s1.逻辑重构
-s2.组建建类
-s3.tehai watcher
+s1.提取全局controller和network
+s2.changeView
 10.其他人副露手牌减少
 11.摸牌效果
 12.牌disabled状态
@@ -12,8 +11,10 @@ bug list:
 blog list:
 1.旋转后自身坐标系与children坐标系
 2.es6 import export
+3.Array.apply(null, { length: 136 }).map(function(value, index){
+  return index;
+})
+
 
 improve list: 
 1.减少计分板材料重制次数
-2.目前object初始化在controller后面，考虑吧rayCasting部分放在controller里面把这两个调换位置？
-

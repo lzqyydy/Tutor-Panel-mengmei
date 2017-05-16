@@ -1,51 +1,54 @@
-import base from './base.js'
-import controller from './controller.js'
-import objects from './objects.js'
-import game from './game.js'
-import network from './network.js'
+import mahjong from '/mahjong/init.js'
 
-base.addObserver('controller', controller);
-controller.addObserver('base', base);
-controller.addObserver('objects', objects);
-controller.addObserver('game', game);
-controller.addObserver('network', network);
-objects.addObserver('controller', controller);
-network.addObserver('controller', controller);
-network.addObserver('objects', objects);
-network.addObserver('game', game);
-game.addObserver('objects', objects);
+var main = {};
 
-import { cameraInit } from './base.js'
-import { rayCastInit } from './objects.js'
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+document.body.appendChild( renderer.domElement );
+stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.domElement );
 
-cameraInit();
-rayCastInit();
+var render = function() {
+  requestAnimationFrame(render);
 
-base.scene.add(objects.meshes.background);
-base.scene.add(objects.meshes.table);
+  stats.update();
+  renderer.clear();
+  renderer.render(main.scene, main.camera);
+  if(main.sceneOrtho){
+    renderer.clearDepth();
+    renderer.render(main.sceneOrtho, main.cameraOrtho);
+  }
+};
+render();
 
-base.scene.add(objects.dummies.yama[0]);
-base.scene.add(objects.dummies.yama[1]);
-base.scene.add(objects.dummies.yama[2]);
-base.scene.add(objects.dummies.yama[3]);
- 
-base.scene.add(objects.dummies.hand[0]);
-base.scene.add(objects.dummies.hand[1]);
-base.scene.add(objects.dummies.hand[2]);
-base.scene.add(objects.dummies.hand[3]);
 
-base.scene.add(objects.dummies.discard[0]);
-base.scene.add(objects.dummies.discard[1]);
-base.scene.add(objects.dummies.discard[2]);
-base.scene.add(objects.dummies.discard[3]);
+function controlCB(event, data){
+  main.controller.onNotify(null, event, data);
+}
+document.addEventListener( 'mousemove', controlCB.bind(null,'conMousemove'), false );
+window.addEventListener( 'resize',      controlCB.bind(null,'conResize'   ), false );
+document.addEventListener( 'click',     controlCB.bind(null,'conClick'    ), false );
 
-base.scene.add(objects.dummies.furo[0]);
-base.scene.add(objects.dummies.furo[1]);
-base.scene.add(objects.dummies.furo[2]);
-base.scene.add(objects.dummies.furo[3]);
 
-base.sceneOrtho.add(objects.dummies.furoList);
+var socket = io('/touhou');
+socket.emit('join');
+socket.on('full', function(){
+  this.emit('ready');
+});
 
-base.scene.add(objects.sprites.board);
+function socketCB(event, data){
+  main.network.onNotify(null, event, data);
+}
 
-base.sceneOrtho.add(objects.sprites.result);
+socket.on('start',     socketCB.bind(null,'socketStart'    ));
+socket.on('draw',      socketCB.bind(null,'socketDraw'     ));
+socket.on('discarded', socketCB.bind(null,'socketDiscard'  ));
+socket.on('operation', socketCB.bind(null,'socketOperation'));
+socket.on('furo',      socketCB.bind(null,'socketFuro'     ));
+socket.on('roundEnd',  socketCB.bind(null,'socketRoundEnd' ));
+socket.on('gameEnd',   socketCB.bind(null,'socketGameEnd'  ));
+socket.on('reconnect', function(){
+  this.emit('join');
+});
