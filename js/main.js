@@ -1,12 +1,24 @@
-import mahjong from '/mahjong/init.js'
+var features = {
+  mahjong: {}
+};
+
+import mahjong from './mahjong/init.js'
+
+features['mahjong'] = mahjong;
 
 var main = {};
+
+import { changeView } from './methods.js';
+
+main.changeView = changeView;
+
+// top-level renderer
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 document.body.appendChild( renderer.domElement );
-stats = new Stats();
+var stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.domElement );
 
@@ -15,14 +27,14 @@ var render = function() {
 
   stats.update();
   renderer.clear();
-  renderer.render(main.scene, main.camera);
-  if(main.sceneOrtho){
+  renderer.render(main.base.scene, main.base.camera);
+  if(main.base.sceneOrtho){
     renderer.clearDepth();
-    renderer.render(main.sceneOrtho, main.cameraOrtho);
+    renderer.render(main.base.sceneOrtho, main.base.cameraOrtho);
   }
 };
-render();
 
+// top-level controller
 
 function controlCB(event, data){
   main.controller.onNotify(null, event, data);
@@ -31,6 +43,7 @@ document.addEventListener( 'mousemove', controlCB.bind(null,'conMousemove'), fal
 window.addEventListener( 'resize',      controlCB.bind(null,'conResize'   ), false );
 document.addEventListener( 'click',     controlCB.bind(null,'conClick'    ), false );
 
+// top-level socket
 
 var socket = io('/touhou');
 socket.emit('join');
@@ -52,3 +65,12 @@ socket.on('gameEnd',   socketCB.bind(null,'socketGameEnd'  ));
 socket.on('reconnect', function(){
   this.emit('join');
 });
+
+// some more work
+main.socket = socket;
+
+
+// RUN! 
+
+main.changeView(features['mahjong']['play']);
+render();

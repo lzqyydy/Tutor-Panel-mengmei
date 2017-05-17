@@ -51,11 +51,11 @@ base.scene.add(objects.sprites.board);
 base.sceneOrtho.add(objects.sprites.result);
 
 
-var view = {};
-view.base = base;
-view.controller = controller;
-view.objects = objects;
-view.game = game;
-view.network = network;
+var play = {};
+play.base = base;
+play.controller = controller;
+play.objects = objects;
+play.game = game;
+play.network = network;
 
-export { view as default };
+export { play as default };

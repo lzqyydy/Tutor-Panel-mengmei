@@ -7,6 +7,7 @@ s2.changeView
 
 bug list:
 2.手牌中已存在的杠不触发
+3.吃牌state有误
 
 blog list:
 1.旋转后自身坐标系与children坐标系

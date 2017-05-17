@@ -1,7 +1,7 @@
 import play from './play/init.js'
 
-var feature = {};
+var view = {};
 
-feature.play = play;
+view.play = play;
 
-export { feature as default }
+export { view as default }
