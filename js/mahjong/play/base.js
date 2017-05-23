@@ -53,7 +53,6 @@ base.onNotify = function(source, event, param){
       base.cameraOrtho.bottom = - base.height / 2;
       base.cameraOrtho.updateProjectionMatrix();
 
-      base.renderer.setSize(window.innerWidth, window.innerHeight);
       break;
   }
 };

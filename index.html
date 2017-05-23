@@ -9,7 +9,6 @@
       margin: 0;
       overflow: hidden;
     }
-    
     canvas {
       position: absolute;
       top: 0;
@@ -22,10 +21,12 @@
 </head>
 
 <body>
+  <mahjong-menu id="mahjong-menu"></mahjong-menu>
   <script src="js/dependency/three.min.js"></script>
   <script src="js/dependency/stats.js"></script>
   <script src="js/dependency/dat.gui.min.js"></script>
   <script src="js/dependency/socket.io.min.js"></script>
+  <script src="js/dependency/vue.min.js"></script>
   <script src="./js/main.js" type="module"></script>
   <img id="tiles" src="resources/texture/tile.png" style="width: 0; height: 0;">
 </body>

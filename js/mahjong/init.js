@@ -1,7 +1,9 @@
+import menu from './menu/init.js'
 import play from './play/init.js'
 
-var view = {};
+var views = {};
+views.menu = menu;
 
-view.play = play;
+views.play = play;
 
-export { view as default }
+export { views as default }

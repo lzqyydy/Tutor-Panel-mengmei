@@ -26,14 +26,14 @@ material.table = new THREE.MeshBasicMaterial({
 
 material.tile = [];
 for(var i=0;i<34;i++){
-  material.tile[i] = new THREE.MultiMaterial( [
+  material.tile[i] = [
     new THREE.MeshBasicMaterial( { map: textures.tile[40] } ), // right
     new THREE.MeshBasicMaterial( { map: textures.tile[39] } ), // left
     new THREE.MeshBasicMaterial( { map: textures.tile[42] } ), // top
     new THREE.MeshBasicMaterial( { map: textures.tile[41] } ), // bottom
     new THREE.MeshBasicMaterial( { map: textures.tile[43] } ), // back
     new THREE.MeshBasicMaterial( { map: textures.tile[i] } )   // front
-  ] );
+  ];
 }
 
 material.invisible = new THREE.MeshBasicMaterial();

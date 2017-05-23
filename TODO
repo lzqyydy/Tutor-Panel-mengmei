@@ -15,7 +15,16 @@ blog list:
 3.Array.apply(null, { length: 136 }).map(function(value, index){
   return index;
 })
-
+4.抠文件script
 
 improve list: 
 1.减少计分板材料重制次数
+
+
+# 2017/5/18
+# when loss is incresing, one common problem is learning_rate is too high
+
+# 2017/5/18
+# higher batch_sizewill result in higher loss and higher gradient
+# 2017/5/18
+# l2_regularizer: lanmda range by training data size. set it like 1/10000

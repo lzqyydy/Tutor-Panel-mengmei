@@ -52,6 +52,7 @@ base.sceneOrtho.add(objects.sprites.result);
 
 
 var play = {};
+play.type = 'gl';
 play.base = base;
 play.controller = controller;
 play.objects = objects;

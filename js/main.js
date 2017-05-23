@@ -3,8 +3,10 @@ var features = {
 };
 
 import mahjong from './mahjong/init.js'
+import blank from './blank/init.js'
 
 features['mahjong'] = mahjong;
+features['blank'] = blank;
 
 var main = {};
 
@@ -17,6 +19,7 @@ main.changeView = changeView;
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+renderer.domElement.className = 'three';
 document.body.appendChild( renderer.domElement );
 var stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -27,9 +30,11 @@ var render = function() {
 
   stats.update();
   renderer.clear();
-  renderer.render(main.base.scene, main.base.camera);
+  if(main.base.scene){
+    renderer.render(main.base.scene, main.base.camera);
+  }
+  renderer.clearDepth();
   if(main.base.sceneOrtho){
-    renderer.clearDepth();
     renderer.render(main.base.sceneOrtho, main.base.cameraOrtho);
   }
 };
@@ -37,6 +42,9 @@ var render = function() {
 // top-level controller
 
 function controlCB(event, data){
+  if(event==='conResize'){
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
   main.controller.onNotify(null, event, data);
 }
 document.addEventListener( 'mousemove', controlCB.bind(null,'conMousemove'), false );
@@ -72,5 +80,6 @@ main.socket = socket;
 
 // RUN! 
 
-main.changeView(features['mahjong']['play']);
+main.changeView(features['blank']);
+//main.changeView(features['mahjong']['play']);
 render();
