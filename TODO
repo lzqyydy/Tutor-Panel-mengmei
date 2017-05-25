@@ -28,3 +28,7 @@ improve list:
 # higher batch_sizewill result in higher loss and higher gradient
 # 2017/5/18
 # l2_regularizer: lanmda range by training data size. set it like 1/10000
+2017/5/24
+reuse network by duplicate and share variables):
+    >>>    with tf.variable_scope("model", reuse=reuse):
+    >>>         tl.layers.set_name_reuse(reuse)

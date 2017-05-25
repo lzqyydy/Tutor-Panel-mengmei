@@ -17,6 +17,7 @@ Vue.component('mahjong-menu', {
 })
 
 
+
 var v = new Vue({
   'el': '#mahjong-menu',
   'methods': {
