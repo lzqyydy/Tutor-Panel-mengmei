@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang=ow: hidden; "en">
-
+<html>
 <head>
   <meta charset="UTF-8" />
   <title>mengmei</title>
@@ -18,16 +17,18 @@
     }
   </style>
   <link rel="stylesheet" type="text/css" href="dat.gui.css">
+  <link rel="stylesheet" type="text/css" href="main.bundle.css">
 </head>
 
 <body>
-  <mahjong-menu id="mahjong-menu"></mahjong-menu>
   <script src="js/dependency/three.min.js"></script>
   <script src="js/dependency/stats.js"></script>
   <script src="js/dependency/dat.gui.min.js"></script>
   <script src="js/dependency/socket.io.min.js"></script>
   <script src="js/dependency/vue.min.js"></script>
-  <script src="./js/main.js" type="module"></script>
+  <!-- <script src="./js/main.js" type="module"></script> -->
   <img id="tiles" src="resources/texture/tile.png" style="width: 0; height: 0;">
+  <mahjong-menu id="mahjong-menu" v-if="display"></mahjong-menu>
+  <script src="main.bundle.js"></script>
 </body>
 </html>

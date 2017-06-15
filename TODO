@@ -1,6 +1,6 @@
 todo list:
-s1.提取全局controller和network
-s2.changeView
+s3.主菜单
+s4.队列状态
 10.其他人副露手牌减少
 11.摸牌效果
 12.牌disabled状态
@@ -20,6 +20,16 @@ blog list:
 improve list: 
 1.减少计分板材料重制次数
 
+macro maker:
+//1.分栏
+//1.5.select
+//1.7.multi
+2.smooth操作和过渡动画
+3.clip & padding
+4.export
+5.flip
+6.rotate
+
 
 # 2017/5/18
 # when loss is incresing, one common problem is learning_rate is too high
@@ -32,3 +42,5 @@ improve list:
 reuse network by duplicate and share variables):
     >>>    with tf.variable_scope("model", reuse=reuse):
     >>>         tl.layers.set_name_reuse(reuse)
+2017/6/1
+RELU!!

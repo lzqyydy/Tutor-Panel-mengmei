@@ -1,25 +1,11 @@
-Vue.component('mahjong-menu', {
-  render: function(createElement){
-    if(this._display){
-      return createElement('div');
-    }
-    else{
-      return;
-    }
-  },
-  data: function(){
-    return {
-      _display: false
-    }
-  },
-  props: {
-  }
-})
+import { vUnit } from '../../structures.js'
+import mahjongMenu from '../../dom/mahjong-menu.vue'
 
-
+Vue.component('mahjong-menu', mahjongMenu);
 
 var v = new Vue({
   'el': '#mahjong-menu',
+  'mixins': [vUnit],
   'methods': {
     onNotify: function(source, event, param){
       switch(event){

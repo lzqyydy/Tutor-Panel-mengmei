@@ -1,4 +1,4 @@
-import { Unit } from './structures.js';
+import { Unit } from '../../structures.js';
 import rayPicking from './controller/rayPicking.js';
 
 var controller = new Unit();

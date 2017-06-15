@@ -3,12 +3,12 @@ var features = {
 };
 
 import mahjong from './mahjong/init.js'
-import blank from './blank/init.js'
 
 features['mahjong'] = mahjong;
-features['blank'] = blank;
 
-var main = {};
+import { Unit } from './structures.js'
+
+var main = new Unit();
 
 import { changeView } from './methods.js';
 
@@ -20,10 +20,10 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 renderer.domElement.className = 'three';
-document.body.appendChild( renderer.domElement );
+document.body.insertBefore( renderer.domElement, document.querySelector("#tiles") );
 var stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.domElement );
+document.body.insertBefore( stats.domElement, document.querySelector("#tiles") );
 
 var render = function() {
   requestAnimationFrame(render);
@@ -80,6 +80,7 @@ main.socket = socket;
 
 // RUN! 
 
-main.changeView(features['blank']);
+main.changeView();
+main.changeView(features['mahjong']['menu']);
 //main.changeView(features['mahjong']['play']);
 render();

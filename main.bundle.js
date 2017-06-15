@@ -1,8 +1,407 @@
-import { Unit } from '../../structures.js';
-import G from './objects/geometry.js'
-import M from './objects/material.js'
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(factory());
+}(this, (function () { 'use strict';
 
-import { rotateAroundObjectAxis, rotateAroundWorldAxis } from './util.js'
+function Unit (){
+  this._observer = {};
+  this.onNotify = function(source, event, param){
+
+  };
+  this.notify = function(target, event, param){
+    if(target!==null&&target!==undefined){
+      if(this._observer[target]!==null&&this._observer[target]!==undefined){
+        this._observer[target].onNotify(null, event, param);
+      }
+    }
+    else{
+      for(var tgt in this._observer){
+        this._observer[tgt].onNotify(null, event, param);
+      }
+    }
+  };
+  this.addObserver = function(name, unit){
+    this._observer[name] = unit;
+  };
+  this.removeObserver = function(name, unit){
+    this._observer[name] = null;
+  };
+}
+
+var vUnit = {
+  data: {
+    _observer: {},
+    display: false,
+    socket: undefined
+  },
+  methods: {
+    notify: function(target, event, param){
+      if(target!==null&&target!==undefined){
+        if(this._observer[target]!==null&&this._observer[target]!==undefined){
+          this._observer[target].onNotify(null, event, param);
+        }
+      }
+      else{
+        for(var tgt in this._observer){
+          this._observer[tgt].onNotify(null, event, param);
+        }
+      }
+    },
+    addObserver: function(name, unit){
+      this._observer[name] = unit;
+    },
+    removeObserver: function(name, unit){
+      this._observer[name] = null;
+    }
+  }
+};
+
+var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('span',{staticStyle:{"color":"yellow"}},[_vm._v(_vm._s(_vm.msg))])])])},staticRenderFns: [],
+  data () {
+    return {
+      msg: 'World Hello!!!'
+    }
+  }
+};
+
+Vue.component('mahjong-menu', mahjongMenu);
+
+var v = new Vue({
+  'el': '#mahjong-menu',
+  'mixins': [vUnit],
+  'methods': {
+    onNotify: function(source, event, param){
+      switch(event){
+        case 'socketRoundEnd' :
+          break;
+      }
+    }
+  }
+});
+
+var menu = {};
+menu.type = 'dom';
+menu.overlay = false;
+menu.v = v;
+
+var base = new Unit();
+
+base.width = window.innerWidth;
+base.height = window.innerHeight;
+base.scene = new THREE.Scene();
+base.camera = new THREE.PerspectiveCamera(75, base.width / base.height, 0.1, 1000);
+base.scene.add(base.camera);
+base.sceneOrtho = new THREE.Scene();
+base.cameraOrtho = new THREE.OrthographicCamera(base.width/-2, base.width/2, base.height/2, base.height/-2, 0, 10);
+base.sceneOrtho.add(base.cameraOrtho);
+
+
+var center = new THREE.Vector3(0,0,0);
+base.camera.$distance = 100;
+base.camera.$theta = Math.acos(0.8); 
+base.camera.$phi = 0;
+base.camera.position.set(base.camera.$distance*Math.cos(base.camera.$theta)*Math.sin(base.camera.$phi),
+                         base.camera.$distance*Math.sin(base.camera.$theta),
+                         base.camera.$distance*Math.cos(base.camera.$theta)*Math.cos(base.camera.$phi));
+base.camera.lookAt(center);
+
+base.cameraOrtho.position.z = 10;
+base.cameraOrtho.lookAt(center);
+
+base.onNotify = function(source, event, param){
+  switch(event){
+    case 'move':
+      base.camera.$phi -= Math.PI*param.x/base.width;
+      base.camera.$theta += Math.PI*param.y/base.height;
+      if(base.camera.$theta>Math.PI/2-0.01){
+        base.camera.$theta = Math.PI/2-0.01;
+      }
+      if(base.camera.$theta<0){
+        base.camera.$theta = 0;
+      }
+      base.camera.position.set(base.camera.$distance*Math.cos(base.camera.$theta)*Math.sin(base.camera.$phi),
+                               base.camera.$distance*Math.sin(base.camera.$theta),
+                               base.camera.$distance*Math.cos(base.camera.$theta)*Math.cos(base.camera.$phi));
+      base.camera.lookAt(center);
+      break;
+    case 'resize':
+      base.width = window.innerWidth;
+      base.height = window.innerHeight;
+      
+      base.camera.aspect = base.width / base.height;
+      base.camera.updateProjectionMatrix();
+
+      base.cameraOrtho.left = - base.width / 2;
+      base.cameraOrtho.right = base.width / 2;
+      base.cameraOrtho.top = base.height / 2;
+      base.cameraOrtho.bottom = - base.height / 2;
+      base.cameraOrtho.updateProjectionMatrix();
+
+      break;
+  }
+};
+
+function cameraInit(){
+  //register rayCasting camera
+  var cameraList = {};
+  cameraList.orthographic = base.cameraOrtho;
+  cameraList.perspective = base.camera;
+  base.notify('controller', 'cameraInit', cameraList);
+}
+
+// raycastList:{
+//   name:    //intersect index, 
+//   type:    //"orthographic" or "perspective"
+//   target:  //intersect target
+//   condition:   //judging condition
+//   success: //on success operation
+//   restore: //on rollback operation
+// }
+// cameraList:{
+//   name: //"orthographic" or "perspective"
+//   camera: //object
+// }
+
+var rayPicking = function(cameraList, raycastList, mouse, INTERSECTED){
+  var raycaster = new THREE.Raycaster();
+  for(var i=0;i<raycastList.length;i++){
+    raycaster.setFromCamera( mouse, cameraList[raycastList[i].type] );
+    var intersects = raycaster.intersectObjects( raycastList[i].target );
+    if ( intersects.length > 0 ){
+      if ( intersects[ 0 ].object !== INTERSECTED[raycastList[i].name]){
+        if ( INTERSECTED[raycastList[i].name] ){
+          raycastList[i].restore.call(INTERSECTED[raycastList[i].name]);
+        }
+        if( raycastList[i].condition.call(intersects[ 0 ].object) ){
+          INTERSECTED[raycastList[i].name] = intersects[ 0 ].object;
+          raycastList[i].success.call(intersects[ 0 ].object);
+          break;
+        }
+        else{
+          INTERSECTED[raycastList[i].name] = null;
+        }
+      }
+    }
+    else {
+      if ( INTERSECTED[raycastList[i].name] ){
+        raycastList[i].restore.call(INTERSECTED[raycastList[i].name]);
+      }
+      INTERSECTED[raycastList[i].name] = null;
+    }
+  }
+};
+
+var controller = new Unit();
+
+controller.mouse = new THREE.Vector2();
+controller.mouse.$clientX = 0;
+controller.mouse.$clientY = 0;
+controller.mouse.x = 0;
+controller.mouse.y = 0;
+controller.INTERSECTED = [];
+controller.cameraList = {};
+controller.raycastList = [];
+
+function mouseMove(event){
+  event.preventDefault();
+  if(event.buttons&1){ //left button
+    controller.notify('base', 'move', {
+      x: event.clientX - controller.mouse.clientX,
+      y: event.clientY - controller.mouse.clientY
+    });
+  }
+  controller.mouse.clientX = event.clientX;
+  controller.mouse.clientY = event.clientY;
+  controller.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  controller.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;  
+
+  rayPicking(controller.cameraList, controller.raycastList, controller.mouse, controller.INTERSECTED);
+
+}
+function click(event){
+  if(controller.INTERSECTED.nextRound&&controller.INTERSECTED.nextRound.parent.visible){
+    controller.notify('network', 'inputReady');
+  }
+  else if(controller.INTERSECTED.furoButton&&controller.INTERSECTED.furoButton.parent.visible){
+    var index = controller.INTERSECTED.furoButton.userData.index;
+    var tile  = controller.INTERSECTED.furoButton.userData.tile;
+    controller.notify('network', 'inputOperation', {
+      tile: tile,
+      value: index
+    });
+  }
+  else if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
+    var value = controller.INTERSECTED.handTile.children[0]._tile;
+    controller.notify('network', 'inputDiscard', {
+      value: value
+    });
+  }
+}
+
+
+function windowResize() {
+  controller.notify(null, 'resize', {});
+}
+
+controller.onNotify = function(source, event, param){
+  switch(event){
+    case 'castInit':
+      controller.raycastList = param;
+      break;
+    case 'cameraInit':
+      controller.cameraList = param;
+      break;
+    case 'conMousemove':
+      mouseMove(param);
+      break;
+    case 'conResize':
+      windowResize(param);
+      break;
+    case 'conClick':
+      click(param);
+      break;
+  }
+};
+
+var geometry = {};
+
+const TILEWIDTH$1 = 4;
+const TILEHEIGHT$1 = 5.6;
+const TILETHICK$1 = 2.4;
+
+geometry.background = new THREE.SphereGeometry( 200, 50, 50 );
+geometry.background.scale( -1, 1, 1 );  
+
+
+geometry.table = new THREE.PlaneGeometry( 100, 100);
+
+geometry.tile = new THREE.BoxGeometry(TILEWIDTH$1, TILEHEIGHT$1, TILETHICK$1);
+
+function rotateAroundObjectAxis( object, axis, radians ) {
+  var rotationMatrix = new THREE.Matrix4();
+  rotationMatrix.makeRotationAxis( axis.normalize(), radians );
+  object.matrix.multiply( rotationMatrix );      // post-multiply
+  object.rotation.setFromRotationMatrix( object.matrix );
+}
+function rotateAroundWorldAxis(object, axis, radians) {
+  var rotWorldMatrix = new THREE.Matrix4();
+  rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+  rotWorldMatrix.multiply(object.matrix);        // pre-multiply
+  object.rotation.setFromRotationMatrix(rotWorldMatrix);
+}
+function generateTextTexture(text, size, font, color){
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d");
+  ctx.font = size + "px "+font;
+  canvas.width = ctx.measureText(text).width;
+  canvas.height = size;
+  ctx.font = size + "px "+font;  
+  ctx.fillStyle = color;
+  ctx.fillText(text, 0, size);
+  var texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  return texture;
+}
+
+var material = {};
+var textures = {};
+
+textures.tile = [];
+var tileTex = document.querySelector("img");
+for(var i$1=0;i$1<45;i$1++){
+  var canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 512;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(tileTex, (i$1%9)*512, Math.floor(i$1/9)*512, 512, 512, 0, 0, 512, 512);
+  textures.tile[i$1] = new THREE.CanvasTexture(canvas);
+  textures.tile[i$1].needsUpdate = true;
+}
+
+material.background = new THREE.MeshBasicMaterial({
+  map: new THREE.TextureLoader().load( 'resources/texture/background.jpg' )
+});
+
+material.table = new THREE.MeshBasicMaterial({
+  color: 0xF1E9DA,
+  side: THREE.DoubleSide
+});
+
+material.tile = [];
+for(var i$1=0;i$1<34;i$1++){
+  material.tile[i$1] = [
+    new THREE.MeshBasicMaterial( { map: textures.tile[40] } ), // right
+    new THREE.MeshBasicMaterial( { map: textures.tile[39] } ), // left
+    new THREE.MeshBasicMaterial( { map: textures.tile[42] } ), // top
+    new THREE.MeshBasicMaterial( { map: textures.tile[41] } ), // bottom
+    new THREE.MeshBasicMaterial( { map: textures.tile[43] } ), // back
+    new THREE.MeshBasicMaterial( { map: textures.tile[i$1] } )   // front
+  ];
+}
+
+material.invisible = new THREE.MeshBasicMaterial();
+material.invisible.visible = false;
+
+
+material.tileSprite = [];
+for(var i$1=0;i$1<34;i$1++){
+  material.tileSprite[i$1] = new THREE.MeshBasicMaterial( { map: textures.tile[i$1] });
+}
+
+textures.operations = {};
+textures.operations.riichi = generateTextTexture('立直', 32, 'Arial', 'rgba(255,255,255,1)');
+textures.operations.agari  = generateTextTexture('和了', 32, 'Arial', 'rgba(255,255,255,1)');
+textures.operations.pass   = generateTextTexture('×', 32, 'Arial', 'rgba(255,255,255,1)');
+material.riichiSprite = new THREE.MeshBasicMaterial( { map: textures.operations.riichi });
+material.agariSprite  = new THREE.MeshBasicMaterial( { map: textures.operations.agari });
+material.passSprite   = new THREE.MeshBasicMaterial( { map: textures.operations.pass });
+
+textures.result = {};
+textures.result.next = generateTextTexture('next', 32, 'Arial', 'rgba(255,255,255,1)');
+material.result = {};
+material.result.next = new THREE.MeshBasicMaterial( { map: textures.result.next } );
+
+
+textures.board = {};
+textures.board.round = [
+  generateTextTexture('东１局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('东２局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('东３局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('东４局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('南１局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('南２局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('南３局', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('南４局', 32, 'Arial', 'rgba(255,255,255,1)')
+];
+textures.board.pos = [
+  generateTextTexture('东', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('南', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('西', 32, 'Arial', 'rgba(255,255,255,1)'),
+  generateTextTexture('北', 32, 'Arial', 'rgba(255,255,255,1)'),
+];
+textures.board.player = [];
+textures.board.score = [];
+
+material.board = {};
+material.board.round = [
+  new THREE.MeshBasicMaterial( { map: textures.board.round[0] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[1] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[2] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[3] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[4] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[5] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[6] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.round[7] })
+];
+material.board.pos = [
+  new THREE.MeshBasicMaterial( { map: textures.board.pos[0] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.pos[1] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.pos[2] }),
+  new THREE.MeshBasicMaterial( { map: textures.board.pos[3] }),
+];
+material.board.player = [];
+material.board.score = [];
 
 var objects = new Unit();
 objects.meshes = {};
@@ -23,10 +422,10 @@ const TILETHICK = 2.4;
 // scene.add( centerLight );
 
 // background ball
-objects.meshes.background = new THREE.Mesh(G.background, M.background);
+objects.meshes.background = new THREE.Mesh(geometry.background, material.background);
 
 // flat table
-objects.meshes.table = new THREE.Mesh(G.table, M.table);
+objects.meshes.table = new THREE.Mesh(geometry.table, material.table);
 objects.meshes.table.rotation.x += Math.PI/2;
 
 // dummy yama
@@ -84,7 +483,7 @@ objects.dummies.hand[2].slots = [];
 objects.dummies.hand[3].slots = [];
 for(var i=0;i<14;i++){
   // hand dummies need to interact with raycaster, so use Mesh instead of Object3D
-  var dtile = new THREE.Mesh(G.tile, M.invisible);
+  var dtile = new THREE.Mesh(geometry.tile, material.invisible);
   dtile.position.x = TILEWIDTH*i; 
   dtile.position.y = TILEHEIGHT/2; 
   dtile.position.z = 0;
@@ -176,7 +575,7 @@ for(var i=0;i<4;i++){
 //create tile meshes
 objects.meshes.tile = [];
 for(var i=0;i<34;i++){
-  objects.meshes.tile[i] = new THREE.Mesh(G.tile, M.tile[i]);
+  objects.meshes.tile[i] = new THREE.Mesh(geometry.tile, material.tile[i]);
 }
 
 
@@ -190,15 +589,15 @@ for(var i=0;i<34;i++){
 //create furo BG sprite
 objects.sprites.furoBG = new THREE.Mesh(new THREE.PlaneGeometry(100, 40), new THREE.MeshBasicMaterial( { color: 0x000000 } ));
 //create riichi sprite
-objects.sprites.riichi = new THREE.Mesh(new THREE.PlaneGeometry(40, 20), M.riichiSprite);
+objects.sprites.riichi = new THREE.Mesh(new THREE.PlaneGeometry(40, 20), material.riichiSprite);
 //create agari sprite
-objects.sprites.agari  = new THREE.Mesh(new THREE.PlaneGeometry(40, 20), M.agariSprite);
+objects.sprites.agari  = new THREE.Mesh(new THREE.PlaneGeometry(40, 20), material.agariSprite);
 //create pass sprite
-objects.sprites.pass   = new THREE.Mesh(new THREE.PlaneGeometry(32, 32), M.passSprite);
+objects.sprites.pass   = new THREE.Mesh(new THREE.PlaneGeometry(32, 32), material.passSprite);
 //create tile sprites
 objects.sprites.tile = [];
 for(var i=0;i<34;i++){
-  objects.sprites.tile[i] = new THREE.Mesh(new THREE.PlaneGeometry(20, 28), M.tileSprite[i]);
+  objects.sprites.tile[i] = new THREE.Mesh(new THREE.PlaneGeometry(20, 28), material.tileSprite[i]);
 }
 //dummy for furo sprites 
 objects.dummies.furoList = new THREE.Object3D();
@@ -327,7 +726,7 @@ objects.dummies.furoList.$init = function(){
   this.children[7].add(txt_pass);
 
   this.$hide();
-}
+};
 objects.dummies.furoList.$init();
 
 
@@ -377,7 +776,7 @@ objects.sprites.result.dora = [];
 objects.sprites.result.han = [];
 objects.sprites.result.ura = [];
 objects.sprites.result.score = [];
-objects.sprites.result.next = new THREE.Mesh( new THREE.PlaneGeometry(50,25), M.result.next );
+objects.sprites.result.next = new THREE.Mesh( new THREE.PlaneGeometry(50,25), material.result.next );
 objects.sprites.result.next.position.y = -200;
 objects.sprites.result.next.position.z = 0.05;
 objects.sprites.result.add(objects.sprites.result.next);
@@ -397,7 +796,7 @@ objects.sprites.result.$set = function(result){
   for(var i=0;i<result.length;i++){
     for(var j=0;j<objects.sprites.result.hai.length;j++){
       if(objects.sprites.result.hai[j].children.length){
-        objects.sprites.result.hai[j].remove(objects.sprites.result.hai[j].children[0])
+        objects.sprites.result.hai[j].remove(objects.sprites.result.hai[j].children[0]);
       }
     }
     for(var j=0;j<result[i].data.haiIndex.length;j++){
@@ -665,16 +1064,14 @@ objects.onNotify = function(source, event, param){
         }
       }
       //refresh score
-      objects.sprites.board.round.material = M.board.round[param.round];
+      objects.sprites.board.round.material = material.board.round[param.round];
       for(var i=0;i<4;i++){
-        objects.sprites.board.data[i].pos.material = M.board.pos[(param.ji-27+i)%4];
+        objects.sprites.board.data[i].pos.material = material.board.pos[(param.ji-27+i)%4];
         //objects.sprites.board.data[i].score.material = new THREE.MeshBasicMaterial( { map: generateTextTexture(param.point[i%4].toString(), 32, 'Arial', 'rgba(255,255,255,1)') } );
       }
       break;
   }
 };
-
-export { objects as default }
 
 function rayCastInit(){//register rayCasting objects
   var castList = [];
@@ -731,4 +1128,333 @@ function rayCastInit(){//register rayCasting objects
   objects.notify('controller', 'castInit', castList);
 }
 
-export { rayCastInit }
+var game = new Unit();
+
+game.tehai = {};
+
+game.onNotify = function(source, event, param){
+  switch(event){
+    case 'socketStart':
+      param.tehai.haiIndex.sort(function(a,b){
+        return a-b;
+      });
+      game.tehai = param.tehai;
+      game.notify('objects', 'tehaiChanged', game.tehai);
+      break;
+    case 'socketDraw':
+      // data:{
+      //  turn: {number},
+      //  hai: {number},
+      //  kan: {bool},
+      //  agari: {bool},
+      //  riichi: {bool}
+      // }
+      if(param.turn===game.tehai.ji){
+        if(param.hai!==null){
+          game.tehai.haiIndex.push(param.hai);
+          // trigger refresh hand
+          game.notify('objects', 'tehaiChanged', game.tehai);
+        }
+      }
+      break;
+    case 'socketDiscard':
+      // data:{
+      //  discard: {number},
+      // }
+      if(param&&param.hai!==null){
+        game.tehai.discard = param.discard;
+        // trigger refresh hand
+        game.notify('objects', 'tehaiChanged', game.tehai);
+      }
+      break;
+    case 'socketFuro':
+      // data:{
+      //   tile: Number, //0-34
+      //   value: Number,
+      //   player: Number //27-30
+      // }
+      //this.game.tehai.furo = data.furo;
+      param.tehai.haiIndex.sort(function(a,b){
+        return a-b;
+      });
+      game.tehai = param.tehai;
+      game.notify('objects', 'tehaiChanged', game.tehai);
+      break;
+    case 'socketRoundEnd':
+      break;
+    case 'inputDiscard':
+      game.tehai.haiIndex.splice(game.tehai.haiIndex.indexOf(param.value), 1);
+      game.notify('objects', 'tehaiChanged', game.tehai);
+      break;
+  }
+};
+
+var network = new Unit();
+
+
+network.onNotify = function(source, event, param){
+  switch(event){
+    case 'inputReady':
+      network.socket.emit('ready');
+      break;
+    case 'inputOperation':
+      network.socket.emit('operation', param, function(){
+        network.notify('objects', 'inputOperation');
+      });
+      break;
+    case 'inputDiscard':
+      network.socket.emit('discard', param, function(){
+        network.notify('game', 'inputDiscard', param);
+      });
+      break;
+    case 'socketStart'    :
+    case 'socketDraw'     :
+    case 'socketDiscard'  :
+    case 'socketOperation':
+    case 'socketFuro'     :
+    case 'socketRoundEnd' :
+    case 'socketGameEnd'  :
+      network.notify(null, event, param);
+      break;
+  }
+};
+
+base.addObserver('controller', controller);
+controller.addObserver('base', base);
+controller.addObserver('objects', objects);
+controller.addObserver('game', game);
+controller.addObserver('network', network);
+objects.addObserver('controller', controller);
+network.addObserver('controller', controller);
+network.addObserver('objects', objects);
+network.addObserver('game', game);
+game.addObserver('objects', objects);
+
+cameraInit();
+rayCastInit();
+
+base.scene.add(objects.meshes.background);
+base.scene.add(objects.meshes.table);
+
+base.scene.add(objects.dummies.yama[0]);
+base.scene.add(objects.dummies.yama[1]);
+base.scene.add(objects.dummies.yama[2]);
+base.scene.add(objects.dummies.yama[3]);
+ 
+base.scene.add(objects.dummies.hand[0]);
+base.scene.add(objects.dummies.hand[1]);
+base.scene.add(objects.dummies.hand[2]);
+base.scene.add(objects.dummies.hand[3]);
+
+base.scene.add(objects.dummies.discard[0]);
+base.scene.add(objects.dummies.discard[1]);
+base.scene.add(objects.dummies.discard[2]);
+base.scene.add(objects.dummies.discard[3]);
+
+base.scene.add(objects.dummies.furo[0]);
+base.scene.add(objects.dummies.furo[1]);
+base.scene.add(objects.dummies.furo[2]);
+base.scene.add(objects.dummies.furo[3]);
+
+base.sceneOrtho.add(objects.dummies.furoList);
+
+base.scene.add(objects.sprites.board);
+
+base.sceneOrtho.add(objects.sprites.result);
+
+
+var play = {};
+play.type = 'gl';
+play.base = base;
+play.controller = controller;
+play.objects = objects;
+play.game = game;
+play.network = network;
+
+var views = {};
+views.menu = menu;
+
+views.play = play;
+
+var base$1 = new Unit();
+base$1.scene = new THREE.Scene();
+base$1.camera = new THREE.PerspectiveCamera();
+base$1.onNotify = function(source, event, param){
+  switch(event){
+    default:
+      break;
+  }
+};
+
+var controller$1 = new Unit();
+
+controller$1.onNotify = function(source, event, param){
+  switch(event){
+    default:
+      break;
+  }
+};
+
+var objects$1 = new Unit();
+
+objects$1.onNotify = function(source, event, param){
+  switch(event){
+    default:
+      break;
+  }
+};
+
+var game$1 = new Unit();
+
+game$1.onNotify = function(source, event, param){
+  switch(event){
+    default:
+      break;
+  }
+};
+
+var network$1 = new Unit();
+
+network$1.onNotify = function(source, event, param){
+  switch(event){
+    default:
+      break;
+  }
+};
+
+var blank = {};
+blank.type = 'gl';
+blank.base = base$1;
+blank.controller = controller$1;
+blank.objects = objects$1;
+blank.game = game$1;
+blank.network = network$1;
+
+var views$1 = {};
+views$1.blank = blank;
+
+function changeView(view){
+  if(view===undefined){
+    this.base = views$1.blank.base;
+    this.controller = views$1.blank.controller;
+    this.network = views$1.blank.network;
+  }
+  else{
+    switch(view.type){
+      case 'gl':
+        if(view.base){
+          this.base = view.base;
+        }
+        if(view.controller){
+          this.controller = view.controller;
+        }
+        if(view.network){
+          if(!view.network.socket){
+            view.network.socket = this.socket;
+          }
+          this.network = view.network;
+        }
+        break;
+      case 'dom':
+        // switch gl scene to blank scene if dom view is top-level view
+        if(!view.overlay){
+          this.base = views$1.blank.base;
+          this.controller = views$1.blank.controller;
+          this.network = views$1.blank.network;
+        }
+        if(!view.socket){
+          view.socket = this.socket;
+        }
+        if(!view.v.display){
+          view.v.display = true;
+        }
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+var features = {
+  mahjong: {}
+};
+
+features['mahjong'] = views;
+
+var main = new Unit();
+
+main.changeView = changeView;
+
+// top-level renderer
+
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+renderer.domElement.className = 'three';
+document.body.insertBefore( renderer.domElement, document.querySelector("#tiles") );
+var stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.insertBefore( stats.domElement, document.querySelector("#tiles") );
+
+var render = function() {
+  requestAnimationFrame(render);
+
+  stats.update();
+  renderer.clear();
+  if(main.base.scene){
+    renderer.render(main.base.scene, main.base.camera);
+  }
+  renderer.clearDepth();
+  if(main.base.sceneOrtho){
+    renderer.render(main.base.sceneOrtho, main.base.cameraOrtho);
+  }
+};
+
+// top-level controller
+
+function controlCB(event, data){
+  if(event==='conResize'){
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  main.controller.onNotify(null, event, data);
+}
+document.addEventListener( 'mousemove', controlCB.bind(null,'conMousemove'), false );
+window.addEventListener( 'resize',      controlCB.bind(null,'conResize'   ), false );
+document.addEventListener( 'click',     controlCB.bind(null,'conClick'    ), false );
+
+// top-level socket
+
+var socket = io('/touhou');
+socket.emit('join');
+socket.on('full', function(){
+  this.emit('ready');
+});
+
+function socketCB(event, data){
+  main.network.onNotify(null, event, data);
+}
+
+socket.on('start',     socketCB.bind(null,'socketStart'    ));
+socket.on('draw',      socketCB.bind(null,'socketDraw'     ));
+socket.on('discarded', socketCB.bind(null,'socketDiscard'  ));
+socket.on('operation', socketCB.bind(null,'socketOperation'));
+socket.on('furo',      socketCB.bind(null,'socketFuro'     ));
+socket.on('roundEnd',  socketCB.bind(null,'socketRoundEnd' ));
+socket.on('gameEnd',   socketCB.bind(null,'socketGameEnd'  ));
+socket.on('reconnect', function(){
+  this.emit('join');
+});
+
+// some more work
+main.socket = socket;
+
+
+// RUN! 
+
+main.changeView();
+main.changeView(features['mahjong']['menu']);
+//main.changeView(features['mahjong']['play']);
+render();
+
+})));
+//# sourceMappingURL=main.bundle.js.map

@@ -1,4 +1,4 @@
-import { Unit } from './structures.js';
+import { Unit } from '../../structures.js';
 
 var network = new Unit();
 
