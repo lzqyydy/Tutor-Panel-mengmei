@@ -57,7 +57,7 @@ var vUnit = {
   }
 };
 
-var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('span',{staticStyle:{"color":"yellow"}},[_vm._v(_vm._s(_vm.msg))])])])},staticRenderFns: [],
+var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('span',{staticStyle:{"color":"yellow"}},[_vm._v(_vm._s(_vm.msg))])])])},staticRenderFns: [],_scopeId: 'data-v-4d2dc44f',
   data () {
     return {
       msg: 'World Hello!!!'

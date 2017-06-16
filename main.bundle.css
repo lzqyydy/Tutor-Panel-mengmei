@@ -17,21 +17,21 @@
 
 
 
-.scene {
+.scene[data-v-4d2dc44f] {
 	position: absolute;
 	width: 100vw;
 	height: 100vh;
 	top: 0;
 	left: 0;
 }
-.wrapper-full{
+.wrapper-full[data-v-4d2dc44f]{
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	display: inline-block;
 }
-.wrapper-square{
+.wrapper-square[data-v-4d2dc44f]{
 	position: absolute;
 	width: 100vmax;
 	height: 100vmax;
