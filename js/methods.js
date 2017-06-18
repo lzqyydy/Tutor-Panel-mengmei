@@ -30,12 +30,11 @@ function changeView(view){
           this.controller = blank.blank.controller;
           this.network = blank.blank.network;
         }
-        if(!view.socket){
-          view.socket = this.socket;
+        if(!this.domBus.display[view.name]){
+          this.domBus.display[view.name] = true;
         }
-        if(!view.v.display){
-          view.v.display = true;
-        }
+          console.log(this.domBus.display)
+          console.log(this.domBus.display[view.name])
         break;
       default:
         break;

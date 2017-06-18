@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .scene {
 	position: absolute;
 	width: 100vw;

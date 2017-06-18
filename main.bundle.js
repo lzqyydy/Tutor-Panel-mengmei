@@ -4,6 +4,21 @@
 	(factory());
 }(this, (function () { 'use strict';
 
+var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('span',{staticStyle:{"color":"yellow"}},[_vm._v(_vm._s(_vm.msg))])])])},staticRenderFns: [],
+  data () {
+    return {
+      msg: 'World Hello!!!'
+    }
+  }
+};
+
+Vue.component('mahjong-menu', mahjongMenu);
+
+var menu = {};
+menu.type = 'dom';
+menu.overlay = false;
+menu.name = 'mahjong-menu';
+
 function Unit (){
   this._observer = {};
   this.onNotify = function(source, event, param){
@@ -28,62 +43,6 @@ function Unit (){
     this._observer[name] = null;
   };
 }
-
-var vUnit = {
-  data: {
-    _observer: {},
-    display: false,
-    socket: undefined
-  },
-  methods: {
-    notify: function(target, event, param){
-      if(target!==null&&target!==undefined){
-        if(this._observer[target]!==null&&this._observer[target]!==undefined){
-          this._observer[target].onNotify(null, event, param);
-        }
-      }
-      else{
-        for(var tgt in this._observer){
-          this._observer[tgt].onNotify(null, event, param);
-        }
-      }
-    },
-    addObserver: function(name, unit){
-      this._observer[name] = unit;
-    },
-    removeObserver: function(name, unit){
-      this._observer[name] = null;
-    }
-  }
-};
-
-var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('span',{staticStyle:{"color":"yellow"}},[_vm._v(_vm._s(_vm.msg))])])])},staticRenderFns: [],_scopeId: 'data-v-4d2dc44f',
-  data () {
-    return {
-      msg: 'World Hello!!!'
-    }
-  }
-};
-
-Vue.component('mahjong-menu', mahjongMenu);
-
-var v = new Vue({
-  'el': '#mahjong-menu',
-  'mixins': [vUnit],
-  'methods': {
-    onNotify: function(source, event, param){
-      switch(event){
-        case 'socketRoundEnd' :
-          break;
-      }
-    }
-  }
-});
-
-var menu = {};
-menu.type = 'dom';
-menu.overlay = false;
-menu.v = v;
 
 var base = new Unit();
 
@@ -1362,12 +1321,11 @@ function changeView(view){
           this.controller = views$1.blank.controller;
           this.network = views$1.blank.network;
         }
-        if(!view.socket){
-          view.socket = this.socket;
+        if(!this.domBus.display[view.name]){
+          this.domBus.display[view.name] = true;
         }
-        if(!view.v.display){
-          view.v.display = true;
-        }
+          console.log(this.domBus.display);
+          console.log(this.domBus.display[view.name]);
         break;
       default:
         break;
@@ -1449,8 +1407,42 @@ socket.on('reconnect', function(){
 main.socket = socket;
 
 
+main.domBus = new Vue({
+  'el': '#domComponents',
+  'data': {
+    _observer: {},
+    display: {
+      'mahjong-menu': false
+    }
+  },
+  'methods': {
+    notify: function(target, event, param){
+      if(target!==null&&target!==undefined){
+        if(this._observer[target]!==null&&this._observer[target]!==undefined){
+          this._observer[target].onNotify(null, event, param);
+        }
+      }
+      else{
+        for(var tgt in this._observer){
+          this._observer[tgt].onNotify(null, event, param);
+        }
+      }
+    },
+    onNotify: function(source, event, param){
+      switch(event){
+        case 'socketRoundEnd' :
+          break;
+      }
+    },
+    addObserver: function(name, unit){
+      this._observer[name] = unit;
+    },
+    removeObserver: function(name, unit){
+      this._observer[name] = null;
+    }
+  }
+});
 // RUN! 
-
 main.changeView();
 main.changeView(features['mahjong']['menu']);
 //main.changeView(features['mahjong']['play']);

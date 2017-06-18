@@ -78,8 +78,42 @@ socket.on('reconnect', function(){
 main.socket = socket;
 
 
+main.domBus = new Vue({
+  'el': '#domComponents',
+  'data': {
+    _observer: {},
+    display: {
+      'mahjong-menu': false
+    }
+  },
+  'methods': {
+    notify: function(target, event, param){
+      if(target!==null&&target!==undefined){
+        if(this._observer[target]!==null&&this._observer[target]!==undefined){
+          this._observer[target].onNotify(null, event, param);
+        }
+      }
+      else{
+        for(var tgt in this._observer){
+          this._observer[tgt].onNotify(null, event, param);
+        }
+      }
+    },
+    onNotify: function(source, event, param){
+      switch(event){
+        case 'socketRoundEnd' :
+          break;
+      }
+    },
+    addObserver: function(name, unit){
+      this._observer[name] = unit;
+    },
+    removeObserver: function(name, unit){
+      this._observer[name] = null;
+    }
+  }
+})
 // RUN! 
-
 main.changeView();
 main.changeView(features['mahjong']['menu']);
 //main.changeView(features['mahjong']['play']);
