@@ -2,21 +2,39 @@
   <div class='scene'>
     <div class='wrapper-full'>
     	<button @click="buttonQueue">Queue</button>
+    	<span class="whiteText">Current in queue: {{queueState}}</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+	props: {
+		display:{
+			default: false
+		},
+		queueState: null
+	},
   data () {
     return {
-      msg: 'World Hello!!!'
     }
   },
   methods:{
+  	init () {
+			this.fetchQueueState();
+  	},
 	  buttonQueue () {
-	  	this.$emit('notify', 'hahaha');
+	  	this.$emit('notify', 'menu', 'menuQueue', null);
+	  },
+	  fetchQueueState () {
+	  	this.$emit('notify', 'menu', 'menuFetchQueueState', null);
+	  	if(this.display){
+	  		setTimeout(this.fetchQueueState, 2000);
+	  	}
 	  }
+  },
+  created (){
+  	this.init();
   }
 }
 </script>
@@ -43,5 +61,8 @@ export default {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+.whiteText{
+	color: white;
 }
 </style>

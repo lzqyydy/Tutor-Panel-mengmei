@@ -4,16 +4,33 @@
 	(factory());
 }(this, (function () { 'use strict';
 
-var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('button',{on:{"click":_vm.buttonQueue}},[_vm._v("Queue")])])])},staticRenderFns: [],
+var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('button',{on:{"click":_vm.buttonQueue}},[_vm._v("Queue")]),_vm._v(" "),_c('span',{staticClass:"whiteText"},[_vm._v("Current in queue: "+_vm._s(_vm.queueState))])])])},staticRenderFns: [],
+	props: {
+		display:{
+			default: false
+		},
+		queueState: null
+	},
   data () {
     return {
-      msg: 'World Hello!!!'
     }
   },
   methods:{
+  	init () {
+			this.fetchQueueState();
+  	},
 	  buttonQueue () {
-	  	this.$emit('notify', 'hahaha');
+	  	this.$emit('notify', 'menu', 'menuQueue', null);
+	  },
+	  fetchQueueState () {
+	  	this.$emit('notify', 'menu', 'menuFetchQueueState', null);
+	  	if(this.display){
+	  		setTimeout(this.fetchQueueState, 2000);
+	  	}
 	  }
+  },
+  created (){
+  	this.init();
   }
 };
 
@@ -22,7 +39,7 @@ Vue.component('mahjong-menu', mahjongMenu);
 var menu = {};
 menu.type = 'dom';
 menu.overlay = false;
-menu.name = 'mahjong-menu';
+menu.name = 'mahjongMenu';
 
 function Unit (){
   this._observer = {};
@@ -1317,6 +1334,9 @@ function changeView(view){
     this.base = views$1.blank.base;
     this.controller = views$1.blank.controller;
     this.network = views$1.blank.network;
+    for(var i in this.domBus.display){
+      this.domBus.display[i] = false;
+    }
   }
   else{
     switch(view.type){
@@ -1348,14 +1368,28 @@ function changeView(view){
           this.controller = views$1.blank.controller;
           this.network = views$1.blank.network;
         }
-        if(!this.domBus.display[view.name]){
-          this.domBus.display[view.name] = true;
+        if(!this.domBus[view.name].display){
+          this.domBus[view.name].display = true;
         }
-          console.log(this.domBus.display);
-          console.log(this.domBus.display[view.name]);
         break;
       default:
         break;
+    }
+  }
+}
+
+function clearGLView(){
+  this.view&&(this.view.active = false);
+  this.view = views$1.blank;
+  this.view.active = true;
+  this.base = views$1.blank.base;
+  this.controller = views$1.blank.controller;
+  this.network = views$1.blank.network;
+}
+function clearDOMView(){
+  for(var i in this.domBus._data){
+    if(this.domBus._data[i].display){
+      this.domBus._data[i].display = false;
     }
   }
 }
@@ -1369,6 +1403,8 @@ features['mahjong'] = views;
 var main = new Unit();
 
 main.changeView = changeView;
+main.clearDOMView = clearDOMView;
+main.clearGLView = clearGLView;
 
 // top-level renderer
 
@@ -1410,8 +1446,9 @@ document.addEventListener( 'click',     controlCB.bind(null,'conClick'    ), fal
 // top-level socket
 
 var socket = io('/touhou');
-socket.emit('join');
 socket.on('full', function(){
+  main.clearDOMView();
+  main.changeView(features['mahjong']['play']);
   this.emit('ready');
 });
 
@@ -1427,7 +1464,10 @@ socket.on('furo',      socketCB.bind(null,'socketFuro'     ));
 socket.on('roundEnd',  socketCB.bind(null,'socketRoundEnd' ));
 socket.on('gameEnd',   socketCB.bind(null,'socketGameEnd'  ));
 socket.on('reconnect', function(){
-  this.emit('join');
+  main.clearGLView();
+  main.clearDOMView();
+  main.changeView(features['mahjong']['menu']);
+  // this.emit('join');
 });
 
 // some more work
@@ -1438,8 +1478,9 @@ main.domBus = new Vue({
   'el': '#domComponents',
   'data': {
     _observer: {},
-    display: {
-      'mahjong-menu': false
+    mahjongMenu: {
+      display: false,
+      queueState: 0
     }
   },
   'methods': {
@@ -1457,7 +1498,13 @@ main.domBus = new Vue({
     },
     onNotify: function(source, event, param){
       switch(event){
-        case 'socketRoundEnd' :
+        case 'menuQueue' :
+          socket.emit('join');
+          break;
+        case 'menuFetchQueueState' :
+          socket.emit('queueState', null, function(data){
+            main.domBus.mahjongMenu.queueState = data.queueState;
+          });
           break;
       }
     },
@@ -1467,13 +1514,18 @@ main.domBus = new Vue({
     removeObserver: function(name, unit){
       this._observer[name] = null;
     }
+  },
+  created: function (){
   }
 });
-// RUN! 
-main.changeView();
-main.changeView(features['mahjong']['menu']);
-//main.changeView(features['mahjong']['play']);
-render();
+function run(){
+  // RUN! 
+  main.changeView();
+  main.changeView(features['mahjong']['menu']);
+  //main.changeView(features['mahjong']['play']);
+  render();
+}
+run();
 
 })));
 //# sourceMappingURL=main.bundle.js.map

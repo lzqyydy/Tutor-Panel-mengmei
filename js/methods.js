@@ -9,6 +9,9 @@ function changeView(view){
     this.base = blank.blank.base;
     this.controller = blank.blank.controller;
     this.network = blank.blank.network;
+    for(var i in this.domBus.display){
+      this.domBus.display[i] = false;
+    }
   }
   else{
     switch(view.type){
@@ -40,11 +43,9 @@ function changeView(view){
           this.controller = blank.blank.controller;
           this.network = blank.blank.network;
         }
-        if(!this.domBus.display[view.name]){
-          this.domBus.display[view.name] = true;
+        if(!this.domBus[view.name].display){
+          this.domBus[view.name].display = true;
         }
-          console.log(this.domBus.display)
-          console.log(this.domBus.display[view.name])
         break;
       default:
         break;
@@ -52,4 +53,19 @@ function changeView(view){
   }
 }
 
-export { changeView };
+function clearGLView(){
+  this.view&&(this.view.active = false);
+  this.view = blank.blank;
+  this.view.active = true;
+  this.base = blank.blank.base;
+  this.controller = blank.blank.controller;
+  this.network = blank.blank.network;
+}
+function clearDOMView(){
+  for(var i in this.domBus._data){
+    if(this.domBus._data[i].display){
+      this.domBus._data[i].display = false;
+    }
+  }
+}
+export { changeView, clearGLView, clearDOMView };

@@ -10,9 +10,11 @@ import { Unit } from './structures.js'
 
 var main = new Unit();
 
-import { changeView } from './methods.js';
+import { changeView, clearDOMView, clearGLView } from './methods.js';
 
 main.changeView = changeView;
+main.clearDOMView = clearDOMView;
+main.clearGLView = clearGLView;
 
 // top-level renderer
 
@@ -54,8 +56,9 @@ document.addEventListener( 'click',     controlCB.bind(null,'conClick'    ), fal
 // top-level socket
 
 var socket = io('/touhou');
-socket.emit('join');
 socket.on('full', function(){
+  main.clearDOMView();
+  main.changeView(features['mahjong']['play']);
   this.emit('ready');
 });
 
@@ -71,7 +74,10 @@ socket.on('furo',      socketCB.bind(null,'socketFuro'     ));
 socket.on('roundEnd',  socketCB.bind(null,'socketRoundEnd' ));
 socket.on('gameEnd',   socketCB.bind(null,'socketGameEnd'  ));
 socket.on('reconnect', function(){
-  this.emit('join');
+  main.clearGLView();
+  main.clearDOMView();
+  main.changeView(features['mahjong']['menu']);
+  // this.emit('join');
 });
 
 // some more work
@@ -82,8 +88,9 @@ main.domBus = new Vue({
   'el': '#domComponents',
   'data': {
     _observer: {},
-    display: {
-      'mahjong-menu': false
+    mahjongMenu: {
+      display: false,
+      queueState: 0
     }
   },
   'methods': {
@@ -101,7 +108,13 @@ main.domBus = new Vue({
     },
     onNotify: function(source, event, param){
       switch(event){
-        case 'socketRoundEnd' :
+        case 'menuQueue' :
+          socket.emit('join');
+          break;
+        case 'menuFetchQueueState' :
+          socket.emit('queueState', null, function(data){
+            main.domBus.mahjongMenu.queueState = data.queueState;
+          });
           break;
       }
     },
@@ -111,10 +124,15 @@ main.domBus = new Vue({
     removeObserver: function(name, unit){
       this._observer[name] = null;
     }
+  },
+  created: function (){
   }
 })
-// RUN! 
-main.changeView();
-main.changeView(features['mahjong']['menu']);
-//main.changeView(features['mahjong']['play']);
-render();
+function run(){
+  // RUN! 
+  main.changeView();
+  main.changeView(features['mahjong']['menu']);
+  //main.changeView(features['mahjong']['play']);
+  render();
+}
+run();
