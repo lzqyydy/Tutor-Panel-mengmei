@@ -4,11 +4,16 @@
 	(factory());
 }(this, (function () { 'use strict';
 
-var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('span',{staticStyle:{"color":"yellow"}},[_vm._v(_vm._s(_vm.msg))])])])},staticRenderFns: [],
+var mahjongMenu = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"scene"},[_c('div',{staticClass:"wrapper-full"},[_c('button',{on:{"click":_vm.buttonQueue}},[_vm._v("Queue")])])])},staticRenderFns: [],
   data () {
     return {
       msg: 'World Hello!!!'
     }
+  },
+  methods:{
+	  buttonQueue () {
+	  	this.$emit('notify', 'hahaha');
+	  }
   }
 };
 
@@ -1178,6 +1183,27 @@ network.onNotify = function(source, event, param){
   }
 };
 
+var play = new Unit();
+play.type = 'gl';
+play.base = base;
+play.controller = controller;
+play.objects = objects;
+play.game = game;
+play.network = network;
+
+play.onNotify = function(source, event, param){
+	switch(event){
+    case 'socketGameEnd'  :
+      break;
+  }
+};
+
+base.addObserver('view', play);
+controller.addObserver('view', play);
+objects.addObserver('view', play);
+network.addObserver('view', play);
+game.addObserver('view', play);
+
 base.addObserver('controller', controller);
 controller.addObserver('base', base);
 controller.addObserver('objects', objects);
@@ -1220,15 +1246,6 @@ base.sceneOrtho.add(objects.dummies.furoList);
 base.scene.add(objects.sprites.board);
 
 base.sceneOrtho.add(objects.sprites.result);
-
-
-var play = {};
-play.type = 'gl';
-play.base = base;
-play.controller = controller;
-play.objects = objects;
-play.game = game;
-play.network = network;
 
 var views = {};
 views.menu = menu;
@@ -1294,6 +1311,9 @@ views$1.blank = blank;
 
 function changeView(view){
   if(view===undefined){
+    this.view&&(this.view.active = false);
+    this.view = views$1.blank;
+    this.view.active = true;
     this.base = views$1.blank.base;
     this.controller = views$1.blank.controller;
     this.network = views$1.blank.network;
@@ -1301,6 +1321,10 @@ function changeView(view){
   else{
     switch(view.type){
       case 'gl':
+        this.view&&(this.view.active = false);
+        this.view = view;
+        this.view.active = true;
+        this.view.addObserver('dom', this.domBus);
         if(view.base){
           this.base = view.base;
         }
@@ -1317,6 +1341,9 @@ function changeView(view){
       case 'dom':
         // switch gl scene to blank scene if dom view is top-level view
         if(!view.overlay){
+          this.view&&(this.view.active = false);
+          this.view = views$1.blank;
+          this.view.active = true;
           this.base = views$1.blank.base;
           this.controller = views$1.blank.controller;
           this.network = views$1.blank.network;

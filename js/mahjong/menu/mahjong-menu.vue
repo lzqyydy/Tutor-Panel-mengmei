@@ -1,7 +1,7 @@
 <template>
   <div class='scene'>
     <div class='wrapper-full'>
-    	<span style="color:yellow">{{ msg }}</span>
+    	<button @click="buttonQueue">Queue</button>
     </div>
   </div>
 </template>
@@ -12,6 +12,11 @@ export default {
     return {
       msg: 'World Hello!!!'
     }
+  },
+  methods:{
+	  buttonQueue () {
+	  	this.$emit('notify', 'hahaha');
+	  }
   }
 }
 </script>

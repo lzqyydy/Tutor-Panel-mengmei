@@ -3,6 +3,9 @@ import blank from './blank/init.js'
 
 function changeView(view){
   if(view===undefined){
+    this.view&&(this.view.active = false);
+    this.view = blank.blank;
+    this.view.active = true;
     this.base = blank.blank.base;
     this.controller = blank.blank.controller;
     this.network = blank.blank.network;
@@ -10,6 +13,10 @@ function changeView(view){
   else{
     switch(view.type){
       case 'gl':
+        this.view&&(this.view.active = false);
+        this.view = view;
+        this.view.active = true;
+        this.view.addObserver('dom', this.domBus);
         if(view.base){
           this.base = view.base;
         }
@@ -26,6 +33,9 @@ function changeView(view){
       case 'dom':
         // switch gl scene to blank scene if dom view is top-level view
         if(!view.overlay){
+          this.view&&(this.view.active = false);
+          this.view = blank.blank;
+          this.view.active = true;
           this.base = blank.blank.base;
           this.controller = blank.blank.controller;
           this.network = blank.blank.network;

@@ -3,6 +3,28 @@ import controller from './controller.js'
 import objects from './objects.js'
 import game from './game.js'
 import network from './network.js'
+import { Unit } from '../../structures.js';
+
+var play = new Unit();
+play.type = 'gl';
+play.base = base;
+play.controller = controller;
+play.objects = objects;
+play.game = game;
+play.network = network;
+
+play.onNotify = function(source, event, param){
+	switch(event){
+    case 'socketGameEnd'  :
+      break;
+  }
+}
+
+base.addObserver('view', play);
+controller.addObserver('view', play);
+objects.addObserver('view', play);
+network.addObserver('view', play);
+game.addObserver('view', play);
 
 base.addObserver('controller', controller);
 controller.addObserver('base', base);
@@ -51,12 +73,5 @@ base.scene.add(objects.sprites.board);
 base.sceneOrtho.add(objects.sprites.result);
 
 
-var play = {};
-play.type = 'gl';
-play.base = base;
-play.controller = controller;
-play.objects = objects;
-play.game = game;
-play.network = network;
 
 export { play as default };
