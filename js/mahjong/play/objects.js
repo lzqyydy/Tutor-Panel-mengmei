@@ -35,21 +35,11 @@ for(var i=0;i<4;i++){
   objects.dummies.yama[i] = new THREE.Object3D();
   objects.dummies.yama[i].position.x = 0;
   objects.dummies.yama[i].position.y = 0;
+  objects.dummies.yama[i].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*i)));
+  rotateAroundWorldAxis(objects.dummies.yama[i], new THREE.Vector3(0,1,0), Math.PI/2 * i);
+  objects.dummies.yama[i].slots = [];
 }
-objects.dummies.yama[0].position.add(new THREE.Vector3(-38,0,30.8));
-objects.dummies.yama[1].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
-objects.dummies.yama[2].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
-objects.dummies.yama[3].position.add(new THREE.Vector3(-38,0,30.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
-// rotateAroundWorldAxis(objects.dummies.yama[0], new THREE.Vector3(0,1,0), 0);
-rotateAroundWorldAxis(objects.dummies.yama[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
-rotateAroundWorldAxis(objects.dummies.yama[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
-rotateAroundWorldAxis(objects.dummies.yama[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
-
 //fill yama with dummies
-objects.dummies.yama[0].slots = [];
-objects.dummies.yama[1].slots = [];
-objects.dummies.yama[2].slots = [];
-objects.dummies.yama[3].slots = [];
 for(var i=0;i<136;i++){
   var dtile = new THREE.Object3D();
   dtile.position.x = TILEWIDTH*Math.floor((i%34)/2); 
@@ -60,28 +50,17 @@ for(var i=0;i<136;i++){
   objects.dummies.yama[Math.floor(i/34)].add(dtile);
 }
 
-
 // dummy hand
 objects.dummies.hand = [];
 for(var i=0;i<4;i++){
   objects.dummies.hand[i] = new THREE.Object3D();
   objects.dummies.hand[i].position.x = 0;
   objects.dummies.hand[i].position.y = 0;
+  objects.dummies.hand[i].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*i)));
+  rotateAroundWorldAxis(objects.dummies.hand[i], new THREE.Vector3(0,1,0), Math.PI/2 * i);
+  objects.dummies.hand[i].slots = [];
 }
-objects.dummies.hand[0].position.add(new THREE.Vector3(-40,0,50));
-objects.dummies.hand[1].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
-objects.dummies.hand[2].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
-objects.dummies.hand[3].position.add(new THREE.Vector3(-40,0,50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
-// rotateAroundWorldAxis(objects.dummies.hand[0], new THREE.Vector3(0,1,0), 0);
-rotateAroundWorldAxis(objects.dummies.hand[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
-rotateAroundWorldAxis(objects.dummies.hand[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
-rotateAroundWorldAxis(objects.dummies.hand[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
-
 //fill hand with dummies
-objects.dummies.hand[0].slots = [];
-objects.dummies.hand[1].slots = [];
-objects.dummies.hand[2].slots = [];
-objects.dummies.hand[3].slots = [];
 for(var i=0;i<14;i++){
   // hand dummies need to interact with raycaster, so use Mesh instead of Object3D
   var dtile = new THREE.Mesh(G.tile, M.invisible);
@@ -104,28 +83,17 @@ for(var i=14;i<4*14;i++){
   objects.dummies.hand[Math.floor(i/14)].add(dtile);
 }
 
-
 // dummy discard
 objects.dummies.discard = [];
 for(var i=0;i<4;i++){
   objects.dummies.discard[i] = new THREE.Object3D();
   objects.dummies.discard[i].position.x = 0;
   objects.dummies.discard[i].position.y = 0;
+  objects.dummies.discard[i].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*i)));
+  rotateAroundWorldAxis(objects.dummies.discard[i], new THREE.Vector3(0,1,0), Math.PI/2 * i);
+  objects.dummies.discard[i].slots = [];
 }
-objects.dummies.discard[0].position.add(new THREE.Vector3(-12,0,12.8));
-objects.dummies.discard[1].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
-objects.dummies.discard[2].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
-objects.dummies.discard[3].position.add(new THREE.Vector3(-12,0,12.8).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
-// rotateAroundWorldAxis(objects.dummies.discard[0], new THREE.Vector3(0,1,0), 0);
-rotateAroundWorldAxis(objects.dummies.discard[1], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
-rotateAroundWorldAxis(objects.dummies.discard[2], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
-rotateAroundWorldAxis(objects.dummies.discard[3], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
-
 //fill discard with dummies
-objects.dummies.discard[0].slots = [];
-objects.dummies.discard[1].slots = [];
-objects.dummies.discard[2].slots = [];
-objects.dummies.discard[3].slots = [];
 for(var i=0;i<4*24;i++){
   var dtile = new THREE.Object3D();
   dtile.position.x = TILEWIDTH*(i%6)+24*Math.floor((i%24)/18); 
@@ -137,23 +105,15 @@ for(var i=0;i<4*24;i++){
   objects.dummies.discard[Math.floor(i/24)].add(dtile);
 }
 
-
 // dummy furo
 objects.dummies.furo = [];
 for(var i=0;i<4;i++){
   objects.dummies.furo[i] = new THREE.Object3D();
   objects.dummies.furo[i].position.x = 0;
   objects.dummies.furo[i].position.y = 0;
+  objects.dummies.furo[i].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*(i+2)%4)));
+  rotateAroundWorldAxis(objects.dummies.furo[i], new THREE.Vector3(0,1,0), Math.PI/2 * (i+2)%4);
 }
-objects.dummies.furo[0].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*2)));
-objects.dummies.furo[1].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*3)));
-objects.dummies.furo[2].position.add(new THREE.Vector3(-40,0,-50));
-objects.dummies.furo[3].position.add(new THREE.Vector3(-40,0,-50).applyQuaternion(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3( 0, 1, 0 ), Math.PI/2*1)));
-rotateAroundWorldAxis(objects.dummies.furo[0], new THREE.Vector3(0,1,0), Math.PI/2 * 2);
-rotateAroundWorldAxis(objects.dummies.furo[1], new THREE.Vector3(0,1,0), Math.PI/2 * 3);
-// rotateAroundWorldAxis(objects.furo.discard[2], new THREE.Vector3(0,1,0), 0);
-rotateAroundWorldAxis(objects.dummies.furo[3], new THREE.Vector3(0,1,0), Math.PI/2 * 1);
-
 //fill furo with dummies
 for(var i=0;i<4;i++){
   objects.dummies.furo[i].groups = [];
@@ -172,16 +132,11 @@ for(var i=0;i<4;i++){
   }
 }
 
-
 //create tile meshes
 objects.meshes.tile = [];
 for(var i=0;i<34;i++){
   objects.meshes.tile[i] = new THREE.Mesh(G.tile, M.tile[i]);
 }
-
-
-
-
 
 
 
@@ -201,134 +156,134 @@ for(var i=0;i<34;i++){
   objects.sprites.tile[i] = new THREE.Mesh(new THREE.PlaneGeometry(20, 28), M.tileSprite[i]);
 }
 //dummy for furo sprites 
-objects.dummies.furoList = new THREE.Object3D();
-objects.dummies.furoList.$set = function(furo){
-  var tiles = [];
-  for(var i=0;i<furo.data.length;i++){
-    switch(furo.data[i]){
-      case 0:
-        for(var j=1;j<this.children[1].children.length;j++){
-          this.children[1].remove(this.children[1].children[j]);
-        }
-        this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[1].children[1].position.set(-30, 0, 2);
-        this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
-        this.children[1].children[2].position.set(0, 0, 2);
-        this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+2].clone());
-        this.children[1].children[3].position.set(30, 0, 2);
-        this.children[1].visible = true;
-        this.buttonList[1].userData.tile = furo.tile;
-        break;
-      case 1:
-        for(var j=1;j<this.children[2].children.length;j++){
-          this.children[2].remove(this.children[2].children[j]);
-        }
-        this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
-        this.children[2].children[1].position.set(-30, 0, 2);
-        this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[2].children[2].position.set(0, 0, 2);
-        this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
-        this.children[2].children[3].position.set(30, 0, 2);
-        this.children[2].visible = true;
-        this.buttonList[2].userData.tile = furo.tile;
-        break;
-      case 2:
-        for(var j=1;j<this.children[3].children.length;j++){
-          this.children[3].remove(this.children[3].children[j]);
-        }
-        this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-2].clone());
-        this.children[3].children[1].position.set(-30, 0, 2);
-        this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
-        this.children[3].children[2].position.set(0, 0, 2);
-        this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[3].children[3].position.set(30, 0, 2);
-        this.children[3].visible = true;
-        this.buttonList[3].userData.tile = furo.tile;
-        break;
-      case 3:
-      case 4:
-      case 5:
-        for(var j=1;j<this.children[5].children.length;j++){
-          this.children[5].remove(this.children[5].children[j]);
-        }
-        this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[5].children[1].position.set(-30, 0, 2);
-        this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[5].children[2].position.set(0, 0, 2);
-        this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[5].children[3].position.set(30, 0, 2);
-        this.children[5].visible = true;
-        this.buttonList[5].userData.tile = furo.tile;
-        break;
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-      case 10:
-        for(var j=1;j<this.children[6].children.length;j++){
-          this.children[6].remove(this.children[6].children[j]);
-        }
-        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[6].children[1].position.set(-36, 0, 2);
-        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[6].children[2].position.set(-12, 0, 2);
-        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[6].children[3].position.set(12, 0, 2);
-        this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
-        this.children[6].children[4].position.set(36, 0, 2);
-        this.children[6].visible = true;
-        this.buttonList[6].userData.tile = furo.tile;
-        break;
-      case 13:
-        this.children[4].visible = true;
-      case 14:
-        this.children[0].visible = true;
-        break;
-    }
-  }
-  this.children[7].visible = true;
-};
-objects.dummies.furoList.$hide = function(){
-  for(var i=0;i<this.children.length;i++){
-    this.children[i].visible = false;
-  }
-};
-objects.dummies.furoList.$reposition = function(){
-  var ratio = window.innerWidth/400;
-  this.position.set(0, -(window.innerHeight/2-40*0.6*ratio), 1);
-  this.scale.set(0.6*ratio, 0.6*ratio, 1);
-};
-objects.dummies.furoList.$init = function(){
-  var bg = objects.sprites.furoBG;
-  bg.position.set(0,0,1);
-  var txt_riichi = objects.sprites.riichi.clone();
-  txt_riichi.position.set(0,0,2);
-  var txt_agari = objects.sprites.agari.clone();
-  txt_agari.position.set(0,0,2);
-  var txt_pass = objects.sprites.pass.clone();
-  txt_pass.position.set(0,0,2);
+// objects.dummies.furoList = new THREE.Object3D();
+// objects.dummies.furoList.$set = function(furo){
+//   var tiles = [];
+//   for(var i=0;i<furo.data.length;i++){
+//     switch(furo.data[i]){
+//       case 0:
+//         for(var j=1;j<this.children[1].children.length;j++){
+//           this.children[1].remove(this.children[1].children[j]);
+//         }
+//         this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[1].children[1].position.set(-30, 0, 2);
+//         this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
+//         this.children[1].children[2].position.set(0, 0, 2);
+//         this.children[1].add(objects.sprites.tile[Math.floor(furo.tile/4)+2].clone());
+//         this.children[1].children[3].position.set(30, 0, 2);
+//         this.children[1].visible = true;
+//         this.buttonList[1].userData.tile = furo.tile;
+//         break;
+//       case 1:
+//         for(var j=1;j<this.children[2].children.length;j++){
+//           this.children[2].remove(this.children[2].children[j]);
+//         }
+//         this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
+//         this.children[2].children[1].position.set(-30, 0, 2);
+//         this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[2].children[2].position.set(0, 0, 2);
+//         this.children[2].add(objects.sprites.tile[Math.floor(furo.tile/4)+1].clone());
+//         this.children[2].children[3].position.set(30, 0, 2);
+//         this.children[2].visible = true;
+//         this.buttonList[2].userData.tile = furo.tile;
+//         break;
+//       case 2:
+//         for(var j=1;j<this.children[3].children.length;j++){
+//           this.children[3].remove(this.children[3].children[j]);
+//         }
+//         this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-2].clone());
+//         this.children[3].children[1].position.set(-30, 0, 2);
+//         this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)-1].clone());
+//         this.children[3].children[2].position.set(0, 0, 2);
+//         this.children[3].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[3].children[3].position.set(30, 0, 2);
+//         this.children[3].visible = true;
+//         this.buttonList[3].userData.tile = furo.tile;
+//         break;
+//       case 3:
+//       case 4:
+//       case 5:
+//         for(var j=1;j<this.children[5].children.length;j++){
+//           this.children[5].remove(this.children[5].children[j]);
+//         }
+//         this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[5].children[1].position.set(-30, 0, 2);
+//         this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[5].children[2].position.set(0, 0, 2);
+//         this.children[5].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[5].children[3].position.set(30, 0, 2);
+//         this.children[5].visible = true;
+//         this.buttonList[5].userData.tile = furo.tile;
+//         break;
+//       case 6:
+//       case 7:
+//       case 8:
+//       case 9:
+//       case 10:
+//         for(var j=1;j<this.children[6].children.length;j++){
+//           this.children[6].remove(this.children[6].children[j]);
+//         }
+//         this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[6].children[1].position.set(-36, 0, 2);
+//         this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[6].children[2].position.set(-12, 0, 2);
+//         this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[6].children[3].position.set(12, 0, 2);
+//         this.children[6].add(objects.sprites.tile[Math.floor(furo.tile/4)].clone());
+//         this.children[6].children[4].position.set(36, 0, 2);
+//         this.children[6].visible = true;
+//         this.buttonList[6].userData.tile = furo.tile;
+//         break;
+//       case 13:
+//         this.children[4].visible = true;
+//       case 14:
+//         this.children[0].visible = true;
+//         break;
+//     }
+//   }
+//   this.children[7].visible = true;
+// };
+// objects.dummies.furoList.$hide = function(){
+//   for(var i=0;i<this.children.length;i++){
+//     this.children[i].visible = false;
+//   }
+// };
+// objects.dummies.furoList.$reposition = function(){
+//   var ratio = window.innerWidth/400;
+//   this.position.set(0, -(window.innerHeight/2-40*0.6*ratio), 1);
+//   this.scale.set(0.6*ratio, 0.6*ratio, 1);
+// };
+// objects.dummies.furoList.$init = function(){
+//   var bg = objects.sprites.furoBG;
+//   bg.position.set(0,0,1);
+//   var txt_riichi = objects.sprites.riichi.clone();
+//   txt_riichi.position.set(0,0,2);
+//   var txt_agari = objects.sprites.agari.clone();
+//   txt_agari.position.set(0,0,2);
+//   var txt_pass = objects.sprites.pass.clone();
+//   txt_pass.position.set(0,0,2);
 
-  this.buttonList = [];
+//   this.buttonList = [];
   
-  for(var i=0;i<8;i++){
-    var group = new THREE.Group();
-    group.position.set(-150+100*(i%4),20*(Math.floor(i/4)?-1:1),0);
-    var bg_d = bg.clone();
-    bg_d.material = bg.material.clone();
-    bg_d.position.set(0,0,1);
-    bg_d.userData.index = i;
-    bg_d.userData.tile = null;
-    this.buttonList.push(bg_d);
-    group.add(bg_d);
-    this.add(group);
-  }
-  this.children[0].add(txt_riichi);
-  this.children[4].add(txt_agari);
-  this.children[7].add(txt_pass);
+//   for(var i=0;i<8;i++){
+//     var group = new THREE.Group();
+//     group.position.set(-150+100*(i%4),20*(Math.floor(i/4)?-1:1),0);
+//     var bg_d = bg.clone();
+//     bg_d.material = bg.material.clone();
+//     bg_d.position.set(0,0,1);
+//     bg_d.userData.index = i;
+//     bg_d.userData.tile = null;
+//     this.buttonList.push(bg_d);
+//     group.add(bg_d);
+//     this.add(group);
+//   }
+//   this.children[0].add(txt_riichi);
+//   this.children[4].add(txt_agari);
+//   this.children[7].add(txt_pass);
 
-  this.$hide();
-}
-objects.dummies.furoList.$init();
+//   this.$hide();
+// }
+// objects.dummies.furoList.$init();
 
 
 //center score board
@@ -413,9 +368,9 @@ objects.sprites.result.$hide();
 
 objects.onNotify = function(source, event, param){
   switch(event){
-    case 'resize':
-      objects.dummies.furoList.$reposition();
-      break;
+    // case 'resize':
+    //   objects.dummies.furoList.$reposition();
+    //   break;
     case 'socketStart':
       // hide result (if shown)
       objects.sprites.result.$hide();
@@ -430,16 +385,18 @@ objects.onNotify = function(source, event, param){
         objects.dummies.hand[Math.floor(i/13)].slots[i%13].add(tile);
       }
       break;
-    case 'socketOperation':
-      objects.dummies.furoList.$set(param);
-      break;
+    // case 'socketOperation':
+    //   // objects.dummies.furoList.$set(param);
+    //   objects.notify('view', 'socketOperation', param);
+    //   console.log('operation on object');
+    //   break;
     case 'socketRoundEnd':
       console.log(JSON.stringify(param));
       objects.sprites.result.$set(param);
       break;
-    case 'inputOperation':
-      objects.dummies.furoList.$hide();
-      break;
+    // case 'inputOperation':
+    //   objects.dummies.furoList.$hide();
+    //   break;
     case 'tehaiChanged':
       //refresh hand 
       for(var i=0;i<objects.dummies.hand[0].slots.length;i++){
@@ -697,20 +654,6 @@ function rayCastInit(){//register rayCasting objects
     }
   };
   castList[1] = {
-    name: 'furoButton',
-    type: 'orthographic',
-    target: objects.dummies.furoList.buttonList,
-    condition: function(){
-      return this.parent.visible;
-    },
-    success: function(){
-      this.material.color.g = 0.5;
-    },
-    restore: function(){
-      this.material.color.g = 0;
-    }
-  };
-  castList[2] = {
     name: 'handTile',
     type: 'perspective',
     target: objects.dummies.hand[0].slots,
@@ -728,6 +671,20 @@ function rayCastInit(){//register rayCasting objects
       }
     }
   };
+  // castList[2] = {
+  //   name: 'furoButton',
+  //   type: 'orthographic',
+  //   target: objects.dummies.furoList.buttonList,
+  //   condition: function(){
+  //     return this.parent.visible;
+  //   },
+  //   success: function(){
+  //     this.material.color.g = 0.5;
+  //   },
+  //   restore: function(){
+  //     this.material.color.g = 0;
+  //   }
+  // };
   objects.notify('controller', 'castInit', castList);
 }
 

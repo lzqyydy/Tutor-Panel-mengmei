@@ -14,8 +14,9 @@ play.game = game;
 play.network = network;
 
 play.onNotify = function(source, event, param){
-	switch(event){
-    case 'socketGameEnd'  :
+  switch(event){
+    case 'socketOperation' :
+      this.notify('feature', 'socketOperation', param);
       break;
   }
 }
@@ -66,7 +67,7 @@ base.scene.add(objects.dummies.furo[1]);
 base.scene.add(objects.dummies.furo[2]);
 base.scene.add(objects.dummies.furo[3]);
 
-base.sceneOrtho.add(objects.dummies.furoList);
+// base.sceneOrtho.add(objects.dummies.furoList);
 
 base.scene.add(objects.sprites.board);
 

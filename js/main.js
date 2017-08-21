@@ -1,14 +1,14 @@
-var features = {
-  mahjong: {}
-};
+
+import { Unit } from './structures.js'
+
+var features = new Unit();
+var main = new Unit();
 
 import mahjong from './mahjong/init.js'
 
 features['mahjong'] = mahjong;
 
-import { Unit } from './structures.js'
 
-var main = new Unit();
 
 import { changeView, clearDOMView, clearGLView } from './methods.js';
 
@@ -116,6 +116,9 @@ main.domBus = new Vue({
             main.domBus.mahjongMenu.queueState = data.queueState;
           });
           break;
+        case 'playOperation':
+          console.log('dom received operation', param);
+          break;
       }
     },
     addObserver: function(name, unit){
@@ -126,6 +129,7 @@ main.domBus = new Vue({
     }
   },
   created: function (){
+    features['mahjong'].addObserver('dom', this);
   }
 })
 function run(){
