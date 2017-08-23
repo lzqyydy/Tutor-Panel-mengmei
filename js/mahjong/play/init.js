@@ -5,6 +5,12 @@ import game from './game.js'
 import network from './network.js'
 import { Unit } from '../../structures.js';
 
+
+import mahjongFuroList from './mahjong-furo-list.vue'
+
+
+Vue.component('mahjong-furo-list', mahjongFuroList);
+
 var play = new Unit();
 play.type = 'gl';
 play.base = base;

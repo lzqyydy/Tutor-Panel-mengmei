@@ -30,6 +30,7 @@
   <img id="tiles" src="resources/texture/tile.png" style="width: 0; height: 0;">
   <div id="domComponents">
     <mahjong-menu v-if="mahjongMenu.display" :display="mahjongMenu.display" :queue-state="mahjongMenu.queueState" @notify="onNotify"></mahjong-menu>
+    <mahjong-furo-list v-if="mahjongFuroList.display" :display="mahjongFuroList.display" :furos="mahjongFuroList.furos" @notify="onNotify"></mahjong-furo-list>
   </div>
   <script src="main.bundle.js"></script>
 </body>

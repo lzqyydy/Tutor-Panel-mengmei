@@ -1157,6 +1157,27 @@ network.onNotify = function(source, event, param){
   }
 };
 
+var mahjongFuroList = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"container"},_vm._l((_vm.furos),function(furo){return _c('div',{staticClass:"furoBlock"})}))},staticRenderFns: [],
+  props: {
+    display:{
+      default: false
+    },
+    furos: null
+  },
+  data () {
+    return {
+    }
+  },
+  methods:{
+
+  },
+  created (){
+
+  }
+};
+
+Vue.component('mahjong-furo-list', mahjongFuroList);
+
 var play = new Unit();
 play.type = 'gl';
 play.base = base;
@@ -1449,6 +1470,10 @@ main.domBus = new Vue({
     mahjongMenu: {
       display: false,
       queueState: 0
+    },
+    mahjongFuroList: {
+      display: true,
+      furos: [{ops:3,tile:70}]
     }
   },
   'methods': {
@@ -1486,7 +1511,8 @@ main.domBus = new Vue({
       this._observer[name] = null;
     }
   },
-  created: function (){
+  mounted: function (){
+    console.log(this.mahjongFuroList.display);
     features['mahjong'].addObserver('dom', this);
   }
 });
@@ -1494,7 +1520,6 @@ function run(){
   // RUN! 
   main.changeView();
   main.changeView(features['mahjong']['menu']);
-  //main.changeView(features['mahjong']['play']);
   render();
 }
 run();

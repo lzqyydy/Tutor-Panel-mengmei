@@ -28,18 +28,18 @@ export default {
 <style>
 .container {
   position: absolute;
-  width: 60vw;
+  width: 80vw;
   height: 100vh;
   top: 0;
-  left: 20vw;
+  left: 10vw;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap-reverse;
   align-content: flex-start;
 }
 .furoBlock{
-  width: 15vw;
-  height: 150px;
-  margin: 0 5px 5px 0;
+  width: 20vw;
+  height: 10vw;
+  margin: 0;
 }
 </style>

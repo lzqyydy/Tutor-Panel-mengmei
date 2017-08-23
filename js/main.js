@@ -91,6 +91,10 @@ main.domBus = new Vue({
     mahjongMenu: {
       display: false,
       queueState: 0
+    },
+    mahjongFuroList: {
+      display: true,
+      furos: [{ops:3,tile:70}]
     }
   },
   'methods': {
@@ -128,7 +132,8 @@ main.domBus = new Vue({
       this._observer[name] = null;
     }
   },
-  created: function (){
+  mounted: function (){
+    console.log(this.mahjongFuroList.display)
     features['mahjong'].addObserver('dom', this);
   }
 })
@@ -136,7 +141,6 @@ function run(){
   // RUN! 
   main.changeView();
   main.changeView(features['mahjong']['menu']);
-  //main.changeView(features['mahjong']['play']);
   render();
 }
 run();
