@@ -94,7 +94,7 @@ main.domBus = new Vue({
     },
     mahjongFuroList: {
       display: true,
-      furos: [{ops:3,tile:70}]
+      furos: [{ops:3,tile:70},{ops:9,tile:70},{ops:13,tile:70}]
     }
   },
   'methods': {
@@ -122,6 +122,9 @@ main.domBus = new Vue({
           break;
         case 'playOperation':
           console.log('dom received operation', param);
+          break;
+        case 'playOperationChosen':
+          console.log(param);
           break;
       }
     },

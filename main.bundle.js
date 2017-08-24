@@ -1157,7 +1157,7 @@ network.onNotify = function(source, event, param){
   }
 };
 
-var mahjongFuroList = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"container"},_vm._l((_vm.furos),function(furo){return _c('div',{staticClass:"furoBlock"})}))},staticRenderFns: [],
+var mahjongFuroList = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"container"},[_c('div',{staticClass:"furoBlock"},[_c('div',{staticClass:"tile",on:{"click":function($event){_vm.chosen(-1);}}},[_vm._v("pass")])]),_vm._l((_vm.furos),function(furo,i){return _c('div',{staticClass:"furoBlock",on:{"click":function($event){_vm.chosen(i);}}},[(furo.ops<=2)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile-furo.ops))]):_vm._e(),(furo.ops<=2)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile-furo.ops+1))]):_vm._e(),(furo.ops<=2)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile-furo.ops+2))]):_vm._e(),(furo.ops>=2&&furo.ops<=10)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile))]):_vm._e(),(furo.ops>=2&&furo.ops<=10)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile))]):_vm._e(),(furo.ops>=2&&furo.ops<=10)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile))]):_vm._e(),(furo.ops>=6&&furo.ops<=10)?_c('div',{staticClass:"tile"},[_vm._v(_vm._s(furo.tile))]):_vm._e(),(furo.ops===13)?_c('div',{staticClass:"tile"},[_vm._v("agari")]):_vm._e(),(furo.ops===14)?_c('div',{staticClass:"tile"},[_vm._v("riichi")]):_vm._e()])})],2)},staticRenderFns: [],
   props: {
     display:{
       default: false
@@ -1169,7 +1169,9 @@ var mahjongFuroList = {render: function(){var _vm=this;var _h=_vm.$createElement
     }
   },
   methods:{
-
+    chosen(i){
+      this.$emit('notify', 'furoList', 'playOperationChosen', i);
+    }
   },
   created (){
 
@@ -1473,7 +1475,7 @@ main.domBus = new Vue({
     },
     mahjongFuroList: {
       display: true,
-      furos: [{ops:3,tile:70}]
+      furos: [{ops:3,tile:70},{ops:9,tile:70},{ops:13,tile:70}]
     }
   },
   'methods': {
@@ -1501,6 +1503,9 @@ main.domBus = new Vue({
           break;
         case 'playOperation':
           console.log('dom received operation', param);
+          break;
+        case 'playOperationChosen':
+          console.log(param);
           break;
       }
     },

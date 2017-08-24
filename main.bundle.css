@@ -94,6 +94,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .container {
   position: absolute;
   width: 80vw;
@@ -109,5 +124,13 @@
   width: 20vw;
   height: 10vw;
   margin: 0;
+  background-color: black;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.tile{
+  display: inline-block;
+  color: white;
 }
 
