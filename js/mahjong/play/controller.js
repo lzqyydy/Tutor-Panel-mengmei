@@ -29,18 +29,18 @@ function mouseMove(event){
 
 };
 function click(event){
-  if(controller.INTERSECTED.nextRound&&controller.INTERSECTED.nextRound.parent.visible){
-    controller.notify('network', 'inputReady');
-  }
-  else if(controller.INTERSECTED.furoButton&&controller.INTERSECTED.furoButton.parent.visible){
-    var index = controller.INTERSECTED.furoButton.userData.index;
-    var tile  = controller.INTERSECTED.furoButton.userData.tile;
-    controller.notify('network', 'inputOperation', {
-      tile: tile,
-      value: index
-    });
-  }
-  else if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
+  // if(controller.INTERSECTED.nextRound&&controller.INTERSECTED.nextRound.parent.visible){
+  //   controller.notify('network', 'inputReady');
+  // }
+  // else if(controller.INTERSECTED.furoButton&&controller.INTERSECTED.furoButton.parent.visible){
+  //   var index = controller.INTERSECTED.furoButton.userData.index;
+  //   var tile  = controller.INTERSECTED.furoButton.userData.tile;
+  //   controller.notify('network', 'inputOperation', {
+  //     tile: tile,
+  //     value: index
+  //   });
+  // }
+  if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
     var value = controller.INTERSECTED.handTile.children[0]._tile;
     controller.notify('network', 'inputDiscard', {
       value: value

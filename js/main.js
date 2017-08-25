@@ -1,4 +1,6 @@
 
+// import '../basscss.cp.css'
+
 import { Unit } from './structures.js'
 
 var features = new Unit();
@@ -93,8 +95,8 @@ main.domBus = new Vue({
       queueState: 0
     },
     mahjongFuroList: {
-      display: true,
-      furos: [{ops:3,tile:70},{ops:9,tile:70},{ops:13,tile:70}]
+      display: false,
+      furos: []
     }
   },
   'methods': {
@@ -122,9 +124,21 @@ main.domBus = new Vue({
           break;
         case 'playOperation':
           console.log('dom received operation', param);
+          this.mahjongFuroList.furos = param.data;
+          this.mahjongFuroList.display = true;
           break;
         case 'playOperationChosen':
           console.log(param);
+          if(param===-1){
+            main.socket.emit('operation', {ops: -1, tile: null}, ()=>{
+              this.mahjongFuroList.display = false;
+            })
+          }
+          else{
+            main.socket.emit('operation', this.mahjongFuroList.furos[param], ()=>{
+              this.mahjongFuroList.display = false;
+            })
+          }
           break;
       }
     },

@@ -11,11 +11,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cssnano": "^3.10.0",
+    "postcss": "^6.0.9",
     "rollup": "^0.41.6",
+    "rollup-plugin-postcss": "^0.5.4",
     "rollup-plugin-vue": "^2.3.1",
     "rollup-watch": "^3.2.2"
   },
   "dependencies": {
+    "basscss": "^8.0.3",
     "debug": "^2.6.3",
     "stylus": "^0.54.5",
     "vue": "^2.2.6"

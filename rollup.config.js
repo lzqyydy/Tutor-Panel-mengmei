@@ -5,26 +5,26 @@
 // import commonjs from 'rollup-plugin-commonjs';
 // import replace from 'rollup-plugin-replace';
 // import uglify from 'rollup-plugin-uglify';
-// import postcss from 'rollup-plugin-postcss';
+import postcss from 'rollup-plugin-postcss';
 import vue from 'rollup-plugin-vue';
 
 // PostCSS plugins
-// import cssnano from 'cssnano';
-// import stylus from 'stylus';
+import cssnano from 'cssnano';
+import stylus from 'stylus';
 
 // PostCSS pre-processor
-// const preprocessor = (content, id) => new Promise((resolve, reject) => {
-//   const renderer = stylus(content, {
-//     filename: id,
-//     sourcemap: {inline: true}
-//   });
-//   renderer.render((err, code) => {
-//     if (err) {
-//       return reject(err);
-//     }
-//     resolve({code, map: renderer.sourcemap});
-//   });
-// });
+const preprocessor = (content, id) => new Promise((resolve, reject) => {
+  const renderer = stylus(content, {
+    filename: id,
+    sourcemap: {inline: true}
+  });
+  renderer.render((err, code) => {
+    if (err) {
+      return reject(err);
+    }
+    resolve({code, map: renderer.sourcemap});
+  });
+});
 
 export default {
   // entry: 'src/scripts/main.js',
@@ -36,13 +36,13 @@ export default {
   // sourceMap: 'inline',
   plugins: [
     vue({compileTemplate: true}),
-    // postcss({
-    //   plugins: [
-    //     cssnano()
-    //   ],
-    //   preprocessor,
-    //   extensions: [ '.styl' ],
-    // }),
+    postcss({
+      plugins: [
+        cssnano()
+      ],
+      preprocessor,
+      extensions: [ '.css' ],
+    }),
     // resolve({
     //   jsnext: true,
     //   main: true,

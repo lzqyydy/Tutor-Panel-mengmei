@@ -4,6 +4,24 @@
 	(factory());
 }(this, (function () { 'use strict';
 
+function __$styleInject(css, returnValue) {
+  if (typeof document === 'undefined') {
+    return returnValue;
+  }
+  css = css || '';
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+  head.appendChild(style);
+  
+  if (style.styleSheet){
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+  return returnValue;
+}
+
 function Unit (){
   this._observer = {};
   this.onNotify = function(source, event, param){
@@ -201,18 +219,18 @@ function mouseMove(event){
 
 }
 function click(event){
-  if(controller.INTERSECTED.nextRound&&controller.INTERSECTED.nextRound.parent.visible){
-    controller.notify('network', 'inputReady');
-  }
-  else if(controller.INTERSECTED.furoButton&&controller.INTERSECTED.furoButton.parent.visible){
-    var index = controller.INTERSECTED.furoButton.userData.index;
-    var tile  = controller.INTERSECTED.furoButton.userData.tile;
-    controller.notify('network', 'inputOperation', {
-      tile: tile,
-      value: index
-    });
-  }
-  else if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
+  // if(controller.INTERSECTED.nextRound&&controller.INTERSECTED.nextRound.parent.visible){
+  //   controller.notify('network', 'inputReady');
+  // }
+  // else if(controller.INTERSECTED.furoButton&&controller.INTERSECTED.furoButton.parent.visible){
+  //   var index = controller.INTERSECTED.furoButton.userData.index;
+  //   var tile  = controller.INTERSECTED.furoButton.userData.tile;
+  //   controller.notify('network', 'inputOperation', {
+  //     tile: tile,
+  //     value: index
+  //   });
+  // }
+  if(controller.INTERSECTED.handTile&&controller.INTERSECTED.handTile.children.length){
     var value = controller.INTERSECTED.handTile.children[0]._tile;
     controller.notify('network', 'inputDiscard', {
       value: value
@@ -1135,11 +1153,11 @@ network.onNotify = function(source, event, param){
     case 'inputReady':
       network.socket.emit('ready');
       break;
-    case 'inputOperation':
-      network.socket.emit('operation', param, function(){
-        network.notify('objects', 'inputOperation');
-      });
-      break;
+    // case 'inputOperation':
+    //   network.socket.emit('operation', param, function(){
+    //     network.notify('objects', 'inputOperation');
+    //   });
+    //   break;
     case 'inputDiscard':
       network.socket.emit('discard', param, function(){
         network.notify('game', 'inputDiscard', param);
@@ -1386,6 +1404,8 @@ function clearDOMView(){
   }
 }
 
+// import '../basscss.cp.css'
+
 var features = new Unit();
 var main = new Unit();
 
@@ -1474,8 +1494,8 @@ main.domBus = new Vue({
       queueState: 0
     },
     mahjongFuroList: {
-      display: true,
-      furos: [{ops:3,tile:70},{ops:9,tile:70},{ops:13,tile:70}]
+      display: false,
+      furos: []
     }
   },
   'methods': {
@@ -1503,9 +1523,21 @@ main.domBus = new Vue({
           break;
         case 'playOperation':
           console.log('dom received operation', param);
+          this.mahjongFuroList.furos = param.data;
+          this.mahjongFuroList.display = true;
           break;
         case 'playOperationChosen':
           console.log(param);
+          if(param===-1){
+            main.socket.emit('operation', {ops: -1, tile: null}, ()=>{
+              this.mahjongFuroList.display = false;
+            });
+          }
+          else{
+            main.socket.emit('operation', this.mahjongFuroList.furos[param], ()=>{
+              this.mahjongFuroList.display = false;
+            });
+          }
           break;
       }
     },
